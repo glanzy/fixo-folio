@@ -8,6 +8,7 @@ export const Navbar = () => {
     { label: "Home", href: "/" },
     { label: "Services", href: "#services" },
     { label: "How It Works", href: "#how-it-works" },
+    { label: "Track Service", href: "/track-service" },
     { label: "FAQ", href: "#faq" },
   ];
 
