@@ -145,7 +145,7 @@ const TrackService = () => {
                   <span>${serviceData.billing.total.toFixed(2)}</span>
                 </div>
                 <div className="mt-4">
-                  <Badge variant={serviceData.billing.status === "Paid" ? "success" : "secondary"}>
+                  <Badge variant={serviceData.billing.status === "Paid" ? "secondary" : "default"}>
                     {serviceData.billing.status}
                   </Badge>
                 </div>
