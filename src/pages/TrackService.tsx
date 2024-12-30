@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { CheckCircle2, Circle } from "lucide-react";
 
 const TrackService = () => {
   // Mock data - in a real app, this would come from an API
@@ -52,12 +53,6 @@ const TrackService = () => {
     ],
   });
 
-  const getStatusColor = (status: string, completed: boolean) => {
-    if (completed) return "bg-green-500";
-    if (status === serviceData.service.status) return "bg-blue-500 animate-pulse";
-    return "bg-gray-200";
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -71,22 +66,29 @@ const TrackService = () => {
             <CardDescription>Service ID: {serviceData.service.id}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex justify-between items-center mb-8">
+            <div className="space-y-4">
               {serviceData.timeline.map((step, index) => (
-                <div key={step.status} className="flex flex-col items-center w-1/5">
-                  <div
-                    className={`w-6 h-6 rounded-full ${getStatusColor(
-                      step.status,
-                      step.completed
-                    )} mb-2`}
-                  />
-                  <div className="h-1 w-full bg-gray-200 absolute" />
-                  <p className="text-sm font-medium mt-2 text-center capitalize">
-                    {step.status}
-                  </p>
-                  {step.date && (
-                    <p className="text-xs text-gray-500 mt-1">{step.date}</p>
-                  )}
+                <div key={step.status} className="flex items-start space-x-4">
+                  <div className="flex flex-col items-center">
+                    {step.completed ? (
+                      <CheckCircle2 className="w-6 h-6 text-primary" />
+                    ) : (
+                      <Circle className={`w-6 h-6 ${
+                        step.status === serviceData.service.status 
+                          ? "text-primary animate-pulse" 
+                          : "text-gray-300"
+                      }`} />
+                    )}
+                    {index < serviceData.timeline.length - 1 && (
+                      <div className="w-0.5 h-8 bg-gray-200 my-1" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium capitalize">{step.status}</p>
+                    {step.date && (
+                      <p className="text-sm text-gray-500">{step.date}</p>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>
