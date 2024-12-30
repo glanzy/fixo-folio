@@ -9,6 +9,7 @@ export const Navbar = () => {
     { label: "Services", href: "#services" },
     { label: "How It Works", href: "#how-it-works" },
     { label: "Track Service", href: "/track-service" },
+    { label: "About Us", href: "/about-us" },
     { label: "FAQ", href: "#faq" },
   ];
 
@@ -23,13 +24,13 @@ export const Navbar = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <a
+              <Link
                 key={item.label}
-                href={item.href}
+                to={item.href}
                 className="text-gray-600 hover:text-primary transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             ))}
             <Button>Book Now</Button>
           </div>
@@ -44,13 +45,13 @@ export const Navbar = () => {
             <SheetContent>
               <div className="flex flex-col space-y-4 mt-8">
                 {menuItems.map((item) => (
-                  <a
+                  <Link
                     key={item.label}
-                    href={item.href}
+                    to={item.href}
                     className="text-lg text-gray-600 hover:text-primary transition-colors"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
                 <Button className="w-full">Book Now</Button>
               </div>

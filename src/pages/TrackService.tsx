@@ -66,10 +66,10 @@ const TrackService = () => {
             <CardDescription>Service ID: {serviceData.service.id}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="md:flex md:justify-between md:items-center md:px-4 space-y-4 md:space-y-0">
               {serviceData.timeline.map((step, index) => (
-                <div key={step.status} className="flex items-start space-x-4">
-                  <div className="flex flex-col items-center">
+                <div key={step.status} className="flex md:flex-col items-start md:items-center md:w-1/5">
+                  <div className="flex md:flex-col items-center">
                     {step.completed ? (
                       <CheckCircle2 className="w-6 h-6 text-primary" />
                     ) : (
@@ -80,10 +80,10 @@ const TrackService = () => {
                       }`} />
                     )}
                     {index < serviceData.timeline.length - 1 && (
-                      <div className="w-0.5 h-8 bg-gray-200 my-1" />
+                      <div className="h-14 w-0.5 md:h-0.5 md:w-full bg-gray-200 my-1 md:my-0 md:mx-1 md:absolute md:left-0 md:top-1/2 md:transform md:translate-x-1/2" />
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="ml-4 md:ml-0 md:text-center md:mt-2">
                     <p className="font-medium capitalize">{step.status}</p>
                     {step.date && (
                       <p className="text-sm text-gray-500">{step.date}</p>
@@ -95,85 +95,83 @@ const TrackService = () => {
           </CardContent>
         </Card>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Customer Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Customer Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p><span className="font-medium">Name:</span> {serviceData.customer.name}</p>
-                <p><span className="font-medium">Email:</span> {serviceData.customer.email}</p>
-                <p><span className="font-medium">Phone:</span> {serviceData.customer.phone}</p>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Customer Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Customer Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p><span className="font-medium">Name:</span> {serviceData.customer.name}</p>
+              <p><span className="font-medium">Email:</span> {serviceData.customer.email}</p>
+              <p><span className="font-medium">Phone:</span> {serviceData.customer.phone}</p>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Device Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Device Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p><span className="font-medium">Type:</span> {serviceData.device.type}</p>
-                <p><span className="font-medium">Brand:</span> {serviceData.device.brand}</p>
-                <p><span className="font-medium">Model:</span> {serviceData.device.model}</p>
-                <p><span className="font-medium">Serial Number:</span> {serviceData.device.serialNumber}</p>
-                <p><span className="font-medium">Issue:</span> {serviceData.device.issue}</p>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Device Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Device Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p><span className="font-medium">Type:</span> {serviceData.device.type}</p>
+              <p><span className="font-medium">Brand:</span> {serviceData.device.brand}</p>
+              <p><span className="font-medium">Model:</span> {serviceData.device.model}</p>
+              <p><span className="font-medium">Serial Number:</span> {serviceData.device.serialNumber}</p>
+              <p><span className="font-medium">Issue:</span> {serviceData.device.issue}</p>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Billing Information */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Billing Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${serviceData.billing.subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span>${serviceData.billing.tax.toFixed(2)}</span>
-                </div>
-                <Separator className="my-2" />
-                <div className="flex justify-between font-bold">
-                  <span>Total</span>
-                  <span>${serviceData.billing.total.toFixed(2)}</span>
-                </div>
-                <div className="mt-4">
-                  <Badge variant={serviceData.billing.status === "Paid" ? "secondary" : "default"}>
-                    {serviceData.billing.status}
-                  </Badge>
-                </div>
+        {/* Billing Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Billing Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>${serviceData.billing.subtotal.toFixed(2)}</span>
               </div>
-            </CardContent>
-          </Card>
+              <div className="flex justify-between">
+                <span>Tax</span>
+                <span>${serviceData.billing.tax.toFixed(2)}</span>
+              </div>
+              <Separator className="my-2" />
+              <div className="flex justify-between font-bold">
+                <span>Total</span>
+                <span>${serviceData.billing.total.toFixed(2)}</span>
+              </div>
+              <div className="mt-4">
+                <Badge variant={serviceData.billing.status === "Paid" ? "secondary" : "default"}>
+                  {serviceData.billing.status}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Repair Images */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Repair Images</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4">
-                {serviceData.repairImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Repair progress ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg"
-                  />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Repair Images */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Repair Images</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 gap-4">
+              {serviceData.repairImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`Repair progress ${index + 1}`}
+                  className="w-full h-32 object-cover rounded-lg"
+                />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       </main>
       <Footer />
     </div>
