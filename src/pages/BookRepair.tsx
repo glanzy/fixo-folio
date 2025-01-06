@@ -13,15 +13,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { FormSection } from "@/components/book-repair/FormSection";
+import { DeviceDetails } from "@/components/book-repair/DeviceDetails";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
   address: z.string().min(10, "Please enter your complete address"),
   deviceType: z.enum(["laptop", "mobile"]),
+  deviceName: z.string().min(2, "Please enter your device name"),
+  deviceModel: z.string().min(2, "Please enter your device model"),
   problem: z.string().min(20, "Please describe the problem in detail"),
 });
 
@@ -34,6 +37,8 @@ const BookRepair = () => {
       mobile: "",
       address: "",
       deviceType: "laptop",
+      deviceName: "",
+      deviceModel: "",
       problem: "",
     },
   });
@@ -62,146 +67,130 @@ const BookRepair = () => {
               <p className="mb-8">Get your device fixed by our expert technicians</p>
               
               <div className="space-y-6">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center space-x-4"
-                >
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <User className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Personal Details</h3>
-                    <p className="text-sm opacity-75">We'll keep your information secure</p>
-                  </div>
-                </motion.div>
+                <FormSection
+                  icon={<User className="w-6 h-6" />}
+                  title="Personal Details"
+                  description="We'll keep your information secure"
+                />
 
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center space-x-4"
-                >
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <Phone className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Contact Information</h3>
-                    <p className="text-sm opacity-75">To keep you updated about repairs</p>
-                  </div>
-                </motion.div>
+                <FormSection
+                  icon={<Phone className="w-6 h-6" />}
+                  title="Contact Information"
+                  description="To keep you updated about repairs"
+                />
 
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center space-x-4"
-                >
-                  <div className="p-3 bg-white/10 rounded-lg">
-                    <FileText className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">Device Details</h3>
-                    <p className="text-sm opacity-75">Tell us about your device</p>
-                  </div>
-                </motion.div>
+                <FormSection
+                  icon={<FileText className="w-6 h-6" />}
+                  title="Device Details"
+                  description="Tell us about your device"
+                />
               </div>
             </div>
 
             <div className="md:w-1/2 p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
 
-                  <FormField
-                    control={form.control}
-                    name="mobile"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mobile Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your mobile number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="mobile"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Mobile Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your mobile number" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
 
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Enter your address" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Address</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Enter your address" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
 
-                  <FormField
-                    control={form.control}
-                    name="deviceType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Device Type</FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex gap-4"
-                          >
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="laptop" id="laptop" />
-                              <label htmlFor="laptop" className="flex items-center gap-2 cursor-pointer">
-                                <Laptop className="w-5 h-5" />
-                                Laptop
-                              </label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <RadioGroupItem value="mobile" id="mobile" />
-                              <label htmlFor="mobile" className="flex items-center gap-2 cursor-pointer">
-                                <Smartphone className="w-5 h-5" />
-                                Mobile
-                              </label>
-                            </div>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <DeviceDetails form={form} />
+                  </motion.div>
 
-                  <FormField
-                    control={form.control}
-                    name="problem"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Describe the Problem</FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Please describe the issue you're facing with your device"
-                            className="min-h-[100px]"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="problem"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Describe the Problem</FormLabel>
+                          <FormControl>
+                            <Textarea 
+                              placeholder="Please describe the issue you're facing with your device"
+                              className="min-h-[100px]"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </motion.div>
 
-                  <Button type="submit" className="w-full">
-                    Submit Repair Request
-                  </Button>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <Button type="submit" className="w-full">
+                      Submit Repair Request
+                    </Button>
+                  </motion.div>
                 </form>
               </Form>
             </div>
