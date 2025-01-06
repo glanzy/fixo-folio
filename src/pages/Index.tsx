@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
+import { Stats } from "@/components/Stats";
 import { HowItWorks } from "@/components/HowItWorks";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
@@ -24,6 +25,7 @@ const Index = () => {
       >
         <Hero />
         <Services />
+        <Stats />
         <HowItWorks />
         <FAQ />
         <Footer />
