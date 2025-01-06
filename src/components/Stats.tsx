@@ -5,6 +5,10 @@ export const Stats = () => {
   return (
     <section className="py-12 bg-primary/5">
       <div className="container px-4 mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-primary mb-2">Our Technician Partners' Impact</h2>
+          <p className="text-gray-600">Delivering excellence in device repair services</p>
+        </div>
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
