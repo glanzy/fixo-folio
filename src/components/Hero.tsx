@@ -2,7 +2,12 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+import { useNavigate } from "react-router-dom";
+
 export const Hero = () => {
+  
+  const navigate = useNavigate();
+  
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
       <div className="container px-4 mx-auto">
@@ -24,7 +29,7 @@ export const Hero = () => {
             Fast, reliable repairs for your smartphones and laptops. 
             Professional technicians, genuine parts, and service guarantee.
           </p>
-          <Button size="lg" className="animate-float">
+          <Button size="lg" className="animate-float" onClick={() => navigate('/book-repair')}>
             Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>
