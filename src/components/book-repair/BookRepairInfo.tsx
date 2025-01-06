@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export const BookRepairInfo = () => {
   return (
-<div className="md:w-1/2 bg-primary p-8 text-white">
+    <div className="md:w-1/2 bg-primary p-8 text-white">
       <h2 className="text-3xl font-bold mb-6">Book Your Repair</h2>
       <p className="mb-8">Get your device fixed by our expert technicians</p>
       
@@ -37,7 +37,7 @@ export const BookRepairInfo = () => {
         <img
           src="/lovable-uploads/ce3f0a31-cf1e-4abc-9413-57e93c1719b1.png"
           alt="FIXO Technician"
-          className="hidden md:block mx-auto p-11"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full object-contain"
         />
       </motion.div>
     </div>

@@ -5,24 +5,24 @@ import { Footer } from "@/components/Footer";
 
 const teamMembers = [
   {
-    name: "Harshit Lata",
+    name: "John Smith",
     role: "CEO & Co-founder",
     image: "/placeholder.svg",
-    linkedin: "https://www.linkedin.com/in/harshitlata/",
+    linkedin: "https://linkedin.com/in/johnsmith",
     description: "10+ years experience in device repair industry",
   },
   {
-    name: "Pallav Jha",
+    name: "Sarah Johnson",
     role: "CTO & Co-founder",
     image: "/placeholder.svg",
-    linkedin: "https://www.linkedin.com/in/pallavjha01/",
+    linkedin: "https://linkedin.com/in/sarahjohnson",
     description: "Former lead engineer at Apple",
   },
   {
-    name: "Lakshay Sharma",
-    role: "CBO & Co-founder",
+    name: "Mike Wilson",
+    role: "COO & Co-founder",
     image: "/placeholder.svg",
-    linkedin: "https://www.linkedin.com/in/lakshaycom/",
+    linkedin: "https://linkedin.com/in/mikewilson",
     description: "Operations expert with 8+ years experience",
   },
 ];

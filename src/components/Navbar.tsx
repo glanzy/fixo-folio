@@ -2,16 +2,15 @@ import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const navigate = useNavigate();
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Services", href: "#services" },
     { label: "How It Works", href: "#how-it-works" },
     { label: "Track Service", href: "/track-service" },
     { label: "About Us", href: "/about-us" },
+    { label: "Book Repair", href: "/book-repair" },
     { label: "FAQ", href: "#faq" },
   ];
 
@@ -34,7 +33,7 @@ export const Navbar = () => {
                 {item.label}
               </Link>
             ))}
-            <Button onClick={() => navigate('/book-repair')}>Book Now</Button>
+            <Button>Book Now</Button>
           </div>
 
           {/* Mobile Menu */}
