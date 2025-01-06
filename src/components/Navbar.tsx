@@ -10,6 +10,7 @@ export const Navbar = () => {
     { label: "How It Works", href: "#how-it-works" },
     { label: "Track Service", href: "/track-service" },
     { label: "About Us", href: "/about-us" },
+    { label: "Book Repair", href: "/book-repair" },
     { label: "FAQ", href: "#faq" },
   ];
 
