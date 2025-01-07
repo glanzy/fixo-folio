@@ -5,7 +5,60 @@ import { Button } from "@/components/ui/button";
 export const Hero = () => {
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
-      <div className="container px-4 mx-auto">
+      {/* Background Doodles */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+        <motion.img
+          src="/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
+          alt="Device Parts"
+          className="absolute w-32 h-32 opacity-40 top-20 left-[10%]"
+          animate={{ y: [-10, 10] }}
+          transition={{ repeat: Infinity, duration: 3, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/b268cdb2-2a68-4246-b015-ac0b58fc46b2.png"
+          alt="Broken Phone"
+          className="absolute w-32 h-32 opacity-40 top-40 right-[15%]"
+          animate={{ y: [-15, 15] }}
+          transition={{ repeat: Infinity, duration: 4, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png"
+          alt="Error Laptop"
+          className="absolute w-40 h-40 opacity-40 bottom-20 left-[20%]"
+          animate={{ y: [-12, 12] }}
+          transition={{ repeat: Infinity, duration: 3.5, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/49355866-65d5-482e-a3b7-09a4693e3f9e.png"
+          alt="Error Message"
+          className="absolute w-32 h-32 opacity-40 top-[30%] left-[30%]"
+          animate={{ y: [-8, 8] }}
+          transition={{ repeat: Infinity, duration: 2.5, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/2b8cdbb7-dd7a-4c36-89ca-7e91b3e38d41.png"
+          alt="Memory Card"
+          className="absolute w-32 h-32 opacity-40 bottom-40 right-[25%]"
+          animate={{ y: [-10, 10] }}
+          transition={{ repeat: Infinity, duration: 3.2, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/69101519-e492-4415-bf5e-f64c759a0f5c.png"
+          alt="Broken Screen"
+          className="absolute w-32 h-32 opacity-40 top-[20%] right-[30%]"
+          animate={{ y: [-12, 12] }}
+          transition={{ repeat: Infinity, duration: 3.8, yoyo: true }}
+        />
+        <motion.img
+          src="/lovable-uploads/892623dc-d3e2-4046-8574-4c38fe8876c1.png"
+          alt="Broken Laptop"
+          className="absolute w-40 h-40 opacity-40 bottom-[15%] right-[10%]"
+          animate={{ y: [-15, 15] }}
+          transition={{ repeat: Infinity, duration: 4.2, yoyo: true }}
+        />
+      </div>
+
+      <div className="container px-4 mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
