@@ -28,7 +28,13 @@ export const Stats = () => {
               <Star className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-4xl font-bold text-primary mb-2">4.8</h3>
-            <p className="text-gray-600">Average Customer Rating</p>
+            <div className="flex items-center justify-center gap-1">
+              {[1, 2, 3, 4].map((_, index) => (
+                <Star key={index} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+              ))}
+              <Star className="h-5 w-5 fill-yellow-400 text-yellow-400 opacity-80" style={{ clipPath: 'inset(0 20% 0 0)' }} />
+            </div>
+            <p className="text-gray-600 mt-2">Average Customer Rating</p>
           </div>
         </motion.div>
       </div>
