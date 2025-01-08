@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowRight, Shield, Clock, Wrench, Star } from "lucide-react";
+import { CheckCircle2, ArrowRight, Shield, Clock, Tool, Star } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const steps = [
   {
     title: "Expert Diagnosis",
     description: "Our certified technicians will thoroughly examine your device and provide a detailed diagnosis report.",
-    icon: Wrench,
+    icon: Tool,
     highlight: "Professional Assessment"
   },
   {
