@@ -1,34 +1,42 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Wrench, Shield, Clock, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
-    title: "Book Online",
-    description: "Schedule a repair service through our easy online booking system. Choose your device type and describe the issue you're experiencing.",
-    image: "/lovable-uploads/Fixo_image.png"
+    icon: Wrench,
+    title: "Expert Diagnosis",
+    description: "Our certified technicians perform a thorough assessment of your device using state-of-the-art diagnostic tools.",
+    highlight: "Free Initial Assessment"
   },
   {
-    title: "Device Diagnosis",
-    description: "Our expert technicians will thoroughly examine your device to identify the root cause of the problem and provide a detailed diagnosis.",
-    image: "/lovable-uploads/Fixo_image1.png"
+    icon: Clock,
+    title: "Quick Turnaround",
+    description: "Most repairs are completed within 24-48 hours, getting you back to what matters most.",
+    highlight: "Same-Day Service Available"
   },
   {
-    title: "Professional Repair",
-    description: "Using genuine parts and professional tools, our certified technicians will repair your device following industry best practices.",
-    image: "/lovable-uploads/Fixoman.png"
+    icon: Shield,
+    title: "Quality Guarantee",
+    description: "We use only genuine parts and provide a 90-day warranty on all repairs.",
+    highlight: "90-Day Warranty"
   },
   {
-    title: "Quality Check",
-    description: "Before returning your device, we perform comprehensive testing to ensure everything works perfectly.",
-    image: "/lovable-uploads/Fixo_image.png"
+    icon: Star,
+    title: "Customer Satisfaction",
+    description: "Join thousands of satisfied customers who trust us with their devices.",
+    highlight: "4.9/5 Customer Rating"
   }
 ];
 
 const HowItWorks = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Navbar />
       <main className="container mx-auto px-4 py-16">
         <motion.div
@@ -37,42 +45,64 @@ const HowItWorks = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl font-bold text-primary mb-4">How It Works</h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Our streamlined repair process ensures your device gets fixed quickly and efficiently
+          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">
+            Professional Device Repair Process
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Experience hassle-free repairs with our simple, transparent process
           </p>
         </motion.div>
 
-        <div className="space-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
               initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.2 }}
-              className={`flex flex-col ${
-                index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-              } items-center gap-8`}
+              className="relative"
             >
-              <div className="flex-1">
-                <div className="bg-primary/5 p-8 rounded-2xl">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle2 className="h-6 w-6 text-primary" />
+              <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center">
+                    <step.icon className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-semibold mb-4">{step.title}</h3>
-                  <p className="text-muted-foreground">{step.description}</p>
+                  <h3 className="text-2xl font-semibold text-primary">{step.title}</h3>
                 </div>
-              </div>
-              <div className="flex-1">
-                <img
-                  src={step.image}
-                  alt={step.title}
-                  className="rounded-2xl shadow-lg w-full"
-                />
+                <p className="text-gray-600 mb-4 text-lg">{step.description}</p>
+                <div className="bg-primary/5 p-4 rounded-lg">
+                  <p className="text-primary font-medium flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5" />
+                    {step.highlight}
+                  </p>
+                </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          className="text-center"
+        >
+          <div className="bg-primary/5 p-8 rounded-2xl mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">
+              Ready to Get Started?
+            </h2>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+              Book your repair appointment now and experience our professional service firsthand.
+            </p>
+            <Button
+              size="lg"
+              onClick={() => navigate("/book-repair")}
+              className="bg-primary hover:bg-primary/90 text-white px-8"
+            >
+              Book Your Repair
+            </Button>
+          </div>
+        </motion.div>
       </main>
       <Footer />
     </div>
