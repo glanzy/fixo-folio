@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Smartphone, Laptop, Tablet, Apple, Shield, Clock, Tool, Star } from "lucide-react";
+import { Smartphone, Laptop, Tablet, Apple, Shield, Clock, Wrench, Star, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -72,7 +72,7 @@ const features = [
     description: "Most repairs completed same-day"
   },
   {
-    icon: Tool,
+    icon: Wrench,
     title: "Genuine Parts",
     description: "Only authentic components used"
   },
