@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, Tool, Award } from "lucide-react";
+import { Shield, Clock, Wrench, Award } from "lucide-react";
 
 const features = [
   {
@@ -13,7 +13,7 @@ const features = [
     description: "Most repairs completed within 24-48 hours, getting you back up and running fast",
   },
   {
-    icon: Tool,
+    icon: Wrench,
     title: "Expert Technicians",
     description: "Our certified technicians have years of experience with all major brands",
   },
