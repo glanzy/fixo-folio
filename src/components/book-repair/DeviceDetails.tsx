@@ -56,7 +56,7 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                     <RadioGroupItem value="ipad" id="ipad" />
                     <label htmlFor="ipad" className="flex items-center gap-2 cursor-pointer">
                       <Tablet className="w-5 h-5" />
-                      iPad/Tablet
+                      iPad
                     </label>
                   </div>
                 </motion.div>
@@ -80,7 +80,7 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                 placeholder={`${form.watch('deviceType') === 'laptop' 
                   ? 'Apple / Asus / HP / Lenovo etc.' 
                   : form.watch('deviceType') === 'ipad' 
-                  ? 'Apple / Samsung / Lenovo / Microsoft etc.' 
+                  ? 'Apple' 
                   : 'Apple / Samsung / Redmi / Oppo etc.'}`} 
                 {...field} 
               />
@@ -101,7 +101,7 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                 placeholder={`${form.watch('deviceType') === 'laptop' 
                   ? 'Macbook Air / F15 / Ideapad etc.' 
                   : form.watch('deviceType') === 'ipad' 
-                  ? 'iPad Pro 13 / Galaxy Tab S10 / Pad 6 etc.' 
+                  ? 'iPad Pro 13 / iPad Air / iPad Mini etc.' 
                   : 'iPhone 15 / S22 / Note 10 etc.'}`} 
                 {...field} 
               />
