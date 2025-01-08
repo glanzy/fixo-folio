@@ -1,3 +1,6 @@
+//Service progress page
+
+
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -13,7 +16,11 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, Circle } from "lucide-react";
 
 const TrackService = () => {
-  // Mock data - in a real app, this would come from an API
+  
+  
+  // Mock data - in a real app, this would come from an API from database
+
+
   const [serviceData] = useState({
     customer: {
       name: "John Doe",
@@ -24,7 +31,6 @@ const TrackService = () => {
       type: "Laptop",
       brand: "Dell",
       model: "XPS 15",
-      serialNumber: "XPS159876",
       issue: "Screen flickering and battery drain",
     },
     service: {
@@ -66,9 +72,9 @@ const TrackService = () => {
             <CardDescription>Service ID: {serviceData.service.id}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {serviceData.timeline.map((step, index) => (
-                <div key={step.status} className="flex items-start space-x-4">
+                <div key={step.status} className="flex items-start space-x-5">
                   <div className="flex flex-col items-center">
                     {step.completed ? (
                       <CheckCircle2 className="w-6 h-6 text-primary" />
@@ -95,7 +101,7 @@ const TrackService = () => {
           </CardContent>
         </Card>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-5">
           {/* Customer Information */}
           <Card>
             <CardHeader>
@@ -120,7 +126,6 @@ const TrackService = () => {
                 <p><span className="font-medium">Type:</span> {serviceData.device.type}</p>
                 <p><span className="font-medium">Brand:</span> {serviceData.device.brand}</p>
                 <p><span className="font-medium">Model:</span> {serviceData.device.model}</p>
-                <p><span className="font-medium">Serial Number:</span> {serviceData.device.serialNumber}</p>
                 <p><span className="font-medium">Issue:</span> {serviceData.device.issue}</p>
               </div>
             </CardContent>

@@ -1,17 +1,27 @@
+// Navbar component - Linked the first page, rest are left as it is
+
+
 import { Menu } from "lucide-react";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+  const navigate = useNavigate();
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Services", href: "#services" },
-    { label: "How It Works", href: "#how-it-works" },
     { label: "Track Service", href: "/track-service" },
     { label: "About Us", href: "/about-us" },
-    { label: "Book Repair", href: "/book-repair" },
-    { label: "FAQ", href: "#faq" },
+    
+    { label: "FAQ", href: "#faq",  onClick: (e: React.MouseEvent) => {
+      e.preventDefault();
+      if (window.location.pathname !== '/') {
+        navigate('/', { replace: true });
+      } else {
+        document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+      }}
+      },
+      
   ];
 
   return (
@@ -28,12 +38,13 @@ export const Navbar = () => {
               <Link
                 key={item.label}
                 to={item.href}
+                onClick={item.onClick}
                 className="text-gray-600 hover:text-primary transition-colors"
               >
                 {item.label}
               </Link>
             ))}
-            <Button>Book Now</Button>
+            <Button onClick={() => window.location.href = "/book-repair"}>Book Now</Button>
           </div>
 
           {/* Mobile Menu */}
@@ -49,6 +60,7 @@ export const Navbar = () => {
                   <Link
                     key={item.label}
                     to={item.href}
+                    onClick={item.onClick}
                     className="text-lg text-gray-600 hover:text-primary transition-colors"
                   >
                     {item.label}

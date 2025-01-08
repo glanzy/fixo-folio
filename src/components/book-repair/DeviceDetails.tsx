@@ -1,7 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Laptop, Smartphone } from "lucide-react";
+import { Laptop, Smartphone, Tablet } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
 
@@ -45,6 +45,18 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                     <label htmlFor="mobile" className="flex items-center gap-2 cursor-pointer">
                       <Smartphone className="w-5 h-5" />
                       Mobile
+                    </label>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-1"
+                >
+                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
+                    <RadioGroupItem value="ipad" id="ipad" />
+                    <label htmlFor="ipad" className="flex items-center gap-2 cursor-pointer">
+                      <Tablet className="w-5 h-5" />
+                      iPad
                     </label>
                   </div>
                 </motion.div>

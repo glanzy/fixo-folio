@@ -51,7 +51,7 @@ export const BookRepairForm = () => {
   };
 
   return (
-    <div className="md:w-1/2 p-8">
+    <div className="md:w-3/4 p-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <motion.div

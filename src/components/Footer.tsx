@@ -1,3 +1,5 @@
+// Footer component - Just link the FAQ
+
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -6,11 +8,12 @@ export const Footer = () => {
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
+
+          {/* Brand and Description */}
           <div className="space-y-4">
             <h3 className="text-2xl font-bold">FIXO</h3>
             <p className="text-gray-300">
-              Professional electronic repair services at your doorstep
+              "We can't fix your broken heart, but we can fix your broken devices"
             </p>
           </div>
 
@@ -24,54 +27,54 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#services" className="text-gray-300 hover:text-white">
-                  Services
+                <a href="/track-service" className="text-gray-300 hover:text-white">
+                  Track Service
                 </a>
               </li>
               <li>
-                <a href="#how-it-works" className="text-gray-300 hover:text-white">
-                  How It Works
+                <a href="/about-us" className="text-gray-300 hover:text-white">
+                  About us
                 </a>
               </li>
               <li>
-                <a href="#faq" className="text-gray-300 hover:text-white">
+                <Link to="/#faq" className="text-gray-300 hover:text-white">
                   FAQ
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Services */}
+          {/* Our Services */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Our Services</h4>
             <ul className="space-y-2">
               <li className="text-gray-300">Mobile Repair</li>
               <li className="text-gray-300">Laptop Service</li>
-              <li className="text-gray-300">Tablet Repair</li>
-              <li className="text-gray-300">PC Repair</li>
+              <li className="text-gray-300">iPad Repair</li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Contact Us */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5" />
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300" >+91 8005539249 | +91 7462080762 | +91 9582568064</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5" />
-                <span className="text-gray-300">support@fixo.com</span>
+                <span className="text-gray-300" onClick={() => window.location.href = "mailto:contact@fixo.com"}>contact@fixo.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5" />
-                <span className="text-gray-300">123 Repair Street, Tech City</span>
+                <span className="text-gray-300" onClick={() => window.location.href = "https://www.google.com/maps/place/IIT+Madras,+Chennai,+Tamil+Nadu+600036"}>Nirmaan, CFI, IIT Madras, Chennai, Tamil Nadu - 600036</span>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Copyright part in the bottom */}
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-300">
           <p>&copy; {new Date().getFullYear()} FIXO. All rights reserved.</p>
         </div>

@@ -32,12 +32,12 @@ export const BookRepairInfo = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="relative h-64 mt-8"
+        className="relative h-64 mt-8 hidden md:block"
       >
         <img
-          src="/lovable-uploads/ce3f0a31-cf1e-4abc-9413-57e93c1719b1.png"
+          src="/lovable-uploads/Fixoman.png"
           alt="FIXO Technician"
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 h-full object-contain"
+          className="absolute left-[0%] top-[-160%] h-[500%] object-contain hidden md:block"
         />
       </motion.div>
     </div>
