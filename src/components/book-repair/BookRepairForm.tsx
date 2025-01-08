@@ -1,7 +1,5 @@
-// Right side of the book repair section
-
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,15 +15,20 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { DeviceDetails } from "./DeviceDetails";
+import { Plus, Trash2 } from "lucide-react";
+
+const deviceSchema = z.object({
+  deviceType: z.enum(["laptop", "mobile", "ipad"]),
+  deviceName: z.string().min(2, "Please enter your device name"),
+  deviceModel: z.string().min(2, "Please enter your device model"),
+  problem: z.string().min(20, "Please describe the problem in detail"),
+});
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
   address: z.string().min(10, "Please enter your complete address"),
-  deviceType: z.enum(["laptop", "mobile"]),
-  deviceName: z.string().min(2, "Please enter your device name"),
-  deviceModel: z.string().min(2, "Please enter your device model"),
-  problem: z.string().min(20, "Please describe the problem in detail"),
+  devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
 export const BookRepairForm = () => {
@@ -36,11 +39,20 @@ export const BookRepairForm = () => {
       name: "",
       mobile: "",
       address: "",
-      deviceType: "laptop",
-      deviceName: "",
-      deviceModel: "",
-      problem: "",
+      devices: [
+        {
+          deviceType: "laptop",
+          deviceName: "",
+          deviceModel: "",
+          problem: "",
+        },
+      ],
     },
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "devices",
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
@@ -116,43 +128,73 @@ export const BookRepairForm = () => {
             />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-             <DeviceDetails form={form} />                  {/*From device type o device model is in this line */}
-          </motion.div>
+          {fields.map((field, index) => (
+            <motion.div
+              key={field.id}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 + index * 0.1 }}
+              className="relative space-y-6 p-6 border rounded-lg"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-medium">Device {index + 1}</h3>
+                {fields.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive"
+                    onClick={() => remove(index)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <FormField
-              control={form.control}
-              name="problem"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Describe the Problem</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Please describe the issue you're facing with your device"
-                      className="min-h-[100px]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </motion.div>
+              <DeviceDetails form={form} index={index} />
+
+              <FormField
+                control={form.control}
+                name={`devices.${index}.problem`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Describe the Problem</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Please describe the issue you're facing with your device"
+                        className="min-h-[100px]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+          ))}
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
+            transition={{ delay: 0.6 }}
+            className="space-y-4"
           >
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() =>
+                append({
+                  deviceType: "laptop",
+                  deviceName: "",
+                  deviceModel: "",
+                  problem: "",
+                })
+              }
+            >
+              <Plus className="mr-2 h-4 w-4" /> Add Another Device
+            </Button>
+
             <Button type="submit" className="w-full">
               Submit Repair Request
             </Button>

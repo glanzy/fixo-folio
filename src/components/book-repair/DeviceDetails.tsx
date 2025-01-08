@@ -7,14 +7,15 @@ import { motion } from "framer-motion";
 
 interface DeviceDetailsProps {
   form: UseFormReturn<any>;
+  index: number;
 }
 
-export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
+export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
   return (
     <div className="space-y-4">
       <FormField
         control={form.control}
-        name="deviceType"
+        name={`devices.${index}.deviceType`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Device Type</FormLabel>
@@ -29,8 +30,8 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                   className="flex-1"
                 >
                   <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="laptop" id="laptop" />
-                    <label htmlFor="laptop" className="flex items-center gap-2 cursor-pointer">
+                    <RadioGroupItem value="laptop" id={`laptop-${index}`} />
+                    <label htmlFor={`laptop-${index}`} className="flex items-center gap-2 cursor-pointer">
                       <Laptop className="w-5 h-5" />
                       Laptop
                     </label>
@@ -41,8 +42,8 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                   className="flex-1"
                 >
                   <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="mobile" id="mobile" />
-                    <label htmlFor="mobile" className="flex items-center gap-2 cursor-pointer">
+                    <RadioGroupItem value="mobile" id={`mobile-${index}`} />
+                    <label htmlFor={`mobile-${index}`} className="flex items-center gap-2 cursor-pointer">
                       <Smartphone className="w-5 h-5" />
                       Mobile
                     </label>
@@ -53,8 +54,8 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
                   className="flex-1"
                 >
                   <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="ipad" id="ipad" />
-                    <label htmlFor="ipad" className="flex items-center gap-2 cursor-pointer">
+                    <RadioGroupItem value="ipad" id={`ipad-${index}`} />
+                    <label htmlFor={`ipad-${index}`} className="flex items-center gap-2 cursor-pointer">
                       <Tablet className="w-5 h-5" />
                       iPad
                     </label>
@@ -67,19 +68,17 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
         )}
       />
       
-      
-      {/* BRAND NAME */}
       <FormField
         control={form.control}
-        name="deviceName"
+        name={`devices.${index}.deviceName`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Brand Name</FormLabel>
             <FormControl>
               <Input 
-                placeholder={`${form.watch('deviceType') === 'laptop' 
+                placeholder={`${form.watch(`devices.${index}.deviceType`) === 'laptop' 
                   ? 'Apple / Asus / HP / Lenovo etc.' 
-                  : form.watch('deviceType') === 'ipad' 
+                  : form.watch(`devices.${index}.deviceType`) === 'ipad' 
                   ? 'Apple' 
                   : 'Apple / Samsung / Redmi / Oppo etc.'}`} 
                 {...field} 
@@ -89,18 +88,18 @@ export const DeviceDetails = ({ form }: DeviceDetailsProps) => {
           </FormItem>
         )}
       />
-      {/* DEVICE MODEL */}
+
       <FormField
         control={form.control}
-        name="deviceModel"
+        name={`devices.${index}.deviceModel`}
         render={({ field }) => (
           <FormItem>
             <FormLabel>Device Model</FormLabel>
             <FormControl>
               <Input 
-                placeholder={`${form.watch('deviceType') === 'laptop' 
+                placeholder={`${form.watch(`devices.${index}.deviceType`) === 'laptop' 
                   ? 'Macbook Air / F15 / Ideapad etc.' 
-                  : form.watch('deviceType') === 'ipad' 
+                  : form.watch(`devices.${index}.deviceType`) === 'ipad' 
                   ? 'iPad Pro 13 / iPad Air / iPad Mini etc.' 
                   : 'iPhone 15 / S22 / Note 10 etc.'}`} 
                 {...field} 
