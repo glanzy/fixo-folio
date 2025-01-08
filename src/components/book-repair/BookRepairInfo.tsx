@@ -1,3 +1,5 @@
+// Left side of the book-repair section
+
 import { User, Phone, FileText } from "lucide-react";
 import { FormSection } from "./FormSection";
 import { motion } from "framer-motion";

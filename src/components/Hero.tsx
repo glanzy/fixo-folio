@@ -89,7 +89,7 @@ export const Hero = () => {
             Fast, reliable repairs for your smartphones and laptops. 
             Professional technicians, genuine parts, and service guarantee.
           </p>
-          <Button size="lg" className="animate-float">
+          <Button size="lg" className="animate-float" onClick={() => window.location.href = "/book-repair"}>
             Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>

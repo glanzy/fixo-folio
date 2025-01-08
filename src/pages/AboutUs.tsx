@@ -25,6 +25,13 @@ const teamMembers = [
     linkedin: "https://linkedin.com/in/mikewilson",
     description: "Operations expert with 8+ years experience",
   },
+  {
+    name: "Bhaalu",
+    role: "President",
+    image: "/placeholder.svg",
+    linkedin: "https://linkedin.com/in/mikewilson",
+    description: "Operations expert with 8+ years experience",
+  },
 ];
 
 const AboutUs = () => {
@@ -44,7 +51,7 @@ const AboutUs = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {teamMembers.map((member, index) => (
             <motion.div
               key={member.name}

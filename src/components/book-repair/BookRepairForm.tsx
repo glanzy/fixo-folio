@@ -1,3 +1,5 @@
+// Right side of the book repair section
+
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -84,7 +86,7 @@ export const BookRepairForm = () => {
               name="mobile"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mobile Number</FormLabel>
+                  <FormLabel>Mobile Number (To which we can contact)</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your mobile number" {...field} />
                   </FormControl>
@@ -119,7 +121,7 @@ export const BookRepairForm = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <DeviceDetails form={form} />
+             <DeviceDetails form={form} />                  {/*From device type o device model is in this line */}
           </motion.div>
 
           <motion.div
