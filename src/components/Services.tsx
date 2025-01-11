@@ -1,40 +1,36 @@
+import { Smartphone, Laptop, Clock, Shield } from "lucide-react";
 import { motion } from "framer-motion";
-import { Smartphone, Laptop, Tablet, Apple } from "lucide-react";
 
 const services = [
   {
     icon: Smartphone,
     title: "Mobile Repair",
     description: "Expert repairs for all smartphone brands",
-    image: "/lovable-uploads/mobile-repair.png"
   },
   {
     icon: Laptop,
     title: "Laptop Service",
     description: "Professional laptop repair and maintenance",
-    image: "/lovable-uploads/laptop-repair.png"
   },
   {
-    icon: Tablet,
-    title: "Tablet Repair",
-    description: "Specialized tablet and iPad repairs",
-    image: "/lovable-uploads/tablet-repair.png"
+    icon: Clock,
+    title: "Quick Service",
+    description: "Same-day repair for most issues",
   },
   {
-    icon: Apple,
-    title: "Apple Devices",
-    description: "Certified Apple device repair service",
-    image: "/lovable-uploads/apple-repair.png"
-  }
+    icon: Shield,
+    title: "Warranty",
+    description: "90-day warranty on all repairs",
+  },
 ];
 
 export const Services = () => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20 bg-white">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Services</h2>
-          <p className="text-gray-600 max-w-xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold text-primary mb-4">Our Services</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Professional repair services for all your devices
           </p>
         </div>
@@ -45,24 +41,15 @@ export const Services = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative overflow-hidden rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300"
+              className="p-6 rounded-xl bg-white border border-gray-100 hover:shadow-lg transition-shadow duration-300"
             >
-              <div className="aspect-w-16 aspect-h-9">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="w-full h-48 object-cover"
-                />
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <service.icon className="h-6 w-6 text-primary" />
               </div>
-              <div className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                  <service.icon className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="text-gray-600">{service.description}</p>
-              </div>
+              <h3 className="text-xl font-semibold mb-2 text-primary">
+                {service.title}
+              </h3>
+              <p className="text-gray-600">{service.description}</p>
             </motion.div>
           ))}
         </div>
