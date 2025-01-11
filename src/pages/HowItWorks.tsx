@@ -1,34 +1,24 @@
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { CheckCircle2, Wrench, Shield, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
-    icon: Wrench,
+    title: "Book Online",
+    description: "Schedule a repair service through our easy online booking system",
+    image: "/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png"
+  },
+  {
     title: "Expert Diagnosis",
-    description: "Our certified technicians perform a thorough assessment of your device using state-of-the-art diagnostic tools.",
-    highlight: "Free Initial Assessment"
+    description: "Our certified technicians perform a thorough assessment",
+    image: "/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
   },
   {
-    icon: Clock,
-    title: "Quick Turnaround",
-    description: "Most repairs are completed within 24-48 hours, getting you back to what matters most.",
-    highlight: "Same-Day Service Available"
-  },
-  {
-    icon: Shield,
-    title: "Quality Guarantee",
-    description: "We use only genuine parts and provide a 90-day warranty on all repairs.",
-    highlight: "90-Day Warranty"
-  },
-  {
-    icon: Star,
-    title: "Customer Satisfaction",
-    description: "Join thousands of satisfied customers who trust us with their devices.",
-    highlight: "4.9/5 Customer Rating"
+    title: "Quick Repair",
+    description: "Professional repair with genuine parts and warranty",
+    image: "/lovable-uploads/49355866-65d5-482e-a3b7-09a4693e3f9e.png"
   }
 ];
 
@@ -36,7 +26,7 @@ const HowItWorks = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <main className="container mx-auto px-4 py-16">
         <motion.div
@@ -45,37 +35,40 @@ const HowItWorks = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">
-            Professional Device Repair Process
+          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+            Simple Repair Process
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Experience hassle-free repairs with our simple, transparent process
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Get your device fixed in three easy steps
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="space-y-24 mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2 }}
-              className="relative"
+              className={`flex items-center gap-12 ${
+                index % 2 === 1 ? "flex-row-reverse" : ""
+              }`}
             >
-              <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow duration-300">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center">
-                    <step.icon className="h-8 w-8 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-primary">{step.title}</h3>
+              <div className="flex-1">
+                <div className="relative overflow-hidden rounded-2xl">
+                  <img
+                    src={step.image}
+                    alt={step.title}
+                    className="w-full h-[400px] object-cover"
+                  />
                 </div>
-                <p className="text-gray-600 mb-4 text-lg">{step.description}</p>
-                <div className="bg-primary/5 p-4 rounded-lg">
-                  <p className="text-primary font-medium flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5" />
-                    {step.highlight}
-                  </p>
+              </div>
+              <div className="flex-1 space-y-4">
+                <div className="inline-block bg-primary/10 px-4 py-2 rounded-full">
+                  Step {index + 1}
                 </div>
+                <h2 className="text-3xl font-bold text-gray-900">{step.title}</h2>
+                <p className="text-xl text-gray-600">{step.description}</p>
               </div>
             </motion.div>
           ))}
@@ -87,19 +80,19 @@ const HowItWorks = () => {
           transition={{ delay: 0.8 }}
           className="text-center"
         >
-          <div className="bg-primary/5 p-8 rounded-2xl mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary mb-4">
+          <div className="bg-gray-50 p-8 rounded-2xl">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               Ready to Get Started?
             </h2>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Book your repair appointment now and experience our professional service firsthand.
+              Book your repair appointment now and experience our professional service.
             </p>
             <Button
               size="lg"
               onClick={() => navigate("/book-repair")}
               className="bg-primary hover:bg-primary/90 text-white px-8"
             >
-              Book Your Repair
+              Book Repair
             </Button>
           </div>
         </motion.div>
