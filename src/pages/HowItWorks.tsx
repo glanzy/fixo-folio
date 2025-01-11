@@ -8,17 +8,29 @@ const steps = [
   {
     title: "Book Online",
     description: "Schedule a repair service through our easy online booking system",
-    image: "/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png"
+    images: [
+      "/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png",
+      "/lovable-uploads/892623dc-d3e2-4046-8574-4c38fe8876c1.png",
+      "/lovable-uploads/69101519-e492-4415-bf5e-f64c759a0f5c.png"
+    ]
   },
   {
     title: "Expert Diagnosis",
     description: "Our certified technicians perform a thorough assessment",
-    image: "/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
+    images: [
+      "/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png",
+      "/lovable-uploads/2b8cdbb7-dd7a-4c36-89ca-7e91b3e38d41.png",
+      "/lovable-uploads/ce3f0a31-cf1e-4abc-9413-57e93c1719b1.png"
+    ]
   },
   {
     title: "Quick Repair",
     description: "Professional repair with genuine parts and warranty",
-    image: "/lovable-uploads/49355866-65d5-482e-a3b7-09a4693e3f9e.png"
+    images: [
+      "/lovable-uploads/49355866-65d5-482e-a3b7-09a4693e3f9e.png",
+      "/lovable-uploads/Fixo_image.png",
+      "/lovable-uploads/Fixo_image1.png"
+    ]
   }
 ];
 
@@ -55,12 +67,25 @@ const HowItWorks = () => {
               }`}
             >
               <div className="flex-1">
-                <div className="relative overflow-hidden rounded-2xl">
-                  <img
-                    src={step.image}
-                    alt={step.title}
-                    className="w-full h-[400px] object-cover"
-                  />
+                <div className="grid grid-cols-2 gap-4">
+                  {step.images.map((image, imgIndex) => (
+                    <div
+                      key={image}
+                      className={`relative overflow-hidden rounded-2xl ${
+                        imgIndex === 2 ? "col-span-2" : ""
+                      }`}
+                    >
+                      <motion.img
+                        src={image}
+                        alt={`${step.title} - Image ${imgIndex + 1}`}
+                        className={`w-full h-full object-cover ${
+                          imgIndex === 2 ? "h-48" : "h-64"
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="flex-1 space-y-4">
