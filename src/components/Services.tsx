@@ -22,6 +22,16 @@ const services = [
     title: "Warranty",
     description: "90-day warranty on all repairs",
   },
+  {
+    icon: Shield,
+    title: "Warranty",
+    description: "90-day warranty on all repairs",
+  },
+  {
+    icon: Shield,
+    title: "Warranty",
+    description: "90-day warranty on all repairs",
+  },
 ];
 
 export const Services = () => {
@@ -34,7 +44,7 @@ export const Services = () => {
             Professional repair services for all your devices
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
           {services.map((service, index) => (
             <motion.div
               key={service.title}

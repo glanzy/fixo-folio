@@ -1,7 +1,4 @@
 import { motion } from "framer-motion";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const steps = [
@@ -39,47 +36,29 @@ const HowItWorks = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
       <main className="container mx-auto px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
-            Simple Repair Process
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Get your device fixed in three easy steps
-          </p>
-        </motion.div>
-
-        <div className="space-y-24 mb-16">
+        <div className="space-y-16 md:space-y-24 mb-16">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
-              className={`flex items-center gap-12 ${
-                index % 2 === 1 ? "flex-row-reverse" : ""
+              className={`flex flex-col md:flex-row gap-8 md:gap-12 ${
+                index % 2 === 1 ? "md:flex-row-reverse" : ""
               }`}
             >
               <div className="flex-1">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3 md:gap-4">
                   {step.images.map((image, imgIndex) => (
                     <div
                       key={image}
-                      className={`relative overflow-hidden rounded-2xl ${
+                      className={`relative overflow-hidden rounded-lg md:rounded-2xl ${
                         imgIndex === 2 ? "col-span-2" : ""
                       }`}
                     >
                       <motion.img
                         src={image}
                         alt={`${step.title} - Image ${imgIndex + 1}`}
-                        className={`w-full h-full object-cover ${
-                          imgIndex === 2 ? "h-48" : "h-64"
+                        className={`w-full object-contain ${
+                          imgIndex === 2 ? "h-32 md:h-40" : "h-40 md:h-48"
                         }`}
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.2 }}
@@ -88,41 +67,17 @@ const HowItWorks = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex-1 space-y-4">
-                <div className="inline-block bg-primary/10 px-4 py-2 rounded-full">
+              <div className="flex-1 space-y-3 md:space-y-4">
+                <div className="inline-block bg-primary/10 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-sm md:text-base">
                   Step {index + 1}
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900">{step.title}</h2>
-                <p className="text-xl text-gray-600">{step.description}</p>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{step.title}</h2>
+                <p className="text-lg md:text-xl text-gray-600">{step.description}</p>
               </div>
             </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="text-center"
-        >
-          <div className="bg-gray-50 p-8 rounded-2xl">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Ready to Get Started?
-            </h2>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Book your repair appointment now and experience our professional service.
-            </p>
-            <Button
-              size="lg"
-              onClick={() => navigate("/book-repair")}
-              className="bg-primary hover:bg-primary/90 text-white px-8"
-            >
-              Book Repair
-            </Button>
-          </div>
-        </motion.div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -40,7 +40,7 @@ export const WhyUs = () => {
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.2 }}
+              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
               className="p-6 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors duration-300"
             >

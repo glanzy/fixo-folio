@@ -1,9 +1,10 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Laptop, Smartphone, Tablet } from "lucide-react";
+import { Laptop, Laptop2, Smartphone, Tablet } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
+
 
 interface DeviceDetailsProps {
   form: UseFormReturn<any>;
@@ -23,7 +24,7 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="flex gap-4"
+                className="flex gap-4 flex-wrap"
               >
                 <motion.div 
                   whileHover={{ scale: 1.05 }}
@@ -58,6 +59,29 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
                     <label htmlFor={`ipad-${index}`} className="flex items-center gap-2 cursor-pointer">
                       <Tablet className="w-5 h-5" />
                       iPad
+                    </label>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-1"
+                >
+                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
+                    <RadioGroupItem value="iphone" id={`iphone-${index}`} />
+                    <label htmlFor={`iphone-${index}`} className="flex items-center gap-2 cursor-pointer">
+                      <Smartphone className="w-5 h-5" />
+                      iPhone
+                    </label>
+                  </div>
+                </motion.div><motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="flex-1"
+                >
+                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
+                    <RadioGroupItem value="macbook" id={`macbook-${index}`} />
+                    <label htmlFor={`macbook-${index}`} className="flex items-center gap-2 cursor-pointer">
+                      <Laptop2 className="w-5 h-5" />
+                      Macbook
                     </label>
                   </div>
                 </motion.div>

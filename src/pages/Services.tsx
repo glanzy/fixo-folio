@@ -10,28 +10,44 @@ const services = [
     icon: Smartphone,
     title: "Smartphone Repair",
     description: "Expert repairs for all major brands including iPhone, Samsung, Google, and more.",
-    image: "/lovable-uploads/Fixo_image.png",
+    image: "/lovable-uploads/1.png",
     price: "Starting from $49"
   },
   {
     icon: Laptop,
     title: "Laptop Service",
     description: "Professional laptop repair and maintenance for all brands.",
-    image: "/lovable-uploads/Fixo_image1.png",
+    image: "/lovable-uploads/5.png",
     price: "Starting from $79"
   },
   {
     icon: Tablet,
     title: "Tablet Repair",
     description: "Comprehensive repair solutions for iPads and Android tablets.",
-    image: "/lovable-uploads/892623dc-d3e2-4046-8574-4c38fe8876c1.png",
+    image: "/lovable-uploads/1.png",
     price: "Starting from $59"
   },
   {
     icon: Apple,
     title: "Apple Device Specialist",
     description: "Certified technicians for all Apple products.",
-    image: "/lovable-uploads/69101519-e492-4415-bf5e-f64c759a0f5c.png",
+    image: "/lovable-uploads/3.png",
+    price: "Starting from $69"
+  }
+  ,
+  {
+    icon: Apple,
+    title: "Apple Device Specialist",
+    description: "Certified technicians for all Apple products.",
+    image: "/lovable-uploads/2.png",
+    price: "Starting from $69"
+  }
+  ,
+  {
+    icon: Apple,
+    title: "Apple Device Specialist",
+    description: "Certified technicians for all Apple products.",
+    image: "/lovable-uploads/4.png",
     price: "Starting from $69"
   }
 ];
@@ -49,7 +65,7 @@ const Services = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl text-blue-800 font-bold mb-6">
             Expert Device Repair Services
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -63,14 +79,14 @@ const Services = () => {
               key={service.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.2 }}
               className="group relative"
             >
-              <div className="relative overflow-hidden rounded-2xl">
+              <div className="relative overflow-hidden rounded-2xl h-64">
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
