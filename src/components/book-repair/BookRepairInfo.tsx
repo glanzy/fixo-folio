@@ -31,7 +31,7 @@ export const BookRepairInfo = () => {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
         className="h-64 mt-8 hidden md:block"
@@ -39,7 +39,7 @@ export const BookRepairInfo = () => {
         <img
           src="/lovable-uploads/Fixoman.png"
           alt="FIXO Technician"
-          className="absolute bottom-0 left-0 object-contain hidden md:block"
+          className="absolute bottom-0 left-0 h-128 object-contain"
         />
       </motion.div>
     </div>

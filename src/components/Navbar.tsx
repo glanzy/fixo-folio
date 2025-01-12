@@ -25,7 +25,7 @@ export const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-2xl font-bold text-primary">
+          <Link to="/" className="text-3xl font-bold text-primary">
             FIXO
           </Link>
 
@@ -36,7 +36,7 @@ export const Navbar = () => {
                 key={item.label}
                 to={item.href}
                 onClick={item.onClick}
-                className="text-gray-600 hover:text-primary transition-colors"
+                className="text-gray-800 text-bold text-l hover:text-blue-600 transition-colors"
               >
                 {item.label}
               </Link>

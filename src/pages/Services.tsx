@@ -10,7 +10,7 @@ const services = [
     icon: Smartphone,
     title: "Smartphone Repair",
     description: "Expert repairs for all major brands including iPhone, Samsung, Google, and more.",
-    image: "/lovable-uploads/1.png",
+    image: "/lovable-uploads/3.png",
     price: "Starting from $49"
   },
   {
@@ -24,14 +24,14 @@ const services = [
     icon: Tablet,
     title: "Tablet Repair",
     description: "Comprehensive repair solutions for iPads and Android tablets.",
-    image: "/lovable-uploads/1.png",
+    image: "/lovable-uploads/44.png",
     price: "Starting from $59"
   },
   {
     icon: Apple,
     title: "Apple Device Specialist",
     description: "Certified technicians for all Apple products.",
-    image: "/lovable-uploads/3.png",
+    image: "/lovable-uploads/22.png",
     price: "Starting from $69"
   }
   ,
@@ -39,7 +39,7 @@ const services = [
     icon: Apple,
     title: "Apple Device Specialist",
     description: "Certified technicians for all Apple products.",
-    image: "/lovable-uploads/2.png",
+    image: "/lovable-uploads/11.png",
     price: "Starting from $69"
   }
   ,
@@ -88,7 +88,7 @@ const Services = () => {
                   alt={service.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/100 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <div className="flex items-center gap-3 mb-2">
                     <service.icon className="h-6 w-6 text-white" />
