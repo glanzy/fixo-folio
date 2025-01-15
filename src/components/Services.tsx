@@ -112,7 +112,7 @@
 
 // Smaller box in 5 format in mobile form code is down below
 
-import { Smartphone, Laptop, Clock, Shield, TabletIcon, Laptop2, ShieldPlus } from "lucide-react";
+import { Smartphone, Laptop, TabletIcon, Laptop2  } from "lucide-react";
 import { motion } from "framer-motion";
 
 const services = [
@@ -120,7 +120,7 @@ const services = [
     icon: Smartphone,
     title: "Android Services",
     description: "Expert repairs for all phone",
-    src: "./public/lovable-uploads/Android_Services.png",
+    src: "./lovable-uploads/Android_Services.png",
   },
   {
     icon: Laptop,
@@ -132,13 +132,13 @@ const services = [
     icon: Smartphone,
     title: "iPhone Services",
     description: "Same-day repair for most",
-    src: "./public/lovable-uploads/iphone_services.png",
+    src: "./lovable-uploads/iphone_services.png",
   },
   {
     icon: TabletIcon,
     title: "iPad Services",
     description: "90-day warranty on all",
-    src: "./public/lovable-uploads/ipad_services.png",
+    src: "./lovable-uploads/ipad_services.png",
   },
   {
     icon: Laptop2,
