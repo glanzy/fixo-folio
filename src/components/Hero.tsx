@@ -5,13 +5,14 @@ import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
+    //Removed the spacing from the mobile view by using "sm:min-h-[80vh] min-h-[30vh]" as extra in the section
+    <section className="relative min-h-[80vh] sm:min-h-[80vh] min-h-[30vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
       {/* Background Doodles */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
         <motion.img
           src="/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
           alt="Device Parts"
-          className="absolute w-40 h-40 opacity-40 bottom-[30%] right-[15%] animate-float delay-450 hidden md:block"
+          className="absolute w-40 h-40 opacity-40 bottom-[30%] right-[15%] animate-float delay-450 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         <motion.img
@@ -23,7 +24,7 @@ export const Hero = () => {
         <motion.img
           src="/lovable-uploads/Fixo_image.png"
           alt="Device Parts"
-          className="absolute w-40 h-40 opacity-40 top-[41%] left-[15%] animate-float delay-550 hidden md:block"
+          className="absolute w-40 h-40 opacity-40 top-[41%] left-[15%] animate-float delay-550 hidden xl:block"
           animate={{ y: [-10, 10] }}
         />
         <motion.img
@@ -47,7 +48,7 @@ export const Hero = () => {
         <motion.img
           src="/lovable-uploads/2b8cdbb7-dd7a-4c36-89ca-7e91b3e38d41.png"
           alt="Memory Card"
-          className="absolute w-40 h-40 opacity-40 top-[75%] left-[65%] animate-float delay-450 hidden md:block"
+          className="absolute w-40 h-40 opacity-40 top-[75%] left-[65%] animate-float delay-450 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         <motion.img
@@ -77,15 +78,14 @@ export const Hero = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <span className="inline-block px-4 py-2 mb-6 text-sm font-medium text-primary bg-primary/10 rounded-full">
-            Professional Device Repair Service
-          </span>
+
           <h1 className="mb-6 text-4xl md:text-6xl font-bold text-primary">
-            Expert Repairs for Your
-            <br />
-            Digital Life
+          Quick Fix, No Tricks
+            {/* <br /> */}
+            {/* Digital Life*/}
           </h1>
-          <p className="mb-8 text-lg text-gray-600 max-w-2xl mx-auto">
+
+          <p className="mb-8 text-lg text-gray-600 max-w-2xl mx-auto hidden md:block">
             Fast, reliable repairs for your smartphones and laptops. 
             Professional technicians, genuine parts, and service guarantee.
           </p>

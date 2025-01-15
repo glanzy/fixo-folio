@@ -27,8 +27,8 @@ const Index = () => {
         <Hero />
         <Services />
         <Stats />
-        <HowItWorks />
         <WhyUs />
+        <HowItWorks />
         <FAQ />
         <Footer />
       </motion.div>

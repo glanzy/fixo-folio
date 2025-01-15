@@ -1,42 +1,69 @@
+// Technician imact page
 import { motion } from "framer-motion";
-import { Users, Star } from "lucide-react";
+import { Users, Star, BriefcaseBusiness, UserRoundCheck, ShieldCheck } from "lucide-react";
 
 export const Stats = () => {
   return (
-    <section className="py-12 bg-primary/5">
-      <div className="container px-4 mx-auto">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-primary mb-2">Our Technician Partners' Impact</h2>
-          <p className="text-gray-600">Delivering excellence in device repair services</p>
-        </div>
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center justify-center text-center"
-        >
-          <div className="p-6 rounded-lg bg-white shadow-sm">
-            <div className="flex items-center justify-center mb-4">
-              <Users className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-4xl font-bold text-primary mb-2">2000+</h3>
-            <p className="text-gray-600">Satisfied Customers Served</p>
-          </div>
+    <section className="bg-white-200"> 
+      {/*  Add  above */}
+      <div className="text-center ">
+        <h2 className="text-3xl font-bold text-primary mt-9 mb-6">Our Technician Partners' Impact</h2>
+      </div>
 
-          <div className="p-6 rounded-lg bg-white shadow-sm">
-            <div className="flex items-center justify-center mb-4">
-            </div>
-            <div className="flex items-center justify-center gap-1">
-              {[1, 2, 3, 4].map((_, index) => (
-                <Star key={index} className="h-9 w-7 fill-yellow-400 text-blue-800" />
-              ))}
-              <Star className="h-7 w-7 fill-yellow-400 text-blue-800 " style={{ clipPath: 'inset(0 20% 0 0)' }} />
-            </div>
-            <h3 className="text-4xl font-bold text-primary mb-2">4.8</h3>
-            
-            <p className="text-gray-600 mt-2">Average Customer Rating</p>
-          </div>
-        </motion.div>
+      <div className="container px-1 flex flex-col lg:flex-row items-center">
+               
+        {/* Left Side: Full Image */}
+        <div className="flex-shrink-0 rounded ml-5 w-full lg:w-1/2 ">
+          <img
+            src="./lovable-uploads/Technicians_Impact.png"
+            alt="Technician Working"
+            className="w-full h-auto object-cover rounded-xl"
+          />
+        </div>
+
+        {/* Right Side: Stats Boxes */}
+        <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8 }}
+  className="w-full lg:w-1/2 flex flex-col items-center space-y-6 px-4 lg:px-8"
+>
+  <div className="flex flex-wrap justify-center gap-6">
+    {/* Box 1 */}
+    <div className="p-6 w-64 rounded-lg bg-white shadow-sm border border-gray-200">
+      <div className="flex items-center justify-center mb-4">
+        <Users className="h-8 w-8 text-primary" />
+      </div>
+      <h3 className="text-3xl font-bold text-primary mb-2 text-center">4000+</h3>
+      <p className="text-gray-600 font-semibold text-center">Satisfied Customers Served</p>
+    </div>
+
+    {/* Box 2 */}
+    <div className="p-6 w-64 rounded-lg bg-white shadow-sm border border-gray-200">
+      <div className="flex items-center justify-center mb-4">
+        <ShieldCheck className="h-8 w-8 text-primary" />
+      </div>
+      <h3 className="text-3xl font-bold text-primary mb-2 text-center">10+ years</h3>
+      <p className="text-gray-600 font-semibold text-center">Experience of technicians</p>
+    </div>
+  </div>
+
+  {/* Box 3 */}
+  <div className="p-6 w-64 rounded-lg bg-white shadow-sm border border-gray-200 mt-6">
+    <div className="flex items-center justify-center gap-1 mb-4">
+      {[1, 2, 3, 4].map((_, index) => (
+        <Star key={index} className="h-9 w-7 fill-yellow-400 text-blue-800" />
+      ))}
+      <Star
+        className="h-7 w-7 fill-yellow-400 text-blue-800"
+        style={{ clipPath: "inset(0 20% 0 0)" }}
+      />
+    </div>
+    <h3 className="text-3xl font-bold text-primary text-center mb-2">4.8</h3>
+    <p className="text-gray-600 font-semibold text-center">Average Customer Rating</p>
+  </div>
+</motion.div>
+
       </div>
     </section>
   );

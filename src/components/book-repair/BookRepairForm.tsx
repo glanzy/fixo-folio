@@ -137,7 +137,7 @@ export const BookRepairForm = () => {
               className="relative space-y-6 p-6 border rounded-lg"
             >
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium">Device {index + 1}</h3>
+              <h3 className="text-lg font-medium"> {index === 0 ? "Device" : `Device ${index + 1}`} </h3>
                 {fields.length > 1 && (
                   <Button
                     type="button"
