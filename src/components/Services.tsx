@@ -18,7 +18,7 @@
 //     src: "./public/lovable-uploads/laptop_services.png",
 //   },
 //   {
-//     icon: Smartphone,
+//     icon: Smartphone,123
 //     title: "iPhone Services",
 //     description: "Same-day repair for most",
 //     src: "./public/lovable-uploads/iphone_services.png",
