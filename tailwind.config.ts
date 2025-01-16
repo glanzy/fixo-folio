@@ -71,10 +71,20 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
         },
+        'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        },
+        'infinite-scroll2': {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'infinite-scroll': 'infinite-scroll 85s linear infinite',
+        'infinite-scroll2': 'infinite-scroll2 85s linear infinite',
         float: "float 3s ease-in-out infinite",
       },
     },
