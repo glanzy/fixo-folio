@@ -12,7 +12,7 @@ const steps = [
   },
   {
     title: "Quick Repair",
-    description: "Professional repair with genuine parts",
+    description: "Professional repair with genuine parts genuine parts",
   },
   {
     title: "Ready to Go",
@@ -22,15 +22,17 @@ const steps = [
 
 export const HowItWorks = () => {
   return (
-    <section className="py-20 bg-primary/5">
+    <section className="py-10  bg-primary/5">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-16">
+        {/* Heading Div */}
+        <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-primary mb-4">How It Works</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Simple steps to get your device repaired
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 ">
           {steps.map((step, index) => (
             <motion.div
               key={step.title}
@@ -39,11 +41,11 @@ export const HowItWorks = () => {
               transition={{ delay: index * 0.2 }}
               className="relative"
             >
-              <div className="bg-white p-6 rounded-xl shadow-sm relative z-10">
+              <div className="bg-white p-6 rounded-xl shadow-sm relative z-10 bg-primary/5">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <CheckCircle2 className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-primary">
+                <h3 className="text-xl font-semibold mb-2 text-primary ">
                   {step.title}
                 </h3>
                 <p className="text-gray-600">{step.description}</p>

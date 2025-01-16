@@ -12,72 +12,73 @@ export const Hero = () => {
         <motion.img
           src="/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
           alt="Device Parts"
-          className="absolute w-40 h-40 opacity-40 bottom-[30%] right-[15%] animate-float delay-450 "
+          className="absolute w-40 h-40 opacity-40 bottom-[30%] right-[15%] animate-float delay-450 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         {/* hidden lg:block */}
         <motion.img
           src="/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png"
           alt="Device Parts"
-          className="absolute w-40 h-40 opacity-40 top-[70%] left-[25%] animate-float delay-500"
+          className="absolute w-40 h-40 opacity-40 top-[70%] left-[25%] animate-float delay-500 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         {/* hidden md:block */}
         <motion.img
           src="/lovable-uploads/Fixo_image.png"
           alt="Device Parts"
-          className="absolute w-40 h-40 opacity-40 top-[41%] left-[15%] animate-float delay-550 "
+          className="absolute w-40 h-40 opacity-40 top-[41%] left-[15%] animate-float delay-550 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         {/* hidden xl:block */}
         <motion.img
           src="/lovable-uploads/b268cdb2-2a68-4246-b015-ac0b58fc46b2.png"
           alt="Broken Phone"
-          className="absolute w-40 h-40 opacity-40 top-[10%] right-[7%] animate-float delay-450 "
+          className="absolute w-40 h-40 opacity-40 top-[10%] right-[7%] animate-float delay-450 hidden lg:block"
           animate={{ y: [-15, 15] }}
         />
         {/* hidden md:block */}
         <motion.img
           src="/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png"
           alt="Error Laptop"
-          className="absolute w-40 h-40 opacity-40 bottom-10 left-10 animate-float delay-250 "
+          className="absolute w-40 h-40 opacity-40 bottom-10 left-10 animate-float delay-250 hidden lg:block"
           animate={{ y: [-12, 12] }}
         />
         {/* hidden md:block */}
         <motion.img
           src="/lovable-uploads/49355866-65d5-482e-a3b7-09a4693e3f9e.png"
           alt="Error Message"
-          className="absolute w-32 h-32 opacity-40 top-10 left-[25%] animate-float delay-400 "
+          className="absolute w-32 h-32 opacity-40 top-10 left-[25%] animate-float delay-400 hidden lg:block"
           animate={{ y: [-8, 8] }}
         />
         {/* hidden md:block */}
         <motion.img
           src="/lovable-uploads/2b8cdbb7-dd7a-4c36-89ca-7e91b3e38d41.png"
           alt="Memory Card"
-          className="absolute w-40 h-40 opacity-40 top-[75%] left-[65%] animate-float delay-450 "
+          className="absolute w-40 h-40 opacity-40 top-[75%] left-[65%] animate-float delay-450 hidden lg:block"
           animate={{ y: [-10, 10] }}
         />
         {/* hidden lg:block */}
         <motion.img
           src="/lovable-uploads/69101519-e492-4415-bf5e-f64c759a0f5c.png"
           alt="Broken Screen"
-          className="absolute w-40 h-40 opacity-40 top-3 right-[25%] animate-float delay-300 "
+          className="absolute w-40 h-40 opacity-40 top-3 right-[25%] animate-float delay-300 hidden lg:block"
           animate={{ y: [-12, 12] }}
         />
         {/* hidden md:block */}
         <motion.img
           src="/lovable-uploads/892623dc-d3e2-4046-8574-4c38fe8876c1.png"
           alt="Broken Laptop"
-          className="absolute w-40 h-43 opacity-40 bottom-[1%] right-[6%] animate-float delay-500 "
+          className="absolute w-40 h-43 opacity-40 bottom-[1%] right-[6%] animate-float delay-500 hidden lg:block"
           animate={{ y: [-15, 15] }}
         />
         {/* hidden md:block */}
         <motion.img
         src="/lovable-uploads/Fixo_image1.png"
         alt="CPU Image"
-        className="absolute w-40 h-43 opacity-40 top-10 left-10 animate-float delay-600 hidden md:block"
+        className="absolute w-40 h-43 opacity-40 top-10 left-10 animate-float delay-600 hidden lg:block"
         animate={{ y: [-15, 15] }}
         />
+        {/* hidden md:block */}
       </div>
 
       <div className="container px-4 mx-auto relative z-10">

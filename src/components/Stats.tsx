@@ -13,13 +13,14 @@ export const Stats = () => {
       <div className="container px-1 flex flex-col lg:flex-row items-center">
                
         {/* Left Side: Full Image */}
+        {/* Old image */}
         <div className="flex-shrink-0 rounded ml-5 w-full lg:w-1/2 mb-5">
           <img
             src="./lovable-uploads/Technicians_Impact.png"
             alt="Technician Working"
             className="w-full h-auto object-cover rounded-2xl"
           />
-        </div>
+        </div>        
 
         {/* Right Side: Stats Boxes */}
         <motion.div
@@ -30,7 +31,7 @@ export const Stats = () => {
         >
   <div className="grid grid-cols-2 flex flex-wrap justify-center gap-6">
     {/* Box 1 */}
-    <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400">
+    <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400 hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-center justify-center mb-4">
         <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
       </div>
@@ -39,7 +40,7 @@ export const Stats = () => {
     </div>
 
     {/* Box 2 */}
-    <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400">
+    <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400 hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-center justify-center mb-4">
         <ShieldCheck className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
       </div>
@@ -49,7 +50,7 @@ export const Stats = () => {
   </div>
 
   {/* Box 3 */}
-  <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400 mt-6">
+  <div className="p-4 w-45 sm:w-64 sm:h-40 rounded-lg bg-white shadow-sm border border-gray-400 mt-6 hover:shadow-lg transition-shadow duration-300">
     <div className="flex items-center justify-center gap-1 mb-3">
       {[1, 2, 3, 4].map((_, index) => (
         <Star key={index} className="h-5 w-5 sm:h-9 sm:w-6 fill-yellow-400 text-blue-800" />
