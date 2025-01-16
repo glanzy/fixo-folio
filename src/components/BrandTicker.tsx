@@ -1,21 +1,21 @@
 import { motion } from "framer-motion";
 
 const brands = [
-  { name: "Apple", logo: "/lovable-uploads/11.png" },
-  { name: "Samsung", logo: "/lovable-uploads/22.png" },
-  { name: "Google", logo: "/lovable-uploads/33.png" },
-  { name: "OnePlus", logo: "/lovable-uploads/44.png" },
-  { name: "Dell", logo: "/lovable-uploads/55.png" },
-  { name: "HP", logo: "/lovable-uploads/4.png" },
-  { name: "Lenovo", logo: "/lovable-uploads/5.png" },
-  { name: "Asus", logo: "/lovable-uploads/3.png" },
+  { name: "Apple", logo: "./brands/Apple-Logosu.png" },
+  { name: "Samsung", logo: "./brands/pngimg.com - samsung_logo_PNG8.png" },
+  { name: "Google", logo: "./brands/310aefe54a220bfe97dae0cc54d56c13-removebg-preview.png" },
+  { name: "OnePlus", logo: "./brands/OnePlus-Logo.png" },
+  { name: "Dell", logo: "./brands/Dell_Logo.png" },
+  { name: "HP", logo: "./brands/HP_logo.png" },
+  { name: "Lenovo", logo: "./brands/Lenovo_Global_Corporate_Logo.png" },
+  { name: "Asus", logo: "./brands/Asus-Logo-1995-present.png" },
 ];
 
 export const BrandTicker = () => {
   return (
-    <div className="w-full overflow-hidden bg-gradient-to-r from-blue-50 via-white to-blue-50 py-12">
+    <div className="w-full overflow-hidden py-12">
       <div className="relative">
-        <div className="flex space-x-16 animate-scroll">
+        <div className="flex space-x-10 animate-scroll">
           {[...brands, ...brands].map((brand, index) => (
             <motion.div
               key={index}
@@ -30,7 +30,7 @@ export const BrandTicker = () => {
               <img
                 src={brand.logo}
                 alt={`${brand.name} logo`}
-                className="h-12 w-auto object-contain grayscale hover:grayscale-0 transition-all duration-300 filter hover:drop-shadow-lg"
+                className="h-12 w-auto object-contain  hover:grayscale-0 transition-all duration-300 filter hover:drop-shadow-lg"
               />
             </motion.div>
           ))}

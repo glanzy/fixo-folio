@@ -18,7 +18,7 @@ const testimonials = [
   {
     name: "Michael Chen",
     role: "MacBook Owner",
-    content: "The team was incredibly knowledgeable. They diagnosed and fixed my MacBook issue quickly. Highly recommended!",
+    content: "The team was incredibly knowledgeable. They diagnosed and fixed my MacBook issue quickly.",
     image: "/lovable-uploads/2.png"
   },
   {

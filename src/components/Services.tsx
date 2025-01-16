@@ -13,7 +13,7 @@ const services = [
     icon: Laptop,
     title: "Laptop Services",
     description: "Professional laptop repair",
-    src: "./public/lovable-uploads/laptop_services.png",
+    src: "./lovable-uploads/Laptop_services.png",
   },
   {
     icon: Smartphone,
@@ -31,7 +31,7 @@ const services = [
     icon: Laptop2,
     title: "Macbook Services",
     description: "90-day warranty on all",
-    src: "./public/lovable-uploads/macbook_services.png",
+    src: "./lovable-uploads/Macbook_services.png",
   },
 ];
 
