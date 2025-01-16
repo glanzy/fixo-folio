@@ -8,6 +8,7 @@ import { WhyUs } from "@/components/WhyUs";
 import { FAQ } from "@/components/FAQ";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { Testimonials } from "@/components/Testimonials";
 
 const Index = () => {
   const controls = useAnimation();
@@ -28,8 +29,8 @@ const Index = () => {
         <Services />
         <WhyUs />
         <Stats />
-        
         <HowItWorks />
+        <Testimonials />
         <FAQ />
         <Footer />
       </motion.div>
