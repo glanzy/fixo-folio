@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 const brands = [
   { name: "Apple", logo: "./brands/Apple-Logosu.png" },
   { name: "Acer", logo: "./brands/Acer_2011.png" },
+  
   { name: "Samsung", logo: "./brands/Samsung.png" },
   { name: "Realme", logo: "./brands/Realme.png" },
   { name: "Google", logo: "./brands/Pixel.png" },
@@ -30,11 +31,11 @@ export const BrandTicker = () => {
   return (
     <div className="w-full overflow-hidden py-5">
       <div className="relative inline-flex flex-nowrap">
-        <div className="animate-infinite-scroll flex items-center space-x-2 whitespace-nowrap">
+        <div className="animate-infinite-scroll flex items-center space-x-4 whitespace-nowrap">
           {[...brands, ...brands, ...brands].map((brand, index) => (
             <motion.div
               key={index}
-              className="flex items-center justify-center min-w-[100px]"
+              className="flex items-center justify-center min-w-[120px]"
             >
               <img
                 src={brand.logo}
@@ -44,11 +45,11 @@ export const BrandTicker = () => {
             </motion.div>
           ))}
         </div>
-        <div className="absolute top-0 animate-infinite-scroll2 flex items-center space-x-2 whitespace-nowrap">
+        <div className="absolute top-0 animate-infinite-scroll2 flex items-center space-x-4 whitespace-nowrap">
           {[...brands, ...brands, ...brands].map((brand, index) => (
             <motion.div
               key={index}
-              className="flex items-center justify-center min-w-[100px]"
+              className="flex items-center justify-center min-w-[120px]"
             >
               <img
                 src={brand.logo}
