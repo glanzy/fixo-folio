@@ -83,8 +83,8 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        'infinite-scroll': 'infinite-scroll 85s linear infinite',
-        'infinite-scroll2': 'infinite-scroll2 85s linear infinite',
+        'infinite-scroll': 'infinite-scroll 80s linear infinite',
+        'infinite-scroll2': 'infinite-scroll2 80s linear infinite',
         float: "float 3s ease-in-out infinite",
       },
     },
