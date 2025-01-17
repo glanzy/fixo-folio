@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from 'embla-carousel-react';
 
 const carouselImages = [
   {
@@ -34,6 +35,20 @@ const carouselImages = [
 export const Hero = () => {
   const isMobile = useIsMobile();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [api, setApi] = useState<any>(null);
+
+  useEffect(() => {
+    if (!api) return;
+
+    api.on('select', () => {
+      setActiveIndex(api.selectedScrollSnap());
+    });
+  }, [api]);
+
+  const scrollTo = (index: number) => {
+    api?.scrollTo(index);
+    setActiveIndex(index);
+  };
 
   if (isMobile) {
     return (
@@ -56,7 +71,7 @@ export const Hero = () => {
                   delay: 4000,
                 }),
               ]}
-              onSlideChange={(index) => setActiveIndex(index)}
+              setApi={setApi}
             >
               <CarouselContent>
                 {carouselImages.map((image, index) => (
@@ -80,7 +95,7 @@ export const Hero = () => {
                     className={`w-2 h-2 rounded-full transition-all ${
                       activeIndex === index ? "bg-primary w-4" : "bg-gray-300"
                     }`}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={() => scrollTo(index)}
                   />
                 ))}
               </div>
