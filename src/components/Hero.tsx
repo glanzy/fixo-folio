@@ -9,6 +9,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useEffect, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
@@ -31,6 +33,7 @@ const carouselImages = [
 
 export const Hero = () => {
   const isMobile = useIsMobile();
+  const [activeIndex, setActiveIndex] = useState(0);
 
   if (isMobile) {
     return (
@@ -46,7 +49,15 @@ export const Hero = () => {
               We Care, We Repair
             </h1>
             
-            <Carousel className="w-full max-w-lg mx-auto mb-8">
+            <Carousel 
+              className="w-full max-w-lg mx-auto mb-8"
+              plugins={[
+                Autoplay({
+                  delay: 4000,
+                }),
+              ]}
+              onSlideChange={(index) => setActiveIndex(index)}
+            >
               <CarouselContent>
                 {carouselImages.map((image, index) => (
                   <CarouselItem key={index}>
@@ -62,6 +73,17 @@ export const Hero = () => {
               </CarouselContent>
               <CarouselPrevious className="hidden md:flex" />
               <CarouselNext className="hidden md:flex" />
+              <div className="flex justify-center gap-2 mt-4">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      activeIndex === index ? "bg-primary w-4" : "bg-gray-300"
+                    }`}
+                    onClick={() => setActiveIndex(index)}
+                  />
+                ))}
+              </div>
             </Carousel>
 
             <Button 
