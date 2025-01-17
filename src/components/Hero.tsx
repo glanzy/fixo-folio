@@ -1,16 +1,84 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
+const carouselImages = [
+  {
+    src: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+    alt: "Woman using laptop",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    alt: "Laptop repair",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    alt: "Circuit board",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+    alt: "Programming screen",
+  },
+];
 
 export const Hero = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <section className="relative min-h-[30vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
+        <div className="container px-4 mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center"
+          >
+            <h1 className="mb-6 text-4xl font-bold text-primary">
+              We Care, We Repair
+            </h1>
+            
+            <Carousel className="w-full max-w-lg mx-auto mb-8">
+              <CarouselContent>
+                {carouselImages.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="p-1">
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="w-full h-48 object-cover rounded-lg shadow-lg"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
+            </Carousel>
+
+            <Button 
+              size="lg" 
+              className="animate-float"
+              onClick={() => window.location.href = "/book-repair"}
+            >
+              Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    //Removed the spacing from the mobile view by using "sm:min-h-[80vh] min-h-[30vh]" as extra in the section
-    <section className="relative min-h-[80vh] sm:min-h-[80vh] min-h-[30vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
-
-
-
-{/* Background Doodles */}
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-transparent">
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
 
         
@@ -164,8 +232,6 @@ export const Hero = () => {
         
       </div>
 
-
-
       <div className="container px-4 mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -173,20 +239,20 @@ export const Hero = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-
           <h1 className="mb-6 text-4xl md:text-6xl font-bold text-primary">
-            {/* Quick Fix, No Tricks */}
-            {/* Repair Fast, Trust First */}
             We Care, We Repair
-            {/* <br /> */}
-            {/* Digital Life*/}
           </h1>
 
           <p className="mb-8 text-lg text-gray-700 md:text-gray-600 max-w-2xl mx-auto hidden md:block">
             Fast, reliable repairs for your smartphones and laptops. 
             Professional technicians, genuine parts, and service guarantee.
           </p>
-          <Button size="lg" className="animate-float" onClick={() => window.location.href = "/book-repair"}>
+          
+          <Button 
+            size="lg" 
+            className="animate-float"
+            onClick={() => window.location.href = "/book-repair"}
+          >
             Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </motion.div>
