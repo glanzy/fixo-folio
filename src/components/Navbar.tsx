@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
-import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
@@ -19,6 +19,7 @@ export const Navbar = () => {
         document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
       }}
     },
+    { label: "Book Now", href: "/book-repair", className: "bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" }
   ];
 
   return (
@@ -36,12 +37,11 @@ export const Navbar = () => {
                 key={item.label}
                 to={item.href}
                 onClick={item.onClick}
-                className="text-gray-800 text-bold text-l hover:text-blue-600 transition-colors"
+                className={`text-gray-800 text-bold text-l transition-colors ${item.className || ''}`}
               >
                 {item.label}
               </Link>
             ))}
-            <Button onClick={() => navigate("/book-repair")}>Book Now</Button>
           </div>
 
           {/* Mobile Menu */}
@@ -58,14 +58,11 @@ export const Navbar = () => {
                     key={item.label}
                     to={item.href}
                     onClick={item.onClick}
-                    className="text-lg text-gray-600 hover:text-primary transition-colors"
+                    className={`text-lg text-gray-600 hover:text-primary transition-colors ${item.className || ''}`}
                   >
                     {item.label}
                   </Link>
                 ))}
-                <Button onClick={() => navigate("/book-repair")} className="w-full">
-                  Book Now
-                </Button>
               </div>
             </SheetContent>
           </Sheet>

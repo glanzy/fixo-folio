@@ -35,7 +35,7 @@ export const Hero = () => {
   useEffect(() => {
     if (!api) return;
 
-    api.on('select', () => {
+    api.on("select", () => {
       setActiveIndex(api.selectedScrollSnap());
     });
   }, [api]);
@@ -58,8 +58,8 @@ export const Hero = () => {
           <h1 className="mb-6 text-4xl font-bold text-primary">
             We Care, We Repair
           </h1>
-          
-          <Carousel 
+
+          <Carousel
             className="w-full max-w-[1400px] mx-auto mb-8"
             plugins={[
               Autoplay({
@@ -71,11 +71,11 @@ export const Hero = () => {
             <CarouselContent>
               {carouselImages.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="p-1">
+                  <div className="relative w-full h-auto overflow-hidden">
                     <img
                       src={image.src}
                       alt={image.alt}
-                      className="w-full h-[200px] md:h-[400px] object-cover rounded-lg shadow-lg"
+                      className="w-full h-auto max-h-[400px] object-contain m-0"
                     />
                   </div>
                 </CarouselItem>
@@ -96,10 +96,10 @@ export const Hero = () => {
             </div>
           </Carousel>
 
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="animate-float"
-            onClick={() => window.location.href = "/book-repair"}
+            onClick={() => (window.location.href = "/book-repair")}
           >
             Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
