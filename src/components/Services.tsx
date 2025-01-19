@@ -1,3 +1,6 @@
+// Changed code this issssss
+
+
 import { Smartphone, Laptop, TabletIcon, Laptop2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { BrandTicker } from "./BrandTicker";
@@ -43,17 +46,19 @@ export const Services = () => {
           <div className="text-center mb-8 md:mb-7">
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2 md:mb-4">
               Our Services
-            </h2>  
+            </h2>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-8">
+          {/* Using flexbox with wrapping and equal size for items */}
+          <div className="flex flex-wrap justify-center gap-6 md:gap-4">
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="p-2 md:p-6 rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300"
+                className="p-2 md:p-6 flex flex-col items-center justify-between rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300"
+                style={{ flexBasis: "calc(20% - 24px)", height: "auto" }}
               >
                 <div className="bg-primary/10 rounded-lg flex items-center justify-center mb-2 md:mb-4">
                   <img
