@@ -40,13 +40,10 @@ export const Services = () => {
     <>
       <section className="py-6 md:py-10 bg-white">
         <div className="container px-4 mx-auto">
-          <div className="text-center mb-8 md:mb-16">
+          <div className="text-center mb-8 md:mb-7">
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2 md:mb-4">
               Our Services
-            </h2>
-            <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
-              Professional repair services for all your devices
-            </p>
+            </h2>  
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-8">

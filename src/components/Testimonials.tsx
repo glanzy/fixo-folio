@@ -38,18 +38,13 @@ const testimonials = [
 
 export const Testimonials = () => {
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-[#F1F0FB]">
+    // <section className="py-20 bg-gradient-to-b from-white to-[#152252]">
+    <section className="py-20 bg-gradient-to-b from-black to-[#152252]">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-12">
-          <h2 className="text-4xl font-bold text-primary mb-4 relative inline-block">
+          <h2 className="text-4xl text-white	 font-bold text-primary mb-4 relative inline-block">
             What Our Customers Say
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-primary/20 rounded-full">
-              <div className="w-1/2 h-full bg-primary rounded-full animate-pulse"></div>
-            </div>
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Real stories from our satisfied customers
-          </p>
         </div>
         <div className="max-w-6xl mx-auto">
           <Carousel

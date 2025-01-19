@@ -14,20 +14,16 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+    src: "./Carousel/C2.png",
     alt: "Woman using laptop",
   },
   {
-    src: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+    src: "./Carousel/C1.png",
     alt: "Laptop repair",
   },
   {
-    src: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+    src: "./Carousel/C3.png",
     alt: "Circuit board",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
-    alt: "Programming screen",
   },
 ];
 
@@ -58,6 +54,7 @@ export const Hero = () => {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
+          <br />
           <h1 className="mb-6 text-4xl font-bold text-primary">
             We Care, We Repair
           </h1>
@@ -66,7 +63,7 @@ export const Hero = () => {
             className="w-full max-w-[1400px] mx-auto mb-8"
             plugins={[
               Autoplay({
-                delay: 4000,
+                delay: 3400,
               }),
             ]}
             setApi={setApi}
