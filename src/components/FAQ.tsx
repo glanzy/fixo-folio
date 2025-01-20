@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -26,26 +27,56 @@ const faqs = [
     answer:
       "We currently service all major metropolitan areas. Enter your location on our booking page to check if we're available in your area.",
   },
+  {
+    question: "Q1",
+    answer: "A1",
+  },
+  {
+    question: "Q2",
+    answer: "A2",
+  },
+  {
+    question: "Q3",
+    answer: "A3",
+  },
 ];
 
 export const FAQ = () => {
+  const [visibleFaqs, setVisibleFaqs] = useState(3);
+
+  const toggleFaqs = () => {
+    setVisibleFaqs((prevVisible) =>
+      prevVisible === faqs.length ? 3 : faqs.length
+    );
+  };
+
   return (
-    <section id="faq" className="py-20 bg-gray-50">
+    <section id="faq" className="py-10 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-primary mb-12">
+        <h2 className="text-3xl font-bold text-center text-primary mb-7">
           Frequently Asked Questions
         </h2>
         <div className="max-w-3xl mx-auto">
           <Accordion type="single" collapsible>
-            {faqs.map((faq, index) => (
+            {faqs.slice(0, visibleFaqs).map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">
+                <AccordionTrigger className="text-left hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent>{faq.answer}</AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
+          {faqs.length > 3 && (
+            <div className="text-center mt-8">
+              <a
+                onClick={toggleFaqs}
+                className="text-primary hover:text-primary-dark cursor-pointer transition-colors"
+              >
+                {visibleFaqs === faqs.length ? "Show Less" : "Show More"}
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </section>
