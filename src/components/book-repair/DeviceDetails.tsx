@@ -5,13 +5,15 @@ import { Laptop, Laptop2, Smartphone, Tablet } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
 
-
 interface DeviceDetailsProps {
   form: UseFormReturn<any>;
   index: number;
 }
 
 export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
+  const deviceType = form.watch(`devices.${index}.deviceType`);
+  const isAppleDevice = ["iphone", "ipad", "macbook"].includes(deviceType);
+
   return (
     <div className="space-y-4">
       <FormField
@@ -46,7 +48,7 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
                     <RadioGroupItem value="mobile" id={`mobile-${index}`} />
                     <label htmlFor={`mobile-${index}`} className="flex items-center gap-2 cursor-pointer">
                       <Smartphone className="w-5 h-5" />
-                      Mobile
+                      Android
                     </label>
                   </div>
                 </motion.div>
@@ -73,7 +75,8 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
                       iPhone
                     </label>
                   </div>
-                </motion.div><motion.div 
+                </motion.div>
+                <motion.div 
                   whileHover={{ scale: 1.05 }}
                   className="flex-1"
                 >
@@ -92,26 +95,26 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
         )}
       />
       
-      <FormField
-        control={form.control}
-        name={`devices.${index}.deviceName`}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Brand Name</FormLabel>
-            <FormControl>
-              <Input 
-                placeholder={`${form.watch(`devices.${index}.deviceType`) === 'laptop' 
-                  ? 'Apple / Asus / HP / Lenovo etc.' 
-                  : form.watch(`devices.${index}.deviceType`) === 'ipad' 
-                  ? 'Apple' 
-                  : 'Apple / Samsung / Redmi / Oppo etc.'}`} 
-                {...field} 
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {!isAppleDevice && (
+        <FormField
+          control={form.control}
+          name={`devices.${index}.deviceName`}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Brand Name</FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder={deviceType === 'laptop' 
+                    ? 'Asus / HP / Lenovo etc.' 
+                    : 'Samsung / Redmi / Oppo etc.'} 
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
 
       <FormField
         control={form.control}
@@ -121,11 +124,15 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
             <FormLabel>Device Model</FormLabel>
             <FormControl>
               <Input 
-                placeholder={`${form.watch(`devices.${index}.deviceType`) === 'laptop' 
-                  ? 'Macbook Air / F15 / Ideapad etc.' 
-                  : form.watch(`devices.${index}.deviceType`) === 'ipad' 
+                placeholder={deviceType === 'laptop' 
+                  ? 'F15 / Ideapad etc.' 
+                  : deviceType === 'ipad' 
                   ? 'iPad Pro 13 / iPad Air / iPad Mini etc.' 
-                  : 'iPhone 15 / S22 / Note 10 etc.'}`} 
+                  : deviceType === 'iphone'
+                  ? 'iPhone 15 / iPhone 14 Pro etc.'
+                  : deviceType === 'macbook'
+                  ? 'Macbook Air / Macbook Pro etc.'
+                  : 'S22 / Note 10 etc.'} 
                 {...field} 
               />
             </FormControl>

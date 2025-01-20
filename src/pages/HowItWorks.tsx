@@ -19,7 +19,7 @@ const steps = [
     images: [
       "/lovable-uploads/329716e9-f580-49bf-96d5-c87088978422.png",
       "/lovable-uploads/2b8cdbb7-dd7a-4c36-89ca-7e91b3e38d41.png",
-      "/lovable-uploads/ce3f0a31-cf1e-4abc-9413-57e93c1719b1.png"
+      "/lovable-uploads/2326e657-e820-47b8-887a-6b8cd44eba11.png"
     ]
   },
   {
