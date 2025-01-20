@@ -1,44 +1,43 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, Wrench, Award } from "lucide-react";
 
 const features = [
   {
-    icon: Shield,
+    image: "./Services/EE.png",
+    title: "Affordable Repairs",
+    description: "We  longevity",
+  },
+  {
+    image: "./Services/AA.png",
+    title: "Warranty Assured",
+    description: "90-day wapeace of mind",
+  },
+  {
+    image: "./Services/FF.png",
     title: "Genuine Parts",
-    description: "We only usend longevity",
+    description: "We only vity",
   },
   {
-    icon: Clock,
-    title: "Quick Turnaround",
-    description: "Most repairs cowithin 24-48 ho",
+    image: "./Services/BB.png",
+    title: "Quick Repairs",
+    description: "Most repai8 hours",
   },
   {
-    icon: Wrench,
+    image: "./Services/CC.png",
     title: "Expert Technicians",
-    description: "Our certified ence with",
+    description: "Our cperience",
   },
   {
-    icon: Wrench,
-    title: "Expert Technicians",
-    description: "Our certified ence with",
-  },
-  {
-    icon: Award,
-    title: "Warranty Assured",
-    description: "90-day warranty on all  mind",
-  },
-  {
-    icon: Award,
-    title: "Warranty Assured",
-    description: "90-day warranty on all remind",
+    image: "./Services/DD.png",
+    title: "Free Pick & Drop",
+    description: "Convenient ",
   },
 ];
 
 export const WhyUs = () => {
   return (
-    <section className="py-6 sm:py-10 bg-white">
+    <section className="py-6 sm:py-10 bg-blue-100">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-6 sm:mb-10">
+        <div className="text-center mb-4 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-1">Why Us</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
@@ -49,17 +48,23 @@ export const WhyUs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="p-3 sm:p-5 rounded-xl hover:bg-primary/10 transition-colors duration-400 "
+              className="p-3 sm:p-5 rounded-xl hover:bg-primary/10 transition-colors duration-400"
             >
-              <div className="flex items-center justify-center ">              
-                <div className="w-8 h-8 sm:w-20 sm:h-20 bg-primary/10 flex items-center justify-center rounded-2xl mb-2 sm:mb-4">
-                  <feature.icon className="h-6 w-6 sm:h-10 sm:w-10 text-primary " />
+              <div className="flex items-center justify-center">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center rounded-2xl mb-2 sm:mb-4 overflow-hidden">
+                  <img 
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
                 </div>
               </div>
               <h3 className="text-sm sm:text-base lg:text-xl font-semibold mb-1 text-primary text-center">
                 {feature.title}
               </h3>
-              <p className="text-xs sm:text-sm lg:text-base text-gray-700 text-center">{feature.description}</p>
+              <p className="text-xs sm:text-sm lg:text-base text-gray-700 text-center">
+                {feature.description}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -67,3 +72,4 @@ export const WhyUs = () => {
     </section>
   );
 };
+export default WhyUs;

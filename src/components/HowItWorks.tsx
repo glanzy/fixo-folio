@@ -12,7 +12,7 @@ const steps = [
   },
   {
     title: "Quick Repair",
-    description: "Professional repair with genuine parts genuine parts",
+    description: "Professional repair with genuine parts and warranty",
   },
   {
     title: "Ready to Go",
@@ -22,7 +22,7 @@ const steps = [
 
 export const HowItWorks = () => {
   return (
-    <section className="py-6 sm:py-10 bg-primary/5">
+    <section className="py-6 sm:py-10 bg-white">
       <div className="container px-4 mx-auto">
         {/* Heading Div */}
         <div className="text-center mb-6 sm:mb-10">
@@ -39,9 +39,9 @@ export const HowItWorks = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.2 }}
-              className="relative"
+              className="relative border-2 rounded-lg"
             >
-              <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm relative z-10 bg-primary/5">
+              <div className="bg-white hover:bg-gray-100 transition-colors p-4 sm:p-6 rounded-xl shadow-sm relative z-10">
                 <div className="w-8 h-8 sm:w-12 sm:h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3 sm:mb-4">
                   <CheckCircle2 className="h-4 w-4 sm:h-6 sm:w-6 text-primary" />
                 </div>

@@ -3,36 +3,37 @@ import { motion } from "framer-motion";
 import { BrandTicker } from "./BrandTicker";
 
 const services = [
-  {
-    icon: Smartphone,
-    title: "Android Services",
-    description: "Expert repairs for all phone",
-    src: "./lovable-uploads/Android_Services.png",
-  },
+  
   {
     icon: Laptop,
     title: "Laptop Services",
     description: "Professional laptop repair",
-    src: "./lovable-uploads/Laptop_services.png",
+    src: "./Services/Laptop_rep.png",
   },
   {
     icon: Smartphone,
     title: "iPhone Services",
     description: "Same-day repair for most",
-    src: "./lovable-uploads/iphone_services.png",
-  },
-  {
-    icon: TabletIcon,
-    title: "iPad Services",
-    description: "90-day warranty on all",
-    src: "./lovable-uploads/ipad_services.png",
+    src: "./Services/iPhone_rep.png",
+  },{
+    icon: Smartphone,
+    title: "Android Services",
+    description: "Expert repairs for all phone",
+    src: "./Services/Android_rep.png",
   },
   {
     icon: Laptop2,
     title: "Macbook Services",
     description: "90-day warranty on all",
-    src: "./lovable-uploads/Macbook_services.png",
+    src: "./Services/mac.png",
   },
+  {
+    icon: TabletIcon,
+    title: "iPad Services",
+    description: "90-day warranty on all",
+    src: "./Services/iPad_rep.png",
+  },
+  
 ];
 
 export const Services = () => {
@@ -55,11 +56,11 @@ export const Services = () => {
                 transition={{ delay: index * 0.1 }}
                 className="p-2 md:p-6 rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300"
               >
-                <div className="bg-primary/10 rounded-lg flex items-center justify-center mb-2 md:mb-4">
+                <div className=" rounded-lg flex items-center justify-center mb-2 md:mb-4 bg-gray-100">
                   <img
                     src={service.src}
                     alt={service.title}
-                    className="h-16 w-16 md:h-32 md:w-32 object-cover rounded-md"
+                    className="h-20 w-20 md:h-32 md:w-36 object-cover rounded-md"
                   />
                 </div>
                 <h3 className="text-sm md:text-xl text-primary text-center">
