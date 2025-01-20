@@ -27,9 +27,7 @@ export const HowItWorks = () => {
         {/* Heading Div */}
         <div className="text-center mb-6 sm:mb-10">
           <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-2 sm:mb-4">How It Works</h2>
-          <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-            Simple steps to get your device repaired
-          </p>
+          
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">

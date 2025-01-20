@@ -8,30 +8,30 @@ const services = [
     icon: Laptop,
     title: "Laptop Services",
     description: "Professional laptop repair",
-    src: "./Services/Laptop_rep.png",
+    src: "./Services/BBB.png",
   },
   {
     icon: Smartphone,
     title: "iPhone Services",
     description: "Same-day repair for most",
-    src: "./Services/iPhone_rep.png",
+    src: "./Services/DDD.png",
   },{
     icon: Smartphone,
     title: "Android Services",
     description: "Expert repairs for all phone",
-    src: "./Services/Android_rep.png",
+    src: "./Services/EEE.png",
   },
   {
     icon: Laptop2,
     title: "Macbook Services",
     description: "90-day warranty on all",
-    src: "./Services/mac.png",
+    src: "./Services/CCC.png",
   },
   {
     icon: TabletIcon,
     title: "iPad Services",
     description: "90-day warranty on all",
-    src: "./Services/iPad_rep.png",
+    src: "./Services/AAA.png",
   },
   
 ];

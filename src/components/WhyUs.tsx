@@ -1,36 +1,36 @@
 import { motion } from "framer-motion";
-import { Wallet, Shield, BadgeCheck, Timer, Award, Truck } from "lucide-react";
 
 const features = [
   {
-    icon: Wallet,
+    image: "./Services/E.png", // Replace with your image path
     title: "Affordable Repairs",
-    description: "Quality repairs at competitive prices, ensuring value for your investment",
+    description: "Quality ur investment",
   },
+  
   {
-    icon: Shield,
-    title: "Warranty Assured",
-    description: "90-day warranty on all repairs for your complete peace of mind",
-  },
-  {
-    icon: BadgeCheck,
+    image: "./Services/F.png",
     title: "Genuine Parts",
-    description: "Only authentic parts used to ensure optimal device performance",
+    description: "Only aue performance",
   },
   {
-    icon: Timer,
+    image: "./Services/B.png",
     title: "Quick Repairs",
-    description: "Most repairs completed within 48 hours",
+    description: "Most re hours",
   },
   {
-    icon: Award,
+    image: "./Services/C.png",
     title: "Expert Technicians",
-    description: "Certified professionals with years of experience",
+    description: "Certified prperience",
   },
   {
-    icon: Truck,
+    image: "./Services/A.png",
+    title: "Warranty Assured",
+    description: "90-day warran peace of mind",
+  },
+  {
+    image: "./Services/D.png",
     title: "Free Pick & Drop",
-    description: "Convenient doorstep service for your devices",
+    description: "Coevices",
   },
 ];
 
@@ -49,12 +49,13 @@ export const WhyUs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="p-3 sm:p-5 rounded-xl bg-white shadow-sm hover:shadow-md hover:bg-primary/5 transition-all duration-300"
+              className="p-3 sm:p-5 rounded-xl bg-white shadow-sm "
             >
               <div className="flex items-center justify-center mb-4">
-                <feature.icon 
-                  className="w-12 h-12 text-primary" 
-                  strokeWidth={1.5}
+                <img 
+                  src={feature.image} 
+                  alt={feature.title} 
+                  className="w-12 h-12 object-contain"
                 />
               </div>
               <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-2 text-primary text-center">
