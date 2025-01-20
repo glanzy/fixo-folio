@@ -1,6 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Laptop, Laptop2, Smartphone, Tablet } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { motion } from "framer-motion";
@@ -9,6 +10,14 @@ interface DeviceDetailsProps {
   form: UseFormReturn<any>;
   index: number;
 }
+
+const laptopBrands = [
+  "Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung", "LG", "Toshiba", "Razer"
+];
+
+const androidBrands = [
+  "Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google"
+];
 
 export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
   const deviceType = form.watch(`devices.${index}.deviceType`);
@@ -26,7 +35,7 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
               <RadioGroup
                 onValueChange={field.onChange}
                 defaultValue={field.value}
-                className="flex gap-4 flex-wrap"
+                className="grid grid-cols-2 sm:grid-cols-3 gap-4"
               >
                 <motion.div 
                   whileHover={{ scale: 1.05 }}
@@ -102,14 +111,23 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Brand Name</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder={deviceType === 'laptop' 
-                    ? 'Asus / HP / Lenovo etc.' 
-                    : 'Samsung / Redmi / Oppo etc.'} 
-                  {...field} 
-                />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={deviceType === 'laptop' 
+                      ? 'Select Laptop Brand' 
+                      : 'Select Phone Brand'} 
+                    />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {(deviceType === 'laptop' ? laptopBrands : androidBrands).map((brand) => (
+                    <SelectItem key={brand} value={brand}>
+                      {brand}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

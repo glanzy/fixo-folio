@@ -16,10 +16,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { DeviceDetails } from "./DeviceDetails";
 import { Plus, Trash2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const deviceSchema = z.object({
-  deviceType: z.enum(["laptop", "mobile", "ipad"]),
-  deviceName: z.string().min(2, "Please enter your device name"),
+  deviceType: z.enum(["laptop", "mobile", "ipad", "iphone", "macbook"]),
+  deviceName: z.string().optional(),
   deviceModel: z.string().min(2, "Please enter your device model"),
   problem: z.string().min(20, "Please describe the problem in detail"),
 });
@@ -28,8 +29,17 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
   address: z.string().min(10, "Please enter your complete address"),
+  preferredDate: z.string().min(1, "Please select a preferred date"),
+  preferredTime: z.string().min(1, "Please select a preferred time"),
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
+
+const timeSlots = [
+  "09:00 AM - 11:00 AM",
+  "11:00 AM - 01:00 PM",
+  "02:00 PM - 04:00 PM",
+  "04:00 PM - 06:00 PM",
+];
 
 export const BookRepairForm = () => {
   const { toast } = useToast();
@@ -39,6 +49,8 @@ export const BookRepairForm = () => {
       name: "",
       mobile: "",
       address: "",
+      preferredDate: "",
+      preferredTime: "",
       devices: [
         {
           deviceType: "laptop",
@@ -63,6 +75,11 @@ export const BookRepairForm = () => {
     });
     form.reset();
   };
+
+  // Get tomorrow's date as the minimum date for booking
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split('T')[0];
 
   return (
     <div className="md:w-3/4 p-8">
@@ -128,16 +145,75 @@ export const BookRepairForm = () => {
             />
           </motion.div>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <FormField
+                control={form.control}
+                name="preferredDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferred Date</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="date" 
+                        min={minDate}
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+              <FormField
+                control={form.control}
+                name="preferredTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferred Time Slot</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select time slot" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timeSlots.map((slot) => (
+                          <SelectItem key={slot} value={slot}>
+                            {slot}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+          </div>
+
           {fields.map((field, index) => (
             <motion.div
               key={field.id}
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.5 + index * 0.1 }}
+              transition={{ delay: 0.7 + index * 0.1 }}
               className="relative space-y-6 p-6 border rounded-lg"
             >
               <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium"> {index === 0 ? "Device" : `Device ${index + 1}`} </h3>
+                <h3 className="text-lg font-medium">
+                  {index === 0 ? "Device" : `Device ${index + 1}`}
+                </h3>
                 {fields.length > 1 && (
                   <Button
                     type="button"
@@ -176,7 +252,7 @@ export const BookRepairForm = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.8 }}
             className="space-y-4"
           >
             <Button
