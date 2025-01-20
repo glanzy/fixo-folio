@@ -3,82 +3,68 @@ import { motion } from "framer-motion";
 const features = [
   {
     image: "./Services/EE.png",
-    title: "Premium Repairs",
-    description: "Expert service with guaranteed satisfaction",
+    title: "Affordable Repairs",
+    description: "We  longevity",
   },
   {
     image: "./Services/AA.png",
-    title: "90-Day Warranty",
-    description: "Complete peace of mind with our service guarantee",
+    title: "Warranty Assured",
+    description: "90-day wapeace of mind",
   },
   {
     image: "./Services/FF.png",
     title: "Genuine Parts",
-    description: "Only authentic components for lasting quality",
+    description: "We only vity",
   },
   {
     image: "./Services/BB.png",
-    title: "Express Service",
-    description: "Swift repairs without compromising quality",
+    title: "Quick Repairs",
+    description: "Most repai8 hours",
   },
   {
     image: "./Services/CC.png",
-    title: "Certified Experts",
-    description: "Highly trained professionals at your service",
+    title: "Expert Technicians",
+    description: "Our cperience",
   },
   {
     image: "./Services/DD.png",
-    title: "Doorstep Service",
-    description: "Convenient pickup and delivery",
+    title: "Free Pick & Drop",
+    description: "Convenient ",
   },
 ];
 
 export const WhyUs = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-white">
+    <section className="py-6 sm:py-10 bg-blue-100">
       <div className="container px-4 mx-auto">
-        <div className="text-center mb-16">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl md:text-4xl font-bold text-primary mb-4"
-          >
-            Why Choose Us
-          </motion.h2>
-          <div className="w-24 h-1 bg-primary mx-auto rounded-full mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Experience excellence in electronic device repair with our premium service offerings
-          </p>
+        <div className="text-center mb-4 sm:mb-10">
+          <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-1">Why Us</h2>
         </div>
-        
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-6 gap-3 sm:gap-4">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
+              transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
+              className="p-3 sm:p-5 rounded-xl hover:bg-primary/10 transition-colors duration-400"
             >
-              <div className="p-6">
-                <div className="mb-6 transform transition-transform duration-300 group-hover:scale-105">
-                  <div className="w-20 h-20 mx-auto rounded-full bg-blue-50 flex items-center justify-center overflow-hidden">
-                    <img 
-                      src={feature.image}
-                      alt={feature.title}
-                      className="w-12 h-12 object-contain"
-                    />
-                  </div>
+              <div className="flex items-center justify-center">
+                <div className="w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center rounded-2xl mb-2 sm:mb-4 overflow-hidden">
+                  <img 
+                    src={feature.image}
+                    alt={feature.title}
+                    className="w-full h-full object-cover rounded-2xl"
+                  />
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-primary text-center group-hover:text-blue-700 transition-colors">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-gray-600 text-center leading-relaxed">
-                  {feature.description}
-                </p>
               </div>
+              <h3 className="text-sm sm:text-base lg:text-xl font-semibold mb-1 text-primary text-center">
+                {feature.title}
+              </h3>
+              <p className="text-xs sm:text-sm lg:text-base text-gray-700 text-center">
+                {feature.description}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -86,5 +72,4 @@ export const WhyUs = () => {
     </section>
   );
 };
-
 export default WhyUs;
