@@ -1,10 +1,27 @@
-import { Menu } from "lucide-react";
+import { Menu, LogOut } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
+
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "Services", href: "/services" },
@@ -42,6 +59,23 @@ export const Navbar = () => {
                 {item.label}
               </Link>
             ))}
+            {isAuthenticated ? (
+              <Button
+                variant="ghost"
+                className="flex items-center gap-2"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            ) : (
+              <Link
+                to="/auth"
+                className="text-gray-800 text-bold text-l transition-colors hover:text-primary"
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -63,6 +97,23 @@ export const Navbar = () => {
                     {item.label}
                   </Link>
                 ))}
+                {isAuthenticated ? (
+                  <Button
+                    variant="ghost"
+                    className="flex items-center gap-2 justify-start"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="text-lg text-gray-600 hover:text-primary transition-colors"
+                  >
+                    Login
+                  </Link>
+                )}
               </div>
             </SheetContent>
           </Sheet>
