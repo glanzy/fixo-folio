@@ -1,7 +1,5 @@
-//Service progress page
-
-
-import { useState } from "react";
+import { useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import {
@@ -14,14 +12,24 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, Circle } from "lucide-react";
+import { toast } from "sonner";
 
 const TrackService = () => {
-  
-  
-  // Mock data - in a real app, this would come from an API from database
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const serviceId = searchParams.get("id");
 
+  useEffect(() => {
+    if (!serviceId) {
+      toast.error("No service ID provided");
+      navigate("/track-service-entry");
+      return;
+    }
+    console.log("Tracking service with ID:", serviceId);
+  }, [serviceId, navigate]);
 
-  const [serviceData] = useState({
+  // Mock data - in a real app, this would come from an API based on the serviceId
+  const serviceData = {
     customer: {
       name: "John Doe",
       email: "john@example.com",
@@ -34,7 +42,7 @@ const TrackService = () => {
       issue: "Screen flickering and battery drain",
     },
     service: {
-      id: "SRV001",
+      id: serviceId || "SRV001",
       status: "diagnosis",
       startDate: "2024-03-15",
       estimatedCompletion: "2024-03-18",
@@ -57,7 +65,7 @@ const TrackService = () => {
       "/placeholder.svg",
       "/placeholder.svg",
     ],
-  });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
