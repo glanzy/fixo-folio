@@ -1,4 +1,4 @@
-import { Mail, MapPin, Phone, MessageSquare, WhatsApp } from "lucide-react";
+import { Mail, MapPin, Phone, MessageSquare, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
@@ -92,7 +92,7 @@ export const Footer = () => {
                 <span className="text-gray-300" onClick={() => window.location.href = "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D"}>Nirmaan The Pre-Incubator, Sudha Shankar Innovation Hub,  IIT Madras, Chennai, Tamil Nadu - 600036</span>
               </div>
               <div className="flex items-center space-x-3">
-                <WhatsApp className="h-5 w-5" />
+                <MessageCircle className="h-5 w-5" />
                 <a 
                   href="https://chat.whatsapp.com/your-group-link" 
                   target="_blank" 
