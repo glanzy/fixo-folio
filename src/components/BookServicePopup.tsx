@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
@@ -39,12 +37,9 @@ export const BookServicePopup = () => {
             Book a repair service now and get your device fixed by our expert technicians!
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Maybe Later</AlertDialogCancel>
-          <AlertDialogAction onClick={handleBookNow} className="bg-primary">
-            Book Now
-          </AlertDialogAction>
-        </AlertDialogFooter>
+        <AlertDialogAction onClick={handleBookNow} className="bg-primary w-full">
+          Book Now
+        </AlertDialogAction>
       </AlertDialogContent>
     </AlertDialog>
   );
