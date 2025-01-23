@@ -61,7 +61,7 @@ export const Stats = () => {
     <section className="bg-white-200">
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-primary mt-6 sm:mt-9 mb-4 sm:mb-6">
-          Our Technician Partners' Impact
+          Crafting Perfect Repairs
         </h2>
       </div>
 
@@ -108,7 +108,7 @@ export const Stats = () => {
                 <ShieldCheck className="h-5 w-5 sm:h-8 sm:w-8 text-primary" />
               </div>
               <h3 className="text-lg sm:text-2xl font-bold text-primary mb-1 sm:mb-2 text-center">
-                {yearsCount}+
+                {yearsCount}+ Years
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 font-semibold text-center">
                 Experienced Professionals You Can Trust

@@ -4,19 +4,19 @@ import { CheckCircle2 } from "lucide-react";
 const steps = [
   {
     title: "Book Online",
-    description: "Schedule a repair service through our easy online booking system",
+    description: "Schedule a repair service through our booking system.",
   },
   {
-    title: "Diagnosis",
-    description: "Our experts will diagnose the issue with your device",
+    title: "Free Diagnosis",
+    description: "Get your device diagnosed & clear pricing afterwards.",
   },
   {
     title: "Quick Repair",
-    description: "Professional repair with genuine parts and warranty",
+    description: "Fast and Professional repairs with high quality parts.",
   },
   {
-    title: "Ready to Go",
-    description: "Get your device back in perfect working condition",
+    title: "Delivery",
+    description: "Your device, good as new - No Magic, JUST FIXO! ",
   },
 ];
 

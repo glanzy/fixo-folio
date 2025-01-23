@@ -4,33 +4,33 @@ const features = [
   {
     image: "./Services/E.png", // Replace with your image path
     title: "Affordable Repairs",
-    description: "Quality ur investment",
+    description: "Competitive Pricing",
   },
   
   {
     image: "./Services/F.png",
     title: "Genuine Parts",
-    description: "Only aue performance",
+    description: "High Quality Spare Parts",
   },
   {
     image: "./Services/B.png",
     title: "Quick Repairs",
-    description: "Most re hours",
+    description: "Most Repair within 24 hours",
   },
   {
     image: "./Services/C.png",
     title: "Expert Technicians",
-    description: "Certified prperience",
+    description: "Certified Technicians",
   },
   {
     image: "./Services/A.png",
     title: "Warranty Assured",
-    description: "90-day warran peace of mind",
+    description: "3-6 Months Warranty",
   },
   {
     image: "./Services/D.png",
-    title: "Free Pick & Drop",
-    description: "Coevices",
+    title: "Free Pickup & Drop",
+    description: "Doorstep Services",
   },
 ];
 

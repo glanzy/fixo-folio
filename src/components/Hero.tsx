@@ -14,16 +14,14 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "./Carousel/C2.png",
+    src: "./Carousel/ABCD.png",
     alt: "Woman using laptop",
-  },
-  {
-    src: "./Carousel/C1.png",
-    alt: "Laptop repair",
-  },
-  {
-    src: "./Carousel/C3.png",
-    alt: "Circuit board",
+  },{
+    src: "./Carousel/EFGH.png",
+    alt: "Woman using laptop",
+  },{
+    src: "./Carousel/HIJK.png",
+    alt: "Woman using laptop",
   },
 ];
 
@@ -55,54 +53,54 @@ export const Hero = () => {
           className="text-center"
         >
           <br />
-          <h1 className="mb-6 text-4xl font-bold text-primary">
-            We Care, We Repair
-          </h1>
+          
 
-          <Carousel
-            className="w-full max-w-[1400px] mx-auto mb-8"
-            plugins={[
-              Autoplay({
-                delay: 3400,
-              }),
-            ]}
-            setApi={setApi}
-          >
-            <CarouselContent>
-              {carouselImages.map((image, index) => (
-                <CarouselItem key={index}>
-                  <div className="relative w-full h-auto overflow-hidden">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="w-full h-auto max-h-[400px] object-contain m-0"
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
-            <div className="flex justify-center gap-2 mt-4">
-              {carouselImages.map((_, index) => (
-                <button
-                  key={index}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    activeIndex === index ? "bg-primary w-4" : "bg-gray-300"
-                  }`}
-                  onClick={() => scrollTo(index)}
-                />
-              ))}
-            </div>
-          </Carousel>
+         <Carousel
+  className="w-full max-w-[1400px] mx-auto mb-8"
+  plugins={[
+    Autoplay({
+      delay: 4000,
+    }),
+  ]}
+  setApi={setApi}
+>
+  <CarouselContent>
+    {carouselImages.map((image, index) => (
+      <CarouselItem key={index}>
+        <div className="relative w-full h-auto overflow-hidden rounded-xl">
+          <img
+            src={image.src}
+            alt={image.alt}
+            className="w-full h-auto max-h-[400px] object-contain m-0 rounded-xl"
+          />
+        </div>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+  <CarouselPrevious className="hidden md:flex" />
+  <CarouselNext className="hidden md:flex" />
+  <div className="flex justify-center gap-2 mt-4">
+    {carouselImages.map((_, index) => (
+      <button
+        key={index}
+        className={`w-2 h-2 rounded-full transition-all ${
+          activeIndex === index ? "bg-primary w-4" : "bg-gray-300"
+        }`}
+        onClick={() => scrollTo(index)}
+      />
+    ))}
+  </div>
+</Carousel>
 
+<br />
           <Button
-            size="lg"
-            className="animate-float"
-            onClick={() => (window.location.href = "/book-repair")}
+          size="xl" // Changed size to "xl" if supported by the component
+          className="animate-float px-8 py-4 text-lg"
+          onClick={() => (window.location.href = "/book-repair")}
           >
-            Book a Repair <ArrowRight className="ml-2 h-4 w-4" />
+          Book a Repair <ArrowRight className="ml-2 h-6 w-6" />
           </Button>
+
         </motion.div>
       </div>
     </section>
