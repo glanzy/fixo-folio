@@ -28,18 +28,19 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
+import { supabase } from "@/supabaseClient";
 
 const deviceSchema = z.object({
   deviceType: z.enum(["laptop", "mobile", "ipad", "iphone", "macbook"]),
   deviceName: z.string().optional(),
-  deviceModel: z.string().min(0, "Please enter your device model"),
-  problem: z.string().min(0, "Please describe the problem in detail"),
+  deviceModel: z.string().min(1, "Please enter your device model"),
+  problem: z.string().min(1, "Please describe the problem in detail"),
 });
 
 const formSchema = z.object({
   name: z.string().min(1, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
-  address: z.string().min(0, "Please enter your complete address"),
+  address: z.string().min(1, "Please enter your complete address"),
   preferredDate: z.string().min(1, "Please select a preferred date"),
   preferredTime: z.string().min(1, "Please select a preferred time"),
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
@@ -83,11 +84,66 @@ export const BookRepairForm = () => {
     return `SRV${timestamp}${random}`;
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    const newServiceId = generateServiceId();
-    setServiceId(newServiceId);
-    setShowConfirmation(true);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      console.log("Form values:", values);
+      const newServiceId = generateServiceId();
+      
+      // Insert customer information
+      const { error: customerError } = await supabase
+        .from('customers')
+        .insert({
+          service_id: newServiceId,
+          name: values.name,
+          mobile: values.mobile,
+          address: values.address,
+          preferred_date: values.preferredDate,
+          preferred_time: values.preferredTime,
+        });
+
+      if (customerError) throw customerError;
+
+      // Insert device information
+      const devicesData = values.devices.map(device => ({
+        service_id: newServiceId,
+        device_type: device.deviceType,
+        device_name: device.deviceName,
+        device_model: device.deviceModel,
+        problem_description: device.problem,
+      }));
+
+      const { error: deviceError } = await supabase
+        .from('devices')
+        .insert(devicesData);
+
+      if (deviceError) throw deviceError;
+
+      // Create initial service tracking entry
+      const { error: trackingError } = await supabase
+        .from('service_tracking')
+        .insert({
+          service_id: newServiceId,
+          status: 'pickup',
+          notes: 'Service request created',
+        });
+
+      if (trackingError) throw trackingError;
+
+      setServiceId(newServiceId);
+      setShowConfirmation(true);
+      
+      toast({
+        title: "Success!",
+        description: "Your repair request has been submitted successfully.",
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error",
+        description: "There was an error submitting your repair request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleConfirmation = () => {
@@ -97,6 +153,8 @@ export const BookRepairForm = () => {
 
   const today = new Date();
   const minDate = today.toISOString().split("T")[0];
+
+  // ... keep existing code (form JSX)
 
   return (
     <>
@@ -300,36 +358,36 @@ export const BookRepairForm = () => {
         </Form>
       </div>
 
-     
-
-<AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Repair Request Submitted Successfully!</AlertDialogTitle>
-      <AlertDialogDescription className="text-center space-y-2">
-        <p>Thank you for submitting your repair request. We will reach out to you soon.</p>
-        <div className="flex items-center justify-center space-x-2">
-          <p className="font-semibold text-primary">Your Service ID: {serviceId}</p>
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(serviceId);
-            }}
-            className="text-sm text-primary hover:text-secondary"
-          >
-            <ClipboardIcon className="h-5 w-5 text-primary cursor-pointer" />
-          </button>
-        </div>
-        <p className="text-sm text-muted-foreground">Please save this ID for future reference.</p>
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogAction onClick={handleConfirmation} className="w-full">
-        Okay
-      </AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
-
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Repair Request Submitted Successfully!</AlertDialogTitle>
+            <AlertDialogDescription className="text-center space-y-2">
+              <p>Thank you for submitting your repair request. We will reach out to you soon.</p>
+              <div className="flex items-center justify-center space-x-2">
+                <p className="font-semibold text-primary">Your Service ID: {serviceId}</p>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(serviceId);
+                    toast({
+                      description: "Service ID copied to clipboard",
+                    });
+                  }}
+                  className="text-sm text-primary hover:text-secondary"
+                >
+                  <ClipboardIcon className="h-5 w-5 text-primary cursor-pointer" />
+                </button>
+              </div>
+              <p className="text-sm text-muted-foreground">Please save this ID for future reference.</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleConfirmation} className="w-full">
+              Okay
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
