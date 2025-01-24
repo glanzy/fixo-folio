@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,22 +10,41 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { X } from "lucide-react";
+
 export const BookServicePopup = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setOpen(true);
-    }, 8000);
-    return () => clearTimeout(timer);
-  }, []);
+    // Check if it's the home page and popup hasn't been shown before
+    const hasPopupBeenShown = localStorage.getItem('bookServicePopupShown');
+    
+    if (location.pathname === '/' && !hasPopupBeenShown) {
+      const timer = setTimeout(() => {
+        setOpen(true);
+        localStorage.setItem('bookServicePopupShown', 'true');
+      }, 8000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
+
   const handleBookNow = () => {
     navigate("/book-repair");
     setOpen(false);
   };
+
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="sm:max-w-[425px]">
+        <button 
+          onClick={() => setOpen(false)} 
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X size={24} />
+        </button>
         <AlertDialogHeader>
           <AlertDialogTitle className="text-2xl font-bold text-primary">
             Ready to Fix Your Device?
@@ -35,7 +54,6 @@ export const BookServicePopup = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Maybe Later</AlertDialogCancel>
           <AlertDialogAction onClick={handleBookNow} className="bg-primary">
             Book Now
           </AlertDialogAction>
