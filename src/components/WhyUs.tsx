@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const features = [
   {
-    image: "./Services/E.png", // Replace with your image path
+    image: "./Services/E.png", 
     title: "Affordable Repairs",
     description: "Competitive Pricing",
   },

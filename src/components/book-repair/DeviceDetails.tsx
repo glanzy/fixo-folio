@@ -26,83 +26,84 @@ export const DeviceDetails = ({ form, index }: DeviceDetailsProps) => {
   return (
     <div className="space-y-4">
       <FormField
-        control={form.control}
-        name={`devices.${index}.deviceType`}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Device Type</FormLabel>
-            <FormControl>
-              <RadioGroup
-                onValueChange={field.onChange}
-                defaultValue={field.value}
-                className="grid grid-cols-2 sm:grid-cols-3 gap-4"
-              >
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-1"
-                >
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="laptop" id={`laptop-${index}`} />
-                    <label htmlFor={`laptop-${index}`} className="flex items-center gap-2 cursor-pointer">
-                      <Laptop className="w-5 h-5" />
-                      Laptop
-                    </label>
-                  </div>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-1"
-                >
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="mobile" id={`mobile-${index}`} />
-                    <label htmlFor={`mobile-${index}`} className="flex items-center gap-2 cursor-pointer">
-                      <Smartphone className="w-5 h-5" />
-                      Android
-                    </label>
-                  </div>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-1"
-                >
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="ipad" id={`ipad-${index}`} />
-                    <label htmlFor={`ipad-${index}`} className="flex items-center gap-2 cursor-pointer">
-                      <Tablet className="w-5 h-5" />
-                      iPad
-                    </label>
-                  </div>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-1"
-                >
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="iphone" id={`iphone-${index}`} />
-                    <label htmlFor={`iphone-${index}`} className="flex items-center gap-2 cursor-pointer">
-                      <Smartphone className="w-5 h-5" />
-                      iPhone
-                    </label>
-                  </div>
-                </motion.div>
-                <motion.div 
-                  whileHover={{ scale: 1.05 }}
-                  className="flex-1"
-                >
-                  <div className="flex items-center space-x-2 p-4 border rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors">
-                    <RadioGroupItem value="macbook" id={`macbook-${index}`} />
-                    <label htmlFor={`macbook-${index}`} className="flex items-center gap-2 cursor-pointer">
-                      <Laptop2 className="w-5 h-5" />
-                      Macbook
-                    </label>
-                  </div>
-                </motion.div>
-              </RadioGroup>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+  control={form.control}
+  name={`devices.${index}.deviceType`}
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Device Type</FormLabel>
+      <FormControl>
+        <RadioGroup
+          onValueChange={field.onChange}
+          defaultValue={field.value}
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4"
+        >
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center"
+          >
+            <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
+              <RadioGroupItem value="laptop" id={`laptop-${index}`} />
+              <label htmlFor={`laptop-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                <Laptop className="w-4 h-4 sm:w-5 sm:h-5" />
+                Laptop
+              </label>
+            </div>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center"
+          >
+            <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
+              <RadioGroupItem value="mobile" id={`mobile-${index}`} />
+              <label htmlFor={`mobile-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
+                Android
+              </label>
+            </div>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center"
+          >
+            <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
+              <RadioGroupItem value="ipad" id={`ipad-${index}`} />
+              <label htmlFor={`ipad-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                <Tablet className="w-4 h-4 sm:w-5 sm:h-5" />
+                iPad
+              </label>
+            </div>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center"
+          >
+            <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
+              <RadioGroupItem value="iphone" id={`iphone-${index}`} />
+              <label htmlFor={`iphone-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
+                iPhone
+              </label>
+            </div>
+          </motion.div>
+          <motion.div 
+            whileHover={{ scale: 1.05 }}
+            className="flex justify-center"
+          >
+            <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
+              <RadioGroupItem value="macbook" id={`macbook-${index}`} />
+              <label htmlFor={`macbook-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                <Laptop2 className="w-4 h-4 sm:w-5 sm:h-5" />
+                Macbook
+              </label>
+            </div>
+          </motion.div>
+        </RadioGroup>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
       
       {!isAppleDevice && (
         <FormField

@@ -11,22 +11,22 @@ import { Quote } from "lucide-react";
 const testimonials = [
   {
     name: "Mahadarshini C V",
-    role: "Apple User",
-    content: "Excellent service - gave my IPAD for scrren change - very reasonable price. And Xr have changed battery - worth for the money spent Very good end to end service. I changed display they didn't charge for screws and temp glass. And returned the phone in short time.",
+    role: "Android User",
+    content: "Excellent service for Oneplus mobiles. My 4-year old Oneplus 8 screen had a lot of lines and the power button was stuck. Replaced with original screen and fixed the button problem in just 90 min at very competitive rates.",
     image: "/lovable-uploads/1.png",
     rating: 5.0 // Dynamic rating
   },
   {
     name: "Aravind Anand",
-    role: "Android User",
-    content: "I had a great experience at this service center. The staff was professional, knowledgeable, and quick to address my concerns. The service was efficient, and they kept me updated throughout the process. I'm very satisfied with the quality of work and would definitely recommend them to others.",
+    role: "Laptop User",
+    content: "Got my HP Laptop serviced here for hinge rework and battery replacement. Work was exceptional and price was very reasonable. Thanks for the quality work.",
     image: "/lovable-uploads/2.png",
     rating: 4.4 // Dynamic rating
   },
   {
-    name: "Ankit",
-    role: "Laptop User",
-    content: "I am very satisfied with the service provided for my laptop. The team was professional, and the repair was completed quickly. I appreciated the regular updates on the progress, and the communication was clear throughout the process. Great support!",
+    name: "Aniket P",
+    role: "Macbook User",
+    content: "I am very satisfied with the service provided for my macbook. The team was professional, and the repair was completed quickly. I appreciated the regular updates on the progress, and the communication was clear throughout the process. Great support!",
     image: "/lovable-uploads/3.png",
     rating: 4.5 // Dynamic rating
   },

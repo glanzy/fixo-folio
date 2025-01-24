@@ -16,8 +16,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { DeviceDetails } from "./DeviceDetails";
-import { Plus, Trash2 } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ClipboardIcon, Plus, Trash2 } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,25 +32,20 @@ import { useState } from "react";
 const deviceSchema = z.object({
   deviceType: z.enum(["laptop", "mobile", "ipad", "iphone", "macbook"]),
   deviceName: z.string().optional(),
-  deviceModel: z.string().min(2, "Please enter your device model"),
-  problem: z.string().min(20, "Please describe the problem in detail"),
+  deviceModel: z.string().min(0, "Please enter your device model"),
+  problem: z.string().min(0, "Please describe the problem in detail"),
 });
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  name: z.string().min(1, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
-  address: z.string().min(10, "Please enter your complete address"),
+  address: z.string().min(0, "Please enter your complete address"),
   preferredDate: z.string().min(1, "Please select a preferred date"),
   preferredTime: z.string().min(1, "Please select a preferred time"),
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
-const timeSlots = [
-  "09:00 AM - 11:00 AM",
-  "11:00 AM - 01:00 PM",
-  "02:00 PM - 04:00 PM",
-  "04:00 PM - 06:00 PM",
-];
+const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
 
 export const BookRepairForm = () => {
   const { toast } = useToast();
@@ -84,7 +79,7 @@ export const BookRepairForm = () => {
 
   const generateServiceId = () => {
     const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
     return `SRV${timestamp}${random}`;
   };
 
@@ -97,13 +92,11 @@ export const BookRepairForm = () => {
 
   const handleConfirmation = () => {
     setShowConfirmation(false);
-    navigate('/');
+    navigate("/");
   };
 
-  // Get tomorrow's date as the minimum date for booking
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
+  const today = new Date();
+  const minDate = today.toISOString().split("T")[0];
 
   return (
     <>
@@ -170,62 +163,65 @@ export const BookRepairForm = () => {
               />
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="preferredDate"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Preferred Date</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="date" 
-                          min={minDate}
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <FormField
+                control={form.control}
+                name="preferredDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferred Date</FormLabel>
+                    <FormControl>
+                      <Input type="date" min={minDate} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-              >
-                <FormField
-                  control={form.control}
-                  name="preferredTime"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Preferred Time Slot</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select time slot" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timeSlots.map((slot) => (
-                            <SelectItem key={slot} value={slot}>
-                              {slot}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </motion.div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+<FormField
+  control={form.control}
+  name="preferredTime"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Preferred Time Slot</FormLabel>
+      <FormControl>
+        <RadioGroup
+          onValueChange={field.onChange}
+          defaultValue={field.value}
+          className="flex flex-wrap "
+        >
+          {timeSlots.map((slot) => (
+            <FormItem
+              key={slot}
+              className="flex items-center space-x-2 border rounded-md p-2 w-36 hover:bg-gray-50 transition-colors"
+            >
+              <FormControl>
+                <RadioGroupItem value={slot} className="mr-2" />
+              </FormControl>
+              <FormLabel className="font-normal flex-grow cursor-pointer">
+                {slot}
+              </FormLabel>
+            </FormItem>
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+
+            </motion.div>
 
             {fields.map((field, index) => (
               <motion.div
@@ -304,23 +300,36 @@ export const BookRepairForm = () => {
         </Form>
       </div>
 
-      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Repair Request Submitted Successfully!</AlertDialogTitle>
-            <AlertDialogDescription className="text-center space-y-2">
-              <p>Thank you for submitting your repair request. We will reach out to you soon.</p>
-              <p className="font-semibold text-primary">Your Service ID: {serviceId}</p>
-              <p className="text-sm text-muted-foreground">Please save this ID for future reference.</p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={handleConfirmation} className="w-full">
-              Okay
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+     
+
+<AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Repair Request Submitted Successfully!</AlertDialogTitle>
+      <AlertDialogDescription className="text-center space-y-2">
+        <p>Thank you for submitting your repair request. We will reach out to you soon.</p>
+        <div className="flex items-center justify-center space-x-2">
+          <p className="font-semibold text-primary">Your Service ID: {serviceId}</p>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(serviceId);
+            }}
+            className="text-sm text-primary hover:text-secondary"
+          >
+            <ClipboardIcon className="h-5 w-5 text-primary cursor-pointer" />
+          </button>
+        </div>
+        <p className="text-sm text-muted-foreground">Please save this ID for future reference.</p>
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogAction onClick={handleConfirmation} className="w-full">
+        Okay
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+
     </>
   );
 };

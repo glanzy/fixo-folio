@@ -4,7 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 const steps = [
   {
     title: "Book Online",
-    description: "Schedule a repair service through our booking system.",
+    description: "Schedule a repair service through our easy booking system.",
   },
   {
     title: "Free Diagnosis",
@@ -16,7 +16,7 @@ const steps = [
   },
   {
     title: "Delivery",
-    description: "Your device, good as new - No Magic, JUST FIXO! ",
+    description: "Get back your device, as good as NEW! ",
   },
 ];
 
