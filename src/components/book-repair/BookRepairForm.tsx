@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import { motion } from "framer-motion";
 // import { useForm, useFieldArray } from "react-hook-form";
 // import * as z from "zod";
@@ -45,15 +46,71 @@
 //   preferredTime: z.string().min(1, "Please select a preferred time"),
 //   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 // });
+=======
+import { motion } from "framer-motion";
+import { useForm, useFieldArray } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { DeviceDetails } from "./DeviceDetails";
+import { ClipboardIcon, Plus, Trash2 } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
+
+const deviceSchema = z.object({
+  deviceType: z.enum(["laptop", "mobile", "ipad", "iphone", "macbook"]),
+  deviceName: z.string().optional(),
+  deviceModel: z.string().min(0, "Please enter your device model"),
+  problem: z.string().min(0, "Please describe the problem in detail"),
+});
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name must be at least 2 characters"),
+  mobile: z.string().min(10, "Please enter a valid mobile number"),
+  address: z.string().min(0, "Please enter your complete address"),
+  preferredDate: z.string().min(1, "Please select a preferred date"),
+  preferredTime: z.string().min(1, "Please select a preferred time"),
+  devices: z.array(deviceSchema).min(1, "Add at least one device"),
+});
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
 
 // const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
 
+<<<<<<< HEAD
 // export const BookRepairForm = () => {
 //   const { toast } = useToast();
 //   const navigate = useNavigate();
 //   const [showConfirmation, setShowConfirmation] = useState(false);
 //   const [serviceId, setServiceId] = useState("");
 //   const [isSubmitting, setIsSubmitting] = useState(false);
+=======
+export const BookRepairForm = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [serviceId, setServiceId] = useState("");
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
 
 //   const form = useForm<z.infer<typeof formSchema>>({
 //     resolver: zodResolver(formSchema),
@@ -85,6 +142,7 @@
 //     return `SRV${timestamp}${random}`;
 //   };
 
+<<<<<<< HEAD
 //   const onSubmit = async (values: z.infer<typeof formSchema>) => {
 //     try {
 //       console.log("Starting form submission with values:", values);
@@ -157,6 +215,14 @@
 //       setIsSubmitting(false);
 //     }
 //   };
+=======
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+    const newServiceId = generateServiceId();
+    setServiceId(newServiceId);
+    setShowConfirmation(true);
+  };
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
 
 //   const handleConfirmation = () => {
 //     setShowConfirmation(false);
@@ -166,6 +232,7 @@
 //   const today = new Date();
 //   const minDate = today.toISOString().split("T")[0];
 
+<<<<<<< HEAD
 //   // ... keep existing code (form JSX)
 
 //   return (
@@ -192,6 +259,32 @@
 //                 )}
 //               />
 //             </motion.div>
+=======
+  return (
+    <>
+      <div className="md:w-3/4 p-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
 
 //             <motion.div
 //               initial={{ opacity: 0, x: 20 }}
@@ -253,6 +346,7 @@
 //               />
 //             </motion.div>
 
+<<<<<<< HEAD
 //             <motion.div
 //               initial={{ opacity: 0, x: 20 }}
 //               animate={{ opacity: 1, x: 0 }}
@@ -290,6 +384,47 @@
 //                 )}
 //               />
 //             </motion.div>
+=======
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+            >
+<FormField
+  control={form.control}
+  name="preferredTime"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Preferred Time Slot</FormLabel>
+      <FormControl>
+        <RadioGroup
+          onValueChange={field.onChange}
+          defaultValue={field.value}
+          className="flex flex-wrap "
+        >
+          {timeSlots.map((slot) => (
+            <FormItem
+              key={slot}
+              className="flex items-center space-x-2 border rounded-md p-2 w-36 hover:bg-gray-50 transition-colors"
+            >
+              <FormControl>
+                <RadioGroupItem value={slot} className="mr-2" />
+              </FormControl>
+              <FormLabel className="font-normal flex-grow cursor-pointer">
+                {slot}
+              </FormLabel>
+            </FormItem>
+          ))}
+        </RadioGroup>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+
+            </motion.div>
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
 
 //             {fields.map((field, index) => (
 //               <motion.div
@@ -360,6 +495,7 @@
 //                 <Plus className="mr-2 h-4 w-4" /> Add Another Device
 //               </Button>
 
+<<<<<<< HEAD
 //               <Button type="submit" className="w-full" disabled={isSubmitting}>
 //                 {isSubmitting ? "Submitting..." : "Submit Repair Request"}
 //               </Button>
@@ -401,3 +537,46 @@
 //     </>
 //   );
 // };
+=======
+              <Button type="submit" className="w-full">
+                Submit Repair Request
+              </Button>
+            </motion.div>
+          </form>
+        </Form>
+      </div>
+
+     
+
+<AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+  <AlertDialogContent>
+    <AlertDialogHeader>
+      <AlertDialogTitle>Repair Request Submitted Successfully!</AlertDialogTitle>
+      <AlertDialogDescription className="text-center space-y-2">
+        <p>Thank you for submitting your repair request. We will reach out to you soon.</p>
+        <div className="flex items-center justify-center space-x-2">
+          <p className="font-semibold text-primary">Your Service ID: {serviceId}</p>
+          <button
+            onClick={() => {
+              navigator.clipboard.writeText(serviceId);
+            }}
+            className="text-sm text-primary hover:text-secondary"
+          >
+            <ClipboardIcon className="h-5 w-5 text-primary cursor-pointer" />
+          </button>
+        </div>
+        <p className="text-sm text-muted-foreground">Please save this ID for future reference.</p>
+      </AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+      <AlertDialogAction onClick={handleConfirmation} className="w-full">
+        Okay
+      </AlertDialogAction>
+    </AlertDialogFooter>
+  </AlertDialogContent>
+</AlertDialog>
+
+    </>
+  );
+};
+>>>>>>> f7c7e80106ec452b6bb03cf629b3d7fb6fb59668
