@@ -18,10 +18,10 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+    <BrowserRouter>
+      <TooltipProvider delayDuration={0}>
+        <Toaster />
+        <Sonner />
         <BookServicePopup />
         <Suspense fallback={<LoadingScreen />}>
           <Routes>
@@ -34,8 +34,8 @@ const App = () => (
             <Route path="/services" element={<Services />} />
           </Routes>
         </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
+      </TooltipProvider>
+    </BrowserRouter>
   </QueryClientProvider>
 );
 
