@@ -108,8 +108,8 @@ export const BookRepairForm = () => {
       console.log("Customer insertion response:", { customerData, customerError });
       if (customerError) throw customerError;
 
-      // Insert device information
-      const devicesData = values.devices.map(device => ({
+      // Prepare devices data array
+      const devicesToInsert = values.devices.map(device => ({
         service_id: newServiceId,
         device_type: device.deviceType,
         device_name: device.deviceName || null,
@@ -117,12 +117,13 @@ export const BookRepairForm = () => {
         problem_description: device.problem,
       }));
 
-      const { data: devicesData, error: deviceError } = await supabase
+      // Insert device information
+      const { data: insertedDevices, error: deviceError } = await supabase
         .from('devices')
-        .insert(devicesData)
+        .insert(devicesToInsert)
         .select();
 
-      console.log("Devices insertion response:", { devicesData, deviceError });
+      console.log("Devices insertion response:", { insertedDevices, deviceError });
       if (deviceError) throw deviceError;
 
       // Create initial service tracking entry
