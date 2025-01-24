@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { supabase } from "@/supabaseClient";
 
 const ServiceIdEntry = () => {
   const [serviceId, setServiceId] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!serviceId.trim()) {
@@ -18,8 +20,29 @@ const ServiceIdEntry = () => {
       return;
     }
 
-    // Navigate to track-service page with the service ID
-    navigate(`/track-service?id=${serviceId}`);
+    setLoading(true);
+
+    try {
+      // Verify if the service ID exists
+      const { data, error } = await supabase
+        .from('customers')
+        .select('service_id')
+        .eq('service_id', serviceId)
+        .single();
+
+      if (error || !data) {
+        toast.error("Invalid service ID. Please check and try again.");
+        return;
+      }
+
+      // Navigate to track-service page with the verified service ID
+      navigate(`/track-service?id=${serviceId}`);
+    } catch (error) {
+      console.error('Error verifying service ID:', error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,8 +66,8 @@ const ServiceIdEntry = () => {
                   className="w-full"
                 />
               </div>
-              <Button type="submit" className="w-full">
-                Track Service
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? "Verifying..." : "Track Service"}
               </Button>
             </form>
           </div>

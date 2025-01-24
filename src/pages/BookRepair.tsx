@@ -232,11 +232,8 @@ const BookRepair = () => {
       setIsSubmitting(true);
       const newServiceId = generateServiceId();
       
-      console.log('Submitting form with values:', values);
-      console.log('Generated service ID:', newServiceId);
-
       // Step 1: Insert customer information
-      const { data: customerData, error: customerError } = await supabase
+      const { error: customerError } = await supabase
         .from('customers')
         .insert({
           service_id: newServiceId,
@@ -247,12 +244,7 @@ const BookRepair = () => {
           preferred_time: values.preferredTime,
         });
 
-      if (customerError) {
-        console.error('Customer insertion error:', customerError);
-        throw new Error(`Customer insertion failed: ${customerError.message}`);
-      }
-
-      console.log('Customer data inserted successfully');
+      if (customerError) throw new Error(`Customer insertion failed: ${customerError.message}`);
 
       // Step 2: Insert devices
       const devicesToInsert = values.devices.map(device => ({
@@ -267,28 +259,35 @@ const BookRepair = () => {
         .from('devices')
         .insert(devicesToInsert);
 
-      if (deviceError) {
-        console.error('Device insertion error:', deviceError);
-        throw new Error(`Device insertion failed: ${deviceError.message}`);
-      }
+      if (deviceError) throw new Error(`Device insertion failed: ${deviceError.message}`);
 
-      console.log('Devices data inserted successfully');
+      // Step 3: Create initial billing entry
+      const { error: billingError } = await supabase
+        .from('billing')
+        .insert({
+          service_id: newServiceId,
+          subtotal: 0, // Initial values, to be updated later
+          tax: 0,
+          total: 0,
+          status: 'pending',
+          payment_method: null,
+          payment_date: null
+        });
 
-      // Step 3: Create tracking entry
+      if (billingError) throw new Error(`Billing insertion failed: ${billingError.message}`);
+
+      // Step 4: Create tracking entry
       const { error: trackingError } = await supabase
         .from('service_tracking')
         .insert({
           service_id: newServiceId,
           status: 'pickup',
           notes: 'Service request created',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
         });
 
-      if (trackingError) {
-        console.error('Tracking insertion error:', trackingError);
-        throw new Error(`Tracking insertion failed: ${trackingError.message}`);
-      }
-
-      console.log('Tracking data inserted successfully');
+      if (trackingError) throw new Error(`Tracking insertion failed: ${trackingError.message}`);
 
       setServiceId(newServiceId);
       setShowConfirmation(true);
@@ -297,6 +296,7 @@ const BookRepair = () => {
         title: "Success!",
         description: `Your repair request has been submitted successfully. Service ID: ${newServiceId}`,
       });
+
     } catch (error) {
       console.error('Form submission error:', error);
       toast({

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -13,59 +13,156 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, Circle } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/supabaseClient";
+
+enum ServiceStatus {
+  PICKUP = 'pickup',
+  DIAGNOSIS = 'diagnosis',
+  REPAIR = 'repair',
+  OUT_FOR_DELIVERY = 'out_for_delivery',
+  DELIVERED = 'delivered'
+}
+
+interface ServiceData {
+  customer: {
+    name: string;
+    phone: string;
+    address: string;
+    preferred_date: string;
+    preferred_time: string;
+  };
+  device: {
+    type: string;
+    brand: string;
+    model: string;
+    issue: string;
+  };
+  service: {
+    id: string;
+    status: ServiceStatus[];  // Changed to array
+    startDate: string;
+    estimatedCompletion: string;
+  };
+  billing: {
+    subtotal: number;
+    tax: number;
+    total: number;
+    status: string;
+    payment_method?: string;
+    payment_date?: string;
+  };
+  timeline: {
+    status: ServiceStatus;
+    completed: boolean;
+    date?: string;
+    notes?: string;
+  }[];
+}
 
 const TrackService = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const serviceId = searchParams.get("id");
+  const [serviceData, setServiceData] = useState<ServiceData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!serviceId) {
-      toast.error("No service ID provided");
-      navigate("/track-service-entry");
-      return;
-    }
-    console.log("Tracking service with ID:", serviceId);
+    const fetchServiceData = async () => {
+      if (!serviceId) {
+        toast.error("No service ID provided");
+        navigate("/track-service-entry");
+        return;
+      }
+
+      try {
+        // Fetch all required data
+        const [
+          { data: customerData, error: customerError },
+          { data: deviceData, error: deviceError },
+          { data: trackingData, error: trackingError },
+          { data: billingData, error: billingError }
+        ] = await Promise.all([
+          supabase.from('customers').select('*').eq('service_id', serviceId).single(),
+          supabase.from('devices').select('*').eq('service_id', serviceId).single(),
+          supabase.from('service_tracking').select('*').eq('service_id', serviceId).order('created_at', { ascending: true }),
+          supabase.from('billing').select('*').eq('service_id', serviceId).single()
+        ]);
+
+        if (customerError) throw customerError;
+        if (deviceError) throw deviceError;
+        if (trackingError) throw trackingError;
+        if (billingError) throw billingError;
+
+        // Transform the data into the required format
+        const transformedData: ServiceData = {
+          customer: {
+            name: customerData.name,
+            phone: customerData.mobile,
+            address: customerData.address,
+            preferred_date: customerData.preferred_date,
+            preferred_time: customerData.preferred_time
+          },
+          device: {
+            type: deviceData.device_type,
+            brand: deviceData.device_name || 'N/A',
+            model: deviceData.device_model,
+            issue: deviceData.problem_description,
+          },
+          service: {
+            id: serviceId,
+            status: trackingData.map(t => t.status as ServiceStatus), // Transform to array
+            startDate: customerData.preferred_date,
+            estimatedCompletion: customerData.preferred_date,
+          },
+          billing: {
+            subtotal: billingData?.subtotal || 0,
+            tax: billingData?.tax || 0,
+            total: billingData?.total || 0,
+            status: billingData?.status || 'pending',
+            payment_method: billingData?.payment_method,
+            payment_date: billingData?.payment_date,
+          },
+          timeline: [
+            { status: ServiceStatus.PICKUP, completed: false },
+            { status: ServiceStatus.DIAGNOSIS, completed: false },
+            { status: ServiceStatus.REPAIR, completed: false },
+            { status: ServiceStatus.OUT_FOR_DELIVERY, completed: false },
+            { status: ServiceStatus.DELIVERED, completed: false },
+          ].map(step => ({
+            ...step,
+            completed: trackingData.some(t => t.status === step.status),
+            date: trackingData.find(t => t.status === step.status)?.created_at,
+            notes: trackingData.find(t => t.status === step.status)?.notes,
+          })),
+        };
+
+        setServiceData(transformedData);
+      } catch (error) {
+        console.error('Error fetching service data:', error);
+        toast.error("Error loading service data");
+        navigate("/track-service-entry");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServiceData();
   }, [serviceId, navigate]);
 
-  // Mock data - in a real app, this would come from an API based on the serviceId
-  const serviceData = {
-    customer: {
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "+1 234 567 8900",
-    },
-    device: {
-      type: "Laptop",
-      brand: "Dell",
-      model: "XPS 15",
-      issue: "Screen flickering and battery drain",
-    },
-    service: {
-      id: serviceId || "SRV001",
-      status: "diagnosis",
-      startDate: "2024-03-15",
-      estimatedCompletion: "2024-03-18",
-    },
-    billing: {
-      subtotal: 149.99,
-      tax: 15.00,
-      total: 164.99,
-      status: "Pending",
-    },
-    timeline: [
-      { status: "pickup", completed: true, date: "2024-03-15 09:00 AM" },
-      { status: "diagnosis", completed: true, date: "2024-03-15 02:00 PM" },
-      { status: "repair", completed: false },
-      { status: "out for delivery", completed: false },
-      { status: "delivered", completed: false },
-    ],
-    repairImages: [
-      "/placeholder.svg",
-      "/placeholder.svg",
-      "/placeholder.svg",
-    ],
-  };
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    </div>;
+  }
+
+  if (!serviceData) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold">Service not found</h2>
+        <p className="text-gray-600">Please check your service ID and try again</p>
+      </div>
+    </div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -88,7 +185,7 @@ const TrackService = () => {
                       <CheckCircle2 className="w-6 h-6 text-primary" />
                     ) : (
                       <Circle className={`w-6 h-6 ${
-                        step.status === serviceData.service.status 
+                        serviceData.service.status.includes(step.status)
                           ? "text-primary animate-pulse" 
                           : "text-gray-300"
                       }`} />
@@ -101,6 +198,9 @@ const TrackService = () => {
                     <p className="font-medium capitalize">{step.status}</p>
                     {step.date && (
                       <p className="text-sm text-gray-500">{step.date}</p>
+                    )}
+                    {step.notes && (
+                      <p className="text-sm text-gray-600">{step.notes}</p>
                     )}
                   </div>
                 </div>
@@ -118,8 +218,8 @@ const TrackService = () => {
             <CardContent>
               <div className="space-y-2">
                 <p><span className="font-medium">Name:</span> {serviceData.customer.name}</p>
-                <p><span className="font-medium">Email:</span> {serviceData.customer.email}</p>
                 <p><span className="font-medium">Phone:</span> {serviceData.customer.phone}</p>
+                <p><span className="font-medium">Address:</span> {serviceData.customer.address}</p>
               </div>
             </CardContent>
           </Card>
@@ -159,30 +259,17 @@ const TrackService = () => {
                   <span>Total</span>
                   <span>${serviceData.billing.total.toFixed(2)}</span>
                 </div>
-                <div className="mt-4">
-                  <Badge variant={serviceData.billing.status === "Paid" ? "secondary" : "default"}>
-                    {serviceData.billing.status}
+                <div className="mt-4 space-y-2">
+                  <Badge variant={serviceData.billing.status === "paid" ? "secondary" : "default"}>
+                    {serviceData.billing.status.toUpperCase()}
                   </Badge>
+                  {serviceData.billing.payment_method && (
+                    <p><span className="font-medium">Payment Method:</span> {serviceData.billing.payment_method}</p>
+                  )}
+                  {serviceData.billing.payment_date && (
+                    <p><span className="font-medium">Payment Date:</span> {new Date(serviceData.billing.payment_date).toLocaleDateString()}</p>
+                  )}
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Repair Images */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Repair Images</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4">
-                {serviceData.repairImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`Repair progress ${index + 1}`}
-                    className="w-full h-32 object-cover rounded-lg"
-                  />
-                ))}
               </div>
             </CardContent>
           </Card>
