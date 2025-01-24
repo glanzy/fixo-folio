@@ -538,7 +538,7 @@ const BookRepair = () => {
                 </form>
               </Form>
             </div>
-            <div className="md:w-1/4 bg-gray-100 p-8">
+            {/* <div className="md:w-1/4 bg-gray-100 p-8">
               <h2 className="text-xl font-semibold mb-4">Repair Information</h2>
               <p className="text-gray-600 mb-4">
                 Please fill out the form with accurate details about your device and the issues you're facing. Our team will get back to you shortly.
@@ -551,7 +551,7 @@ const BookRepair = () => {
                 <ClipboardIcon className="h-5 w-5 text-gray-500" />
                 <span className="text-gray-600">Status: {showConfirmation ? "Submitted" : "Pending"}</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
