@@ -53,6 +53,7 @@ export const BookRepairForm = () => {
   const navigate = useNavigate();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [serviceId, setServiceId] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,11 +87,13 @@ export const BookRepairForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log("Form values:", values);
+      console.log("Starting form submission with values:", values);
+      setIsSubmitting(true);
       const newServiceId = generateServiceId();
+      console.log("Generated service ID:", newServiceId);
       
       // Insert customer information
-      const { error: customerError } = await supabase
+      const { data: customerData, error: customerError } = await supabase
         .from('customers')
         .insert({
           service_id: newServiceId,
@@ -99,34 +102,40 @@ export const BookRepairForm = () => {
           address: values.address,
           preferred_date: values.preferredDate,
           preferred_time: values.preferredTime,
-        });
+        })
+        .select();
 
+      console.log("Customer insertion response:", { customerData, customerError });
       if (customerError) throw customerError;
 
       // Insert device information
       const devicesData = values.devices.map(device => ({
         service_id: newServiceId,
         device_type: device.deviceType,
-        device_name: device.deviceName,
+        device_name: device.deviceName || null,
         device_model: device.deviceModel,
         problem_description: device.problem,
       }));
 
-      const { error: deviceError } = await supabase
+      const { data: devicesData, error: deviceError } = await supabase
         .from('devices')
-        .insert(devicesData);
+        .insert(devicesData)
+        .select();
 
+      console.log("Devices insertion response:", { devicesData, deviceError });
       if (deviceError) throw deviceError;
 
       // Create initial service tracking entry
-      const { error: trackingError } = await supabase
+      const { data: trackingData, error: trackingError } = await supabase
         .from('service_tracking')
         .insert({
           service_id: newServiceId,
           status: 'pickup',
           notes: 'Service request created',
-        });
+        })
+        .select();
 
+      console.log("Service tracking insertion response:", { trackingData, trackingError });
       if (trackingError) throw trackingError;
 
       setServiceId(newServiceId);
@@ -143,6 +152,8 @@ export const BookRepairForm = () => {
         description: "There was an error submitting your repair request. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -246,39 +257,37 @@ export const BookRepairForm = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
             >
-<FormField
-  control={form.control}
-  name="preferredTime"
-  render={({ field }) => (
-    <FormItem>
-      <FormLabel>Preferred Time Slot</FormLabel>
-      <FormControl>
-        <RadioGroup
-          onValueChange={field.onChange}
-          defaultValue={field.value}
-          className="flex flex-wrap "
-        >
-          {timeSlots.map((slot) => (
-            <FormItem
-              key={slot}
-              className="flex items-center space-x-2 border rounded-md p-2 w-36 hover:bg-gray-50 transition-colors"
-            >
-              <FormControl>
-                <RadioGroupItem value={slot} className="mr-2" />
-              </FormControl>
-              <FormLabel className="font-normal flex-grow cursor-pointer">
-                {slot}
-              </FormLabel>
-            </FormItem>
-          ))}
-        </RadioGroup>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
-
+              <FormField
+                control={form.control}
+                name="preferredTime"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Preferred Time Slot</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-wrap gap-4"
+                      >
+                        {timeSlots.map((slot) => (
+                          <FormItem
+                            key={slot}
+                            className="flex items-center space-x-2 border rounded-md p-2 w-36 hover:bg-gray-50 transition-colors"
+                          >
+                            <FormControl>
+                              <RadioGroupItem value={slot} />
+                            </FormControl>
+                            <FormLabel className="font-normal cursor-pointer">
+                              {slot}
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </motion.div>
 
             {fields.map((field, index) => (
@@ -350,8 +359,8 @@ export const BookRepairForm = () => {
                 <Plus className="mr-2 h-4 w-4" /> Add Another Device
               </Button>
 
-              <Button type="submit" className="w-full">
-                Submit Repair Request
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit Repair Request"}
               </Button>
             </motion.div>
           </form>
