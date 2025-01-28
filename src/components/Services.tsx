@@ -8,7 +8,7 @@ const services = [
     icon: Laptop,
     title: "Laptop Services",
     description: "Professional laptop repair",
-    src: "./Services/BBB.png",
+    src: "./Services/CCC.png",
   },
   {
     icon: Smartphone,
@@ -25,13 +25,19 @@ const services = [
     icon: Laptop2,
     title: "Macbook Services",
     description: "90-day warranty on all",
-    src: "./Services/CCC.png",
+    src: "./Services/BBB.png",
   },
   {
     icon: TabletIcon,
     title: "iPad Services",
     description: "90-day warranty on all",
     src: "./Services/AAA.png",
+  },
+  {
+    icon: TabletIcon,
+    title: "Cleaning & Upgradation",
+    description: "90-day warranty on all",
+    src: "./Services/Cleaning3.png",
   },
   
 ];
@@ -47,9 +53,9 @@ export const Services = () => {
             </h2>  
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-8">
             {services.map((service, index) => (
-              <motion.div
+                <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -63,10 +69,10 @@ export const Services = () => {
                     className="h-20 w-20 md:h-32 md:w-36 object-cover rounded-md"
                   />
                 </div>
-                <h3 className="text-sm md:text-xl text-primary text-center">
+                <h3 className="text-sm md:text-lg text-primary text-center">
                   {service.title}
                 </h3>
-              </motion.div>
+              </motion.div>  
             ))}
           </div>
         </div>

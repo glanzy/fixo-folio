@@ -4,7 +4,7 @@ const features = [
   {
     image: "./Services/E.png", 
     title: "Affordable Repairs",
-    description: "Competitive Pricing",
+    description: "Reasonable Pricing",
   },
   
   {

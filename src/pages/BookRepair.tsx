@@ -4,7 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText } from "lucide-react";
+import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText, Check } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { supabase } from "@/supabaseClient";
@@ -47,8 +47,8 @@ const formSchema = z.object({
 });
 
 const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
-const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung", "LG", "Toshiba", "Razer"];
-const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google"];
+const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
+const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google", "Honor", "Poco", "Asus", "Infinix", "Techno", "Iqoo", "Huawei", "CMF"];
 
 const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: number }) => {
   const deviceType = form.watch(`devices.${index}.deviceType`);
@@ -196,6 +196,7 @@ const BookRepair = () => {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [serviceId, setServiceId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -267,7 +268,7 @@ const BookRepair = () => {
         .insert({
           service_id: newServiceId,
           subtotal: 0, // Initial values, to be updated later
-          tax: 0,
+          iitm: 0,
           total: 0,
           status: 'pending',
           payment_method: null,
@@ -312,6 +313,27 @@ const BookRepair = () => {
   const handleConfirmation = () => {
     setShowConfirmation(false);
     navigate("/");
+  };
+
+  const copyServiceId = async () => {
+    try {
+      await navigator.clipboard.writeText(serviceId);
+      setCopySuccess(true);
+      toast({
+        title: "Copied!",
+        description: "Service ID copied to clipboard",
+      });
+      // Reset the success state after 2 seconds
+      setTimeout(() => {
+        setCopySuccess(false);
+      }, 4000);
+    } catch (err) {
+      toast({
+        title: "Failed to copy",
+        description: "Please try copying manually",
+        variant: "destructive",
+      });
+    }
   };
 
   const today = new Date();
@@ -398,7 +420,7 @@ const BookRepair = () => {
                       name="mobile"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Mobile Number (To which we can contact)</FormLabel>
+                          <FormLabel>Mobile Number</FormLabel>
                           <FormControl>
                             <Input placeholder="Enter your mobile number" {...field} />
                           </FormControl>
@@ -428,7 +450,7 @@ const BookRepair = () => {
                       name="preferredDate"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Date</FormLabel>
+                          <FormLabel>Pickup Date</FormLabel>
                           <FormControl>
                             <Input type="date" min={minDate} {...field} />
                           </FormControl>
@@ -443,7 +465,7 @@ const BookRepair = () => {
                       name="preferredTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Preferred Time Slot</FormLabel>
+                          <FormLabel>Pickup Time Slot</FormLabel>
                           <FormControl>
                             <RadioGroup
                               onValueChange={field.onChange}
@@ -538,23 +560,43 @@ const BookRepair = () => {
                 </form>
               </Form>
             </div>
-            {/* <div className="md:w-1/4 bg-gray-100 p-8">
-              <h2 className="text-xl font-semibold mb-4">Repair Information</h2>
-              <p className="text-gray-600 mb-4">
-                Please fill out the form with accurate details about your device and the issues you're facing. Our team will get back to you shortly.
-              </p>
-              <div className="flex items-center gap-2 mb-4">
-                <ClipboardIcon className="h-5 w-5 text-gray-500" />
-                <span className="text-gray-600">Service ID: {serviceId || "N/A"}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ClipboardIcon className="h-5 w-5 text-gray-500" />
-                <span className="text-gray-600">Status: {showConfirmation ? "Submitted" : "Pending"}</span>
-              </div>
-            </div> */}
+
           </div>
         </motion.div>
       </div>
+      <AlertDialog open={showConfirmation}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Booking Confirmed!</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-4">
+              <p>Your repair request has been submitted successfully.</p>
+              <div className="flex items-center gap-2 p-2 bg-secondary rounded-lg">
+                <span>Service ID: {serviceId}</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className={`h-8 w-8 transition-colors ${
+                    copySuccess ? "bg-green-500 text-white hover:bg-green-600" : ""
+                  }`}
+                  onClick={copyServiceId}
+                >
+                  {copySuccess ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <ClipboardIcon className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Please save this Service ID for future reference.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={handleConfirmation}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

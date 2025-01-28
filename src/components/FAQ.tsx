@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "What types of devices do you repair?",
     answer:
-      "We repair a wide range of electronic devices including smartphones (all major brands), laptops, tablets, and desktop computers.",
+      "We repair a wide range of electronic devices including smartphones (all major brands), laptops and iPads.",
   },
   {
     question: "How long does a typical repair take?",
@@ -20,24 +20,20 @@ const faqs = [
   {
     question: "Do you offer any warranty on repairs?",
     answer:
-      "Yes, we provide a 90-day warranty on all our repairs, covering both parts and labor.",
+      "Yes, we offer 3-6 months of warranty on all our repairs, covering both parts and labor.",
   },
   {
     question: "What are your service areas?",
     answer:
-      "We currently service all major metropolitan areas. Enter your location on our booking page to check if we're available in your area.",
+      "We are currently serving in IIT MADRAS. Soon we will expand to other locations.",
   },
   {
-    question: "Q1",
-    answer: "A1",
+    question: "How can I find out the cost of my repair?",
+    answer: "You can get the pricing by filling out the \"Book Repair\" form on our website. Once submitted, our team will contact you with the pricing details. We assure you that we offer the best prices in the market.",
   },
   {
-    question: "Q2",
-    answer: "A2",
-  },
-  {
-    question: "Q3",
-    answer: "A3",
+    question: "What kind of Parts do you use?",
+    answer: "We use only genuine parts for all our repairs. We source our parts from trusted OEM suppliers to ensure the highest quality.",
   },
 ];
 

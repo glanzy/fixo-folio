@@ -28,7 +28,7 @@ export const Footer = () => {
 
   return (
     <footer className="bg-primary text-white">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand and Description */}
           <div className="space-y-4">
@@ -36,6 +36,17 @@ export const Footer = () => {
             <p className="text-gray-300">
               "We can't fix your broken heart, but we can fix your broken devices"
             </p>
+            {/* Nirmaan Logo */}
+            <div className="mt-6 flex flex-col items-center space-y-2">
+              <img
+                src=""
+                alt="IIT Madras Logo"
+                className="h-18 rounded-lg w-auto"
+              />
+              <p className="text-md text-gray-300 tracking-wide">
+                Incubated in Nirmaan, IIT Madras
+              </p>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -85,18 +96,28 @@ export const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5" />
-                <span className="text-gray-300" onClick={() => window.location.href = "mailto:contact@fixo.com"}>contact@fixo.com</span>
+                <span
+                  className="text-gray-300"
+                  onClick={() => window.location.href = "mailto:contact@fixonow.com"}
+                >
+                  contact@fixonow.com
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5" />
-                <span className="text-gray-300" onClick={() => window.location.href = "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D"}>Nirmaan The Pre-Incubator, Sudha Shankar Innovation Hub,  IIT Madras, Chennai, Tamil Nadu - 600036</span>
+                <span
+                  className="text-gray-300"
+                  onClick={() => window.location.href = "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D"}
+                >
+                  Nirmaan The Pre-Incubator, Sudha Shankar Innovation Hub, IIT Madras, Chennai, Tamil Nadu - 600036
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <MessageCircle className="h-5 w-5" />
-                <a 
-                  href="https://chat.whatsapp.com/your-group-link" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://chat.whatsapp.com/B5fTANfsQZQ5apGqjZTOQ9"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-white"
                 >
                   Join our WhatsApp Community

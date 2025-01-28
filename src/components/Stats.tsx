@@ -61,7 +61,7 @@ export const Stats = () => {
     <section className="bg-white-200">
       <div className="text-center">
         <h2 className="text-2xl sm:text-3xl font-bold text-primary mt-6 sm:mt-9 mb-4 sm:mb-6">
-          Crafting Perfect Repairs
+          Our Technicians
         </h2>
       </div>
 

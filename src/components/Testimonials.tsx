@@ -21,7 +21,7 @@ const testimonials = [
     role: "Laptop User",
     content: "Got my HP Laptop serviced here for hinge rework and battery replacement. Work was exceptional and price was very reasonable. Thanks for the quality work.",
     image: "/lovable-uploads/2.png",
-    rating: 4.4 // Dynamic rating
+    rating: 5.0// Dynamic rating
   },
   {
     name: "Aniket P",
@@ -35,7 +35,7 @@ const testimonials = [
     role: "Macbook User",
     content: "The technician was kind and explained details. Swift servicing and good customer experience. Service cost was half of what was quoted in Apple authorised. Overall good and will recommend to others for Macbook servicing.",
     image: "/lovable-uploads/4.png",
-    rating: 5.0 // Dynamic rating
+    rating: 4.0 // Dynamic rating
   }
 ];
 

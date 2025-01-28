@@ -19,7 +19,7 @@ enum ServiceStatus {
   PICKUP = 'pickup',
   DIAGNOSIS = 'diagnosis',
   REPAIR = 'repair',
-  OUT_FOR_DELIVERY = 'out_for_delivery',
+
   DELIVERED = 'delivered'
 }
 
@@ -37,6 +37,12 @@ interface ServiceData {
     model: string;
     issue: string;
   };
+  devices?: {
+    type: string;
+    brand: string;
+    model: string;
+    issue: string;
+  }[];
   service: {
     id: string;
     status: ServiceStatus[];  // Changed to array
@@ -45,7 +51,7 @@ interface ServiceData {
   };
   billing: {
     subtotal: number;
-    tax: number;
+    iitm: number;
     total: number;
     status: string;
     payment_method?: string;
@@ -78,12 +84,12 @@ const TrackService = () => {
         // Fetch all required data
         const [
           { data: customerData, error: customerError },
-          { data: deviceData, error: deviceError },
+          { data: devicesData, error: deviceError }, // Changed to get all devices
           { data: trackingData, error: trackingError },
           { data: billingData, error: billingError }
         ] = await Promise.all([
           supabase.from('customers').select('*').eq('service_id', serviceId).single(),
-          supabase.from('devices').select('*').eq('service_id', serviceId).single(),
+          supabase.from('devices').select('*').eq('service_id', serviceId), // Removed .single()
           supabase.from('service_tracking').select('*').eq('service_id', serviceId).order('created_at', { ascending: true }),
           supabase.from('billing').select('*').eq('service_id', serviceId).single()
         ]);
@@ -92,6 +98,11 @@ const TrackService = () => {
         if (deviceError) throw deviceError;
         if (trackingError) throw trackingError;
         if (billingError) throw billingError;
+
+        // Handle case where no data is found
+        if (!customerData || !devicesData || !trackingData || !billingData) {
+          throw new Error("Service data not found");
+        }
 
         // Transform the data into the required format
         const transformedData: ServiceData = {
@@ -103,20 +114,28 @@ const TrackService = () => {
             preferred_time: customerData.preferred_time
           },
           device: {
-            type: deviceData.device_type,
-            brand: deviceData.device_name || 'N/A',
-            model: deviceData.device_model,
-            issue: deviceData.problem_description,
+            // Take the first device's details for backward compatibility
+            type: devicesData[0].device_type,
+            brand: devicesData[0].device_name || 'N/A',
+            model: devicesData[0].device_model,
+            issue: devicesData[0].problem_description,
           },
+          // Add a new field for all devices if needed
+          devices: devicesData.map(device => ({
+            type: device.device_type,
+            brand: device.device_name || 'N/A',
+            model: device.device_model,
+            issue: device.problem_description,
+          })),
           service: {
             id: serviceId,
-            status: trackingData.map(t => t.status as ServiceStatus), // Transform to array
+            status: trackingData.map(t => t.status as ServiceStatus),
             startDate: customerData.preferred_date,
             estimatedCompletion: customerData.preferred_date,
           },
           billing: {
             subtotal: billingData?.subtotal || 0,
-            tax: billingData?.tax || 0,
+            iitm: billingData?.iitm || 0,
             total: billingData?.total || 0,
             status: billingData?.status || 'pending',
             payment_method: billingData?.payment_method,
@@ -126,7 +145,7 @@ const TrackService = () => {
             { status: ServiceStatus.PICKUP, completed: false },
             { status: ServiceStatus.DIAGNOSIS, completed: false },
             { status: ServiceStatus.REPAIR, completed: false },
-            { status: ServiceStatus.OUT_FOR_DELIVERY, completed: false },
+
             { status: ServiceStatus.DELIVERED, completed: false },
           ].map(step => ({
             ...step,
@@ -196,11 +215,11 @@ const TrackService = () => {
                   </div>
                   <div className="flex-1">
                     <p className="font-medium capitalize">{step.status}</p>
-                    {step.date && (
+                    {/* {step.date && (
                       <p className="text-sm text-gray-500">{step.date}</p>
-                    )}
+                    )} */}
                     {step.notes && (
-                      <p className="text-sm text-gray-600">{step.notes}</p>
+                      <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
                     )}
                   </div>
                 </div>
@@ -230,11 +249,17 @@ const TrackService = () => {
               <CardTitle>Device Information</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <p><span className="font-medium">Type:</span> {serviceData.device.type}</p>
-                <p><span className="font-medium">Brand:</span> {serviceData.device.brand}</p>
-                <p><span className="font-medium">Model:</span> {serviceData.device.model}</p>
-                <p><span className="font-medium">Issue:</span> {serviceData.device.issue}</p>
+              <div className="space-y-4">
+                {serviceData.devices.map((device, index) => (
+                  <div key={index} className="space-y-2">
+                    {index > 0 && <Separator className="my-4" />}
+                    <p><span className="font-medium">Device {index + 1}</span></p>
+                    <p><span className="font-medium">Type:</span> {device.type}</p>
+                    <p><span className="font-medium">Brand:</span> {device.brand}</p>
+                    <p><span className="font-medium">Model:</span> {device.model}</p>
+                    <p><span className="font-medium">Issue:</span> {device.issue}</p>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -247,17 +272,21 @@ const TrackService = () => {
             <CardContent>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>${serviceData.billing.subtotal.toFixed(2)}</span>
+                  <span>Total Service Charge</span>
+                  <span>₹ {serviceData.billing.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Tax</span>
-                  <span>${serviceData.billing.tax.toFixed(2)}</span>
+                  <span>IITM Discount</span>
+                  <span>- ₹ {serviceData.billing.iitm.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delivery Charge</span>
+                  <span>₹ 0.00</span>
                 </div>
                 <Separator className="my-2" />
                 <div className="flex justify-between font-bold">
-                  <span>Total</span>
-                  <span>${serviceData.billing.total.toFixed(2)}</span>
+                  <span>Total Amount</span>
+                  <span>₹ {serviceData.billing.total.toFixed(2)}</span>
                 </div>
                 <div className="mt-4 space-y-2">
                   <Badge variant={serviceData.billing.status === "paid" ? "secondary" : "default"}>

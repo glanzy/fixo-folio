@@ -14,10 +14,10 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "./Carousel/ABCD.png",
+    src: "./Carousel/EFGH.png",
     alt: "Woman using laptop",
   },{
-    src: "./Carousel/EFGH.png",
+    src: "./Carousel/ABCD.png",
     alt: "Woman using laptop",
   },{
     src: "./Carousel/HIJK.png",
@@ -66,13 +66,13 @@ export const Hero = () => {
             <CarouselContent>
               {carouselImages.map((image, index) => (
                 <CarouselItem key={index}>
-                  <div className="relative w-full h-auto overflow-hidden rounded-xl">
+                  <a href="/book-repair" className="block w-full h-auto overflow-hidden rounded-xl">
                     <img
                       src={image.src}
                       alt={image.alt}
                       className="w-full h-auto max-h-[400px] object-contain m-0 rounded-xl"
                     />
-                  </div>
+                  </a>
                 </CarouselItem>
               ))}
             </CarouselContent>

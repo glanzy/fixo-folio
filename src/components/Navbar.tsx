@@ -7,7 +7,7 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "How It Works", href: "/how-it-works" },
+
     { label: "Track Service", href: "/track-service-entry" },
     { label: "FAQ", href: "#faq", onClick: (e: React.MouseEvent) => {
       e.preventDefault();
