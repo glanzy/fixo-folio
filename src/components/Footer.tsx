@@ -37,14 +37,14 @@ export const Footer = () => {
               "We can't fix your broken heart, but we can fix your broken devices"
             </p>
             {/* Nirmaan Logo */}
-            <div className="mt-6 flex flex-col items-center space-y-2">
+            <div className="mt-5 flex flex items-center">
               <img
-                src=""
+                src="./lovable-uploads/Nirmaan_logofooter.png"
                 alt="IIT Madras Logo"
-                className="h-18 rounded-lg w-auto"
+                className="h-36 rounded-lg w-auto"
               />
-              <p className="text-md text-gray-300 tracking-wide">
-                Incubated in Nirmaan, IIT Madras
+              <p className="text-md font-bold text-gray-300 tracking-wide">
+                Pre-Incubated in Nirmaan, IIT Madras
               </p>
             </div>
           </div>
@@ -91,7 +91,7 @@ export const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5" />
+                <Phone className="h-6 w-6" />
                 <span className="text-gray-300">+91 8005539249 | +91 7462080762 | +91 9582568064</span>
               </div>
               <div className="flex items-center space-x-3">
@@ -104,7 +104,7 @@ export const Footer = () => {
                 </span>
               </div>
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5" />
+                <MapPin className="h-12 w-12" />
                 <span
                   className="text-gray-300"
                   onClick={() => window.location.href = "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D"}
@@ -150,7 +150,7 @@ export const Footer = () => {
         </div>
 
         {/* Copyright part in the bottom */}
-        <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-300">
+        <div className=" mt-1 pt-5 text-center text-gray-200">
           <p>&copy; {new Date().getFullYear()} FIXO. All rights reserved.</p>
         </div>
       </div>
