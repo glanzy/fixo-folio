@@ -17,7 +17,7 @@ export const Navbar = () => {
         document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
       }}
     },
-    { label: "Book", href: "/book-repair", className: "bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" }
+    { label: "Book Now", href: "/book-repair", className: "bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" }
   ];
 
   return (

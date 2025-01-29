@@ -14,15 +14,14 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "./Carousel/C1.png",
-    alt: "Woman using laptop",
-  },{
     src: "./Carousel/EFGH.png",
     alt: "Woman using laptop",
-  },{
-    src: "./Carousel/ABCD.png",
+  },
+  {
+    src: "./Carousel/C1.png",
     alt: "Woman using laptop",
-  },{
+  },
+  {
     src: "./Carousel/HIJK.png",
     alt: "Woman using laptop",
   },
@@ -97,13 +96,17 @@ export const Hero = () => {
           <br />
 
 
+          <div className="flex justify-center items-center">
+  <button
+    type="button"
+    onClick={() => (window.location.href = "/book-repair")}
+    className="flex items-center justify-center animate-float text-white bg-gradient-to-r from-blue-800 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-6 py-3 text-center"
+  >
+    Book a Repair <ArrowRight className="ml-2 h-6 w-6" />
+  </button>
+</div>
 
-          <button type="button"
-          
-          onClick={() => (window.location.href = "/book-repair")}
-          className="animate-float text-white bg-gradient-to-r from-blue-800 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-          Book a Repair <ArrowRight className="ml-2 h-6 w-6" />
-            </button>
+
           {/* <button type="button" 
           className="text-white bg-gradient-to-r from-blue-900 via-blue-600 to-blue-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-2xl shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">
           Book a Repair
