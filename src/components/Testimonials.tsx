@@ -10,37 +10,39 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Quote } from "lucide-react";
 const testimonials = [
   {
-    name: "Mahadarshini C V",
-    role: "Android User",
-    content: "Excellent service for Oneplus mobiles. My 4-year old Oneplus 8 screen had a lot of lines and the power button was stuck. Replaced with original screen and fixed the button problem in just 90 min at very competitive rates.",
+    name: "Mayank, IITM",
+    role: "Laptop User",
+    content: "Got my Asus FX508 Laptop serviced here for hinge panel repair. The work was top-notch, and the pricing was very reasonable. Really impressed with the quality and professionalism. Highly recommend!",
     image: "/lovable-uploads/1.png",
     rating: 5.0 // Dynamic rating
   },
   {
-    name: "Aravind Anand",
-    role: "Laptop User",
-    content: "Got my HP Laptop serviced here for hinge rework and battery replacement. Work was exceptional and price was very reasonable. Thanks for the quality work.",
-    image: "/lovable-uploads/2.png",
-    rating: 5.0// Dynamic rating
-  },
-  {
-    name: "Aniket P",
+    name: "Bharathi, IITM",
     role: "Macbook User",
-    content: "I am very satisfied with the service provided for my macbook. The team was professional, and the repair was completed quickly. I appreciated the regular updates on the progress, and the communication was clear throughout the process. Great support!",
-    image: "/lovable-uploads/3.png",
-    rating: 4.5 // Dynamic rating
-  },
-  {
-    name: "Aaliya",
-    role: "Macbook User",
-    content: "The technician was kind and explained details. Swift servicing and good customer experience. Service cost was half of what was quoted in Apple authorised. Overall good and will recommend to others for Macbook servicing.",
+    content: "Swift servicing and good customer experience. Service cost was half of what was quoted in Apple authorised. Overall good and will recommend to others for Macbook servicing.",
     image: "/lovable-uploads/4.png",
-    rating: 4.0 // Dynamic rating
-  }
+    rating: 5.0 // Dynamic rating
+  },
+  {
+    name: "Aniket P, IITM",
+    role: "Smartphone User",
+    content: "Recently I have serviced my Poco x2 and x3 mobiles, they explained the issues in a clear manner and delivered the mobile earlier as well with reasonable charges. Kudos to entire team who gave the great support.",
+    image: "/lovable-uploads/3.png",
+    rating: 5.0 // Dynamic rating
+  },
+  {
+    name: "Md Imran, IITM",
+    role: "Laptop User",
+    content: "I am very satisfied with the service for my Dell Latitude 7398 charger repair. The team was professional, and the repair was completed quickly. I appreciated the regular updates on the progress, and the communication was clear throughout the process. Great support!",
+    image: "/lovable-uploads/2.png",
+    rating: 4.0// Dynamic rating
+  },
+  
 ];
 
 export const Testimonials = () => {
   return (
+    <div>
     <section className="py-10 bg-gradient-to-b from-black to-[#152252] flex flex-col justify-between">
       <div className="container mx-auto px-4 flex-grow">
         <div className="max-w-2xl mx-auto text-center mb-12">
@@ -115,12 +117,6 @@ export const Testimonials = () => {
                         })}
                       </div>
                       <div className="flex items-center gap-4 mt-auto">
-                        {/* <Avatar className="w-12 h-12 border-2 border-primary/20">
-                          <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                          <AvatarFallback className="bg-primary/5 text-primary">
-                            {testimonial.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar> */}
                         <div className="text-left">
                           <h4 className="font-semibold text-primary">{testimonial.name}</h4>
                           <p className="text-sm text-muted-foreground">{testimonial.role}</p>
@@ -136,11 +132,10 @@ export const Testimonials = () => {
           </Carousel>
         </div>
       </div>
-      <h1 className="text-center font-bold text-white mb-0 mt-5 text-2xl">"Your Device's Best Friend for Repairs"</h1>
-
-{/* Remove the gap below this */}
-
-
+      
     </section>
+    <h1 className="text-center italic text-white mt-auto text-3xl bg-gradient-to-b from-[#152252] to-[#152359]">"Your Device's Best Friend for Repairs"</h1>
+  </div>
+        
   );
 };

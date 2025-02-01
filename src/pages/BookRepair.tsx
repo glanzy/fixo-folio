@@ -4,7 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText, Check } from "lucide-react";
+import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText, Check , Clock2, MapPinCheckInside  } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { supabase } from "@/supabaseClient";
@@ -361,25 +361,33 @@ const BookRepair = () => {
           <div className="md:flex">
             <div className="relative md:w-1/2 bg-primary p-8 text-white">
               <h2 className="text-3xl font-bold mb-6">Book Your Repair</h2>
-              <p className="mb-8">Get your device fixed by our expert technicians</p>
+              <p className="mb-8">Get the clear pricing after diagnosis of your device.</p>
               
               <div className="space-y-6 mb-8">
+                
+
                 <FormSection
                   icon={<User className="w-6 h-6" />}
-                  title="Personal Details"
-                  description="We'll keep your information secure"
+                  title="Contact Information"
+                  description="To keep you updated about repairs"
                 />
 
                 <FormSection
-                  icon={<Phone className="w-6 h-6" />}
-                  title="Contact Information"
-                  description="To keep you updated about repairs"
+                  icon={<Clock2 className="w-6 h-6" />}
+                  title="Pickup Timings"
+                  description="Select your preferred date and slot"
                 />
 
                 <FormSection
                   icon={<FileText className="w-6 h-6" />}
                   title="Device Details"
                   description="Tell us about your device"
+                />
+
+                <FormSection
+                  icon={<MapPinCheckInside className="w-6 h-6" />}
+                  title="Free Pickup and Drop"
+                  description="Get doorstep service"
                 />
               </div>
 
@@ -435,9 +443,9 @@ const BookRepair = () => {
                       name="address"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Address</FormLabel>
+                          <FormLabel>Complete Address</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your address" {...field} />
+                            <Input placeholder="Room no. / Hostel name etc." {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

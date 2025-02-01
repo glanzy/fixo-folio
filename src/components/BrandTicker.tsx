@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 const brands = [
   { name: "Apple", logo: "./brands/Apple-Logosu.png" },
   { name: "Acer", logo: "./brands/Acer_2011.png" },
-  
   { name: "Samsung", logo: "./brands/Samsung.png" },
   { name: "Realme", logo: "./brands/Realme.png" },
   { name: "Google", logo: "./brands/Pixel.png" },

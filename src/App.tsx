@@ -11,7 +11,6 @@ import TrackService from "./pages/TrackService";
 import ServiceIdEntry from "./pages/ServiceIdEntry";
 import AboutUs from "./pages/AboutUs";
 import BookRepair from "./pages/BookRepair";
-import HowItWorks from "./pages/HowItWorks";
 import Services from "./pages/Services";
 
 const queryClient = new QueryClient();
@@ -30,7 +29,6 @@ const App = () => (
             <Route path="/track-service" element={<TrackService />} />
             <Route path="/about-us" element={<AboutUs />} />
             <Route path="/book-repair" element={<BookRepair />} />
-
             <Route path="/services" element={<Services />} />
           </Routes>
         </Suspense>

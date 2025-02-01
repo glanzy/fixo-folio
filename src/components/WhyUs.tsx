@@ -47,7 +47,7 @@ export const WhyUs = () => {
               key={feature.title}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.07 }}
               viewport={{ once: true }}
               className="p-3 sm:p-5 rounded-xl bg-white shadow-sm "
             >

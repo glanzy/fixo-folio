@@ -7,29 +7,29 @@ const teamMembers = [
   {
     name: "Harshit Lata",
     role: "CEO & Co-founder",
-    image: "/placeholder.svg",
+    image: "./aboutus/Hars.jpg",
     linkedin: "https://www.linkedin.com/in/harshitlata/",
     description: "-",
   },
   {
     name: "Pallav Jha",
     role: "CTO & Co-founder",
-    image: "/placeholder.svg",
+    image: "./aboutus/Pals.jpg",
     linkedin: "https://www.linkedin.com/in/pallavjha01/",
     description: "-",
   },
   {
     name: "Lakshay Sharma",
-    role: "CBO & Co-founder",
-    image: "/placeholder.svg",
+    role: "COO & Co-founder",
+    image: "./aboutus/Laks.jpg",
     linkedin: "https://www.linkedin.com/in/lakshaycom/",
     description: "-",
   },
   {
     name: "Bhaalu",
-    role: "President & CMO",
-    image: "/placeholder.svg",
-    linkedin: "",
+    role: "Cheif Motivational Officer",
+    image: "./aboutus/Bha.jpg",
+    linkedin: "https://www.linkedin.com/company/fixonow/",
     description: "-",
   },
 ];
@@ -58,7 +58,7 @@ const AboutUs = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.2 }}
-              className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow text-center"
             >
               <img
                 src={member.image}
@@ -70,16 +70,18 @@ const AboutUs = () => {
                   {member.name}
                 </h3>
                 <p className="text-gray-600 mb-2">{member.role}</p>
-                <p className="text-gray-500 text-sm mb-4">{member.description}</p>
-                <a
-                  href={member.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
-                >
-                  <Linkedin className="w-5 h-5 mr-2" />
-                  Connect on LinkedIn
-                </a>
+                {/* <p className="text-gray-500 text-sm mb-4">{member.description}</p> */}
+                {member.linkedin && (
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
+                  >
+                    <Linkedin className="w-5 h-5 mr-2" />
+                    Connect on LinkedIn
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}

@@ -254,7 +254,7 @@ const TrackService = () => {
                   <div key={index} className="space-y-2">
                     {index > 0 && <Separator className="my-4" />}
                     <p><span className="font-medium">Device {index + 1}</span></p>
-                    <p><span className="font-medium">Type:</span> {device.type}</p>
+                    <p><span className="font-medium">Device Type:</span> {device.type}</p>
                     <p><span className="font-medium">Brand:</span> {device.brand}</p>
                     <p><span className="font-medium">Model:</span> {device.model}</p>
                     <p><span className="font-medium">Issue:</span> {device.issue}</p>
@@ -276,7 +276,7 @@ const TrackService = () => {
                   <span>₹ {serviceData.billing.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>IITM Discount</span>
+                  <span>Valentine Month Discount (10% OFF)</span>
                   <span>- ₹ {serviceData.billing.iitm.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">

@@ -14,16 +14,20 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "./Carousel/EFGH.png",
+    src: "./Carousel/C33.png",
     alt: "Woman using laptop",
+    src1 : "./Carousel/P1.png",
   },
   {
-    src: "./Carousel/C1.png",
+    src: "./Carousel/C11.png",
     alt: "Woman using laptop",
+    src1 : "./Carousel/P2.png",
+
   },
   {
-    src: "./Carousel/HIJK.png",
+    src: "./Carousel/C22.png",
     alt: "Woman using laptop",
+    src1 : "./Carousel/P3.png",
   },
 ];
 
@@ -56,15 +60,17 @@ export const Hero = () => {
         >
           <br />
           
-         <Carousel
-            className="w-full max-w-[1400px] mx-auto mb-8"
-            plugins={[
-              Autoplay({
-                delay: 4000,
-              }),
-            ]}
-            setApi={setApi}
-          >
+         
+              {/* Desktop Carousel (md and above) */}
+              <Carousel
+                className="w-full max-w-[1400px] mx-auto mb-8 hidden md:block"
+                plugins={[
+                  Autoplay({
+                    delay: 4000,
+                  }),
+                ]}
+                setApi={setApi}
+              >
             <CarouselContent>
               {carouselImages.map((image, index) => (
                 <CarouselItem key={index}>
@@ -93,37 +99,48 @@ export const Hero = () => {
             </div>
           </Carousel>
 
+          {/* Mobile Carousel (sm and below) */}
+          <Carousel
+            className="w-full mx-auto mb-6 md:hidden"
+            plugins={[
+              Autoplay({
+                delay: 4000,
+              }),
+            ]}
+          >
+            <CarouselContent>
+              {carouselImages.map((image, index) => (
+                <CarouselItem key={index}>
+                  <a href="/book-repair" className="block w-full h-auto overflow-hidden rounded-xl">
+                    <img
+                      src={image.src1}
+                      alt={image.alt}
+                      className="w-full h-auto max-h-[250px] object-contain m-0 rounded-xl"
+                    />
+                  </a>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden sm:flex" />
+            <CarouselNext className="hidden sm:flex" />
+          </Carousel>
+        
+
+
           <br />
 
 
           <div className="flex justify-center items-center">
-  <button
-    type="button"
-    onClick={() => (window.location.href = "/book-repair")}
-    className="flex items-center justify-center animate-float text-white bg-gradient-to-r from-blue-800 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-6 py-3 text-center"
-  >
-    Book a Repair <ArrowRight className="ml-2 h-6 w-6" />
-  </button>
-</div>
-
-
-          {/* <button type="button" 
-          className="text-white bg-gradient-to-r from-blue-900 via-blue-600 to-blue-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-2xl shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">
-          Book a Repair
-            </button> */}
-          
-          
-          
-          {/* <Button
-            size="lg"
-            className="animate-float px-8 py-4 text-lg"
-            onClick={() => (window.location.href = "/book-repair")}
-          >
-            Book a Repair <ArrowRight className="ml-2 h-6 w-6" />
-          </Button> */}
-
+            <button
+              type="button"
+              onClick={() => (window.location.href = "/book-repair")}
+              className="flex items-center justify-center animate-float text-white bg-gradient-to-r from-blue-800 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-6 py-3 text-center"
+            >
+              Book Repair <ArrowRight className="ml-2 h-6 w-6" />
+            </button>
+          </div>
         </motion.div>
       </div>
     </section>
   );
-};
+}; 

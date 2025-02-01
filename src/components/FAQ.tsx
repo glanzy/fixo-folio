@@ -8,41 +8,44 @@ import {
 
 const faqs = [
   {
+    question: "How can I find out the cost of my repair?",
+    answer: "We will provide you a reasonable cost post diagnosis after you submit your repair request.",
+  },
+  {
     question: "What types of devices do you repair?",
-    answer:
-      "We repair a wide range of electronic devices including smartphones (all major brands), laptops and iPads.",
+    answer:"We provide repair services for smartphones and laptops(charger included), across all brands, and iPads.",
   },
   {
     question: "How long does a typical repair take?",
-    answer:
-      "Most repairs are completed within 24-48 hours. Simple repairs like screen replacements can often be done on the same day.",
-  },
-  {
-    question: "Do you offer any warranty on repairs?",
-    answer:
-      "Yes, we offer 3-6 months of warranty on all our repairs, covering both parts and labor.",
+    answer: "Most of the repairs are completed within 24 hours, faster than the industry average of 3-7 days."
   },
   {
     question: "What are your service areas?",
-    answer:
-      "We are currently serving in IIT MADRAS. Soon we will expand to other locations.",
+    answer:"We are serving in the IIT Madras campus as of now.",
   },
   {
-    question: "How can I find out the cost of my repair?",
-    answer: "You can get the pricing by filling out the \"Book Repair\" form on our website. Once submitted, our team will contact you with the pricing details. We assure you that we offer the best prices in the market.",
+    question: "How do I claim warranty?",
+    answer: "Reach out to us via our email at contact@fixonow.com with your details. We will ensure a hassle-free warranty claim process.",
   },
   {
     question: "What kind of Parts do you use?",
-    answer: "We use only genuine parts for all our repairs. We source our parts from trusted OEM suppliers to ensure the highest quality.",
+    answer: "We use high-quality spare parts (OEMs) to ensure the longevity and performance of your devices.",
+  },
+  {
+  question: "How can I track the status of my repair?",
+  answer: "You can track your device repair status in real-time on our website under the \"Track Service\" section.",
+  },
+  {  question: "Is my data safe during the repair?",
+  answer: "Absolutely! 100% customer data safety is guaranteed and We ensure there is no risk of data loss or theft.",
   },
 ];
 
 export const FAQ = () => {
-  const [visibleFaqs, setVisibleFaqs] = useState(3);
+  const [visibleFaqs, setVisibleFaqs] = useState(4);
 
   const toggleFaqs = () => {
     setVisibleFaqs((prevVisible) =>
-      prevVisible === faqs.length ? 3 : faqs.length
+      prevVisible === faqs.length ? 4 : faqs.length
     );
   };
 
@@ -63,7 +66,7 @@ export const FAQ = () => {
               </AccordionItem>
             ))}
           </Accordion>
-          {faqs.length > 3 && (
+          {faqs.length > 4 && (
             <div className="text-center mt-8">
               <a
                 onClick={toggleFaqs}

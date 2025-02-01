@@ -56,6 +56,26 @@ export const HowItWorks = () => {
             </motion.div>
           ))}
         </div>
+
+
+<br /><br /><br />
+
+
+      <div className="flex flex-col items-center justify-center gap-6 bg-gradient-to-b from-blue-200 to-white p-6 rounded-lg">
+        <div className="font-bold text-2xl text-center text-gray-800">
+          SO WHAT ARE YOU WAITING FOR?
+        </div>
+        <button
+          type="button"
+          onClick={() => (window.location.href = "/book-repair")}
+          className="flex items-center justify-center animate-float text-white bg-gradient-to-r from-blue-800 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-lg px-6 py-3 text-center"
+        >
+          Book Your Repair Now
+        </button>
+      </div>
+
+
+
       </div>
     </section>
   );

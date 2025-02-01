@@ -7,16 +7,18 @@ export const Navbar = () => {
   const navigate = useNavigate();
   const menuItems = [
     { label: "Home", href: "/" },
-
     { label: "Track Service", href: "/track-service-entry" },
-    { label: "FAQ", href: "#faq", onClick: (e: React.MouseEvent) => {
+    { label: "FAQ", href: "#faq", onClick: async (e: React.MouseEvent) => {
       e.preventDefault();
       if (window.location.pathname !== '/') {
-        navigate('/', { replace: true });
+        await navigate('/');
+        setTimeout(() => {
+          document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       } else {
         document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
-      }}
-    },
+      }
+    }},
     { label: "Book Now", href: "/book-repair", className: "bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors" }
   ];
 
