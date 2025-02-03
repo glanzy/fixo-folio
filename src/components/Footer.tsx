@@ -42,6 +42,7 @@ export const Footer = () => {
       toast({
         title: "Thank you for your feedback!",
         description: "We appreciate your input and will review it carefully.",
+        duration: 3000,
       });
       setFeedback("");
     } catch (error) {
@@ -49,6 +50,7 @@ export const Footer = () => {
         title: "Error",
         description: "Failed to submit feedback. Please try again.",
         variant: "destructive",
+        duration: 3000, // Automatically hides after 3 seconds
       });
       console.error('Error submitting feedback:', error);
     }
@@ -175,7 +177,6 @@ export const Footer = () => {
                   </a>
                 </div>
               </div>
-
 
               
 {/* 

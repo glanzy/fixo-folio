@@ -14,6 +14,9 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, Circle } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/supabaseClient";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Star, StarIcon } from "lucide-react";
 
 enum ServiceStatus {
   PICKUP = 'pickup',
@@ -65,12 +68,21 @@ interface ServiceData {
   }[];
 }
 
+interface FeedbackData {
+  rating: number;
+  comment: string;
+}
+
 const TrackService = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const serviceId = searchParams.get("id");
   const [serviceData, setServiceData] = useState<ServiceData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [feedback, setFeedback] = useState<FeedbackData | null>(null);
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
+  const [userFeedback, setUserFeedback] = useState({ rating: 0, comment: '' });
+  const [hoveredStar, setHoveredStar] = useState(0);
 
   useEffect(() => {
     const fetchServiceData = async () => {
@@ -167,6 +179,63 @@ const TrackService = () => {
 
     fetchServiceData();
   }, [serviceId, navigate]);
+
+  useEffect(() => {
+    const fetchFeedback = async () => {
+      if (!serviceId) return;
+
+      const { data, error } = await supabase
+        .from('repair_feedback')
+        .select('*')
+        .eq('service_id', serviceId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching feedback:', error);
+        return;
+      }
+
+      if (data) {
+        setFeedback({
+          rating: data.rating,
+          comment: data.comment
+        });
+      }
+    };
+
+    fetchFeedback();
+  }, [serviceId]);
+
+  const submitFeedback = async () => {
+    if (!serviceId || userFeedback.rating === 0) {
+      toast.error("Please provide a rating");
+      return;
+    }
+
+    setSubmittingFeedback(true);
+    try {
+      const { error } = await supabase
+        .from('repair_feedback')
+        .insert({
+          service_id: serviceId,
+          rating: userFeedback.rating,
+          comment: userFeedback.comment
+        });
+
+      if (error) throw error;
+
+      setFeedback({
+        rating: userFeedback.rating,
+        comment: userFeedback.comment
+      });
+      toast.success("Thank you for your feedback!");
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      toast.error("Failed to submit feedback");
+    } finally {
+      setSubmittingFeedback(false);
+    }
+  };
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">
@@ -300,6 +369,64 @@ const TrackService = () => {
                   )}
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Feedback post repair */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Feedback</CardTitle>
+              <CardDescription>Share your experience with our service</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {feedback ? (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <StarIcon
+                        key={star}
+                        className={`w-6 h-6 ${
+                          star <= feedback.rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  {feedback.comment && (
+                    <p className="text-gray-700">{feedback.comment}</p>
+                  )}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        className={`w-6 h-6 cursor-pointer transition-colors ${
+                          star <= (hoveredStar || userFeedback.rating)
+                            ? 'text-yellow-400 fill-yellow-400'
+                            : 'text-gray-300'
+                        }`}
+                        onMouseEnter={() => setHoveredStar(star)}
+                        onMouseLeave={() => setHoveredStar(0)}
+                        onClick={() => setUserFeedback(prev => ({ ...prev, rating: star }))}
+                      />
+                    ))}
+                  </div>
+                  <Textarea
+                    placeholder="Share your experience with us"
+                    value={userFeedback.comment}
+                    onChange={(e) => setUserFeedback(prev => ({ ...prev, comment: e.target.value }))}
+                    className="min-h-[100px]"
+                  />
+                  <Button 
+                    onClick={submitFeedback} 
+                    disabled={submittingFeedback || userFeedback.rating === 0}
+                    className="w-full"
+                  >
+                    {submittingFeedback ? "Submitting..." : "Submit Feedback"}
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
