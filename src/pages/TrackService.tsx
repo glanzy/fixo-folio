@@ -345,7 +345,7 @@ const TrackService = () => {
                   <span>₹ {serviceData.billing.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Valentine Month Discount (10% OFF)</span>
+                  <span>Valentine Month Discount (UPTO 10% OFF)</span>
                   <span>- ₹ {serviceData.billing.iitm.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
