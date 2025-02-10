@@ -1,4 +1,11 @@
-import { Mail, MapPin, Phone, MessageSquare, MessageCircle, Twitter, Linkedin, Instagram, LinkedinIcon, LucideLinkedin  } from "lucide-react";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  MessageSquare,
+  MessageCircle,
+
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
@@ -28,14 +35,12 @@ export const Footer = () => {
     }
 
     try {
-      const { error } = await supabase
-        .from('feedback')
-        .insert([
-          {
-            message: feedback,
-            created_at: new Date().toISOString(),
-          }
-        ]);
+      const { error } = await supabase.from("feedback").insert([
+        {
+          message: feedback,
+          created_at: new Date().toISOString(),
+        },
+      ]);
 
       if (error) throw error;
 
@@ -52,7 +57,7 @@ export const Footer = () => {
         variant: "destructive",
         duration: 3000, // Automatically hides after 3 seconds
       });
-      console.error('Error submitting feedback:', error);
+      console.error("Error submitting feedback:", error);
     }
   };
 
@@ -60,14 +65,12 @@ export const Footer = () => {
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-
           {/* Brand and Description */}
           <div className="space-y-4">
-
             <div className="flex items-center space-x-4">
               <h3 className="text-5xl font-bold">FIXO</h3>
             </div>
-            <p className= "italic text-gray-300 text-lg">
+            <p className="italic text-gray-300 text-lg">
               We can't fix your broken heart, but we can fix your broken devices
             </p>
 
@@ -79,10 +82,9 @@ export const Footer = () => {
                 className="h-20 rounded-lg w-auto"
               />
               <p className="text-base text-white tracking-wide">
-                SUPPORTED BY NIRMAAN, IIT MADRAS 
+                SUPPORTED BY NIRMAAN, IIT MADRAS
               </p>
             </div>
-
           </div>
 
           {/* Quick Links */}
@@ -122,8 +124,6 @@ export const Footer = () => {
             </ul>
           </div> */}
 
-
-
           {/* Contact Us */}
           <div>
             <h4 className="text-lg font-semibold mb-4">CONTACT US</h4>
@@ -142,7 +142,9 @@ export const Footer = () => {
                 <Mail className="h-5 w-5" />
                 <span
                   className="text-gray-300"
-                  onClick={() => window.location.href = "mailto:contact@fixonow.com"}
+                  onClick={() =>
+                    (window.location.href = "mailto:contact@fixonow.com")
+                  }
                 >
                   contact@fixonow.com
                 </span>
@@ -153,9 +155,13 @@ export const Footer = () => {
                 <MapPin className="h-7 w-7" />
                 <span
                   className="text-gray-300"
-                  onClick={() => window.location.href = "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D"}
+                  onClick={() =>
+                    (window.location.href =
+                      "https://www.google.com/maps/place/Sudha+%26+Shankar+Innovation+Hub/@12.9919745,80.2283012,17z/data=!3m1!4b1!4m6!3m5!1s0x3a5267b1fb87ef8d:0xa03b5a54521f8c14!8m2!3d12.9919693!4d80.2308761!16s%2Fg%2F11k584pcw8?entry=ttu&g_ep=EgoyMDI1MDEwMi4wIKXMDSoASAFQAw%3D%3D")
+                  }
                 >
-                  Sudha Shankar Innovation Hub, IIT Madras, Chennai, Tamil Nadu - 600036
+                  Sudha Shankar Innovation Hub, IIT Madras, Chennai, Tamil Nadu
+                  - 600036
                 </span>
               </div>
 
@@ -163,23 +169,54 @@ export const Footer = () => {
 
               <div className="flex items-center space-x-3">
                 <div className="flex items-center space-x-2">
-                  <a href="https://chat.whatsapp.com/B5fTANfsQZQ5apGqjZTOQ9" target="_blank" rel="noopener noreferrer">
-                    <img src="./socials/WL.png" alt="Message Circle" className="w-8 h-8 transition-colors" />
+                  <a
+                    href="https://chat.whatsapp.com/B5fTANfsQZQ5apGqjZTOQ9"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="./socials/WL.png"
+                      alt="Message Circle"
+                      className="w-8 h-8 transition-colors"
+                    />
                   </a>
-                  <a href="https://www.linkedin.com/company/fixorepairs" target="_blank" rel="noopener noreferrer">
-                    <img src="./socials/LL.png" alt="Linkedin" className="w-8 h-8 transition-colors" />
+                  <a
+                    href="https://www.linkedin.com/company/fixorepairs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="./socials/LL.png"
+                      alt="Linkedin"
+                      className="w-8 h-8 transition-colors"
+                    />
                   </a>
-                  <a href="https://www.instagram.com/fixo.repairs" target="_blank" rel="noopener noreferrer">
-                    <img src="./socials/IL.png" alt="Instagram" className="w-8 h-8 transition-colors" />
+                  <a
+                    href="https://www.instagram.com/fixo.repairs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="./socials/IL.png"
+                      alt="Instagram"
+                      className="w-8 h-8 transition-colors"
+                    />
                   </a>
-                  <a href="https://x.com/fixorepairs" target="_blank" rel="noopener noreferrer">
-                    <img src="./socials/TL.png" alt="Twitter" className="w-8 h-8 transition-colors" />
+                  <a
+                    href="https://x.com/fixorepairs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src="./socials/TL.png"
+                      alt="Twitter"
+                      className="w-8 h-8 transition-colors"
+                    />
                   </a>
                 </div>
               </div>
 
-              
-{/* 
+              {/* 
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="secondary" className="flex items-center gap-2">
@@ -206,20 +243,25 @@ export const Footer = () => {
           </div>
 
           <div className="space-y-4">
-                    <Textarea
-                      placeholder="Tell us what you think..."
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                      className="min-h-[100px] text-black"
-                    />
-                    <Button onClick={handleFeedbackSubmit} className="bg-gray-300 text-black hover:bg-gray-100">Submit Feedback</Button>
+            <Textarea
+              placeholder="Tell us what you think..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              className="min-h-[100px] text-black"
+            />
+            <Button
+              onClick={handleFeedbackSubmit}
+              className="bg-gray-300 text-black hover:bg-gray-100"
+            >
+              Submit Feedback
+            </Button>
           </div>
         </div>
         
         {/* Copyright part in the bottom */}
         <div className="pt-3 text-center text-gray-200">
-          <p>&copy; {new Date().getFullYear()} FIXO™. All rights reserved.</p>
-        </div>
+          <p>&copy; {new Date().getFullYear()} FIXO. All rights reserved.</p>
+      </div>
       </div>
     </footer>
   );

@@ -266,33 +266,43 @@ const TrackService = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {serviceData.timeline.map((step, index) => (
-                <div key={step.status} className="flex items-start space-x-5">
-                  <div className="flex flex-col items-center">
-                    {step.completed ? (
-                      <CheckCircle2 className="w-6 h-6 text-primary" />
-                    ) : (
-                      <Circle className={`w-6 h-6 ${
-                        serviceData.service.status.includes(step.status)
-                          ? "text-primary animate-pulse" 
-                          : "text-gray-300"
-                      }`} />
-                    )}
-                    {index < serviceData.timeline.length - 1 && (
-                      <div className="w-0.5 h-8 bg-gray-200 my-1" />
-                    )}
+              {serviceData.timeline.map((step, index) => {
+                // Check if any later step is active to check the previous steps which are done
+                const isLaterStepActive = serviceData.service.status.some(
+                  activeStatus => {
+                    const activeIndex = serviceData.timeline.findIndex(t => t.status === activeStatus);
+                    return activeIndex > index;
+                  }
+                );
+
+                // Step should be completed if it's marked as completed OR if any later step is active
+                const shouldShowCompleted = step.completed || isLaterStepActive;
+
+                return (
+                  <div key={step.status} className="flex items-start space-x-5">
+                    <div className="flex flex-col items-center">
+                      {shouldShowCompleted ? (
+                        <CheckCircle2 className="w-6 h-6 text-primary" />
+                      ) : (
+                        <Circle className={`w-6 h-6 ${
+                          serviceData.service.status.includes(step.status)
+                            ? "text-primary animate-pulse" 
+                            : "text-gray-300"
+                        }`} />
+                      )}
+                      {index < serviceData.timeline.length - 1 && (
+                        <div className="w-0.5 h-8 bg-gray-200 my-1" />
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium capitalize">{step.status}</p>
+                      {step.notes && (
+                        <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="font-medium capitalize">{step.status}</p>
-                    {/* {step.date && (
-                      <p className="text-sm text-gray-500">{step.date}</p>
-                    )} */}
-                    {step.notes && (
-                      <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { BrandTicker } from "./BrandTicker";
 
 const services = [
-  
   {
     icon: Laptop,
     title: "Laptop Services",
@@ -15,7 +14,8 @@ const services = [
     title: "iPhone Services",
     description: "Same-day repair for most",
     src: "./Services/DDD.png",
-  },{
+  },
+  {
     icon: Smartphone,
     title: "Android Services",
     description: "Expert repairs for all phone",
@@ -43,6 +43,10 @@ const services = [
 ];
 
 export const Services = () => {
+  const handleRedirect = () => {
+    window.location.href = "/book-repair"; // Redirect to /book-repair
+  };
+
   return (
     <>
       <section className="py-6 md:py-10 bg-white">
@@ -50,19 +54,20 @@ export const Services = () => {
           <div className="text-center mb-8 md:mb-7">
             <h2 className="text-2xl md:text-3xl font-bold text-primary mb-2 md:mb-4">
               Our Services
-            </h2>  
+            </h2>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-8">
             {services.map((service, index) => (
-                <motion.div
+              <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="p-2 md:p-6 rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300"
+                className="p-2 md:p-6 rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                onClick={handleRedirect} // Call handleRedirect on click
               >
-                <div className=" rounded-lg flex items-center justify-center mb-2 md:mb-4 bg-gray-100">
+                <div className="rounded-lg flex items-center justify-center mb-2 md:mb-4 bg-gray-100">
                   <img
                     src={service.src}
                     alt={service.title}
@@ -72,7 +77,7 @@ export const Services = () => {
                 <h3 className="text-sm md:text-lg text-primary text-center">
                   {service.title}
                 </h3>
-              </motion.div>  
+              </motion.div>
             ))}
           </div>
         </div>
