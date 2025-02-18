@@ -247,7 +247,17 @@ const BookRepair = () => {
 
       if (customerError) throw new Error(`Customer insertion failed: ${customerError.message}`);
 
-      // Step 2: Insert devices
+      // Step 2: Create warranty entry - Changed default value to '-'
+      const { error: warrantyError } = await supabase
+        .from('warranties')
+        .insert({
+          service_id: newServiceId,
+          warranty_days: '-'  // Changed from 'TBA' to '-'
+        });
+
+      if (warrantyError) throw new Error(`Warranty creation failed: ${warrantyError.message}`);
+
+      // Step 3: Insert devices
       const devicesToInsert = values.devices.map(device => ({
         service_id: newServiceId,
         device_type: device.deviceType,
@@ -262,7 +272,7 @@ const BookRepair = () => {
 
       if (deviceError) throw new Error(`Device insertion failed: ${deviceError.message}`);
 
-      // Step 3: Create initial billing entry
+      // Step 4: Create initial billing entry
       const { error: billingError } = await supabase
         .from('billing')
         .insert({
@@ -277,7 +287,7 @@ const BookRepair = () => {
 
       if (billingError) throw new Error(`Billing insertion failed: ${billingError.message}`);
 
-      // Step 4: Create tracking entry
+      // Step 5: Create tracking entry
       const { error: trackingError } = await supabase
         .from('service_tracking')
         .insert({

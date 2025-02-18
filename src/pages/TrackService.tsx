@@ -17,12 +17,19 @@ import { supabase } from "@/supabaseClient";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Star, StarIcon } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 enum ServiceStatus {
   PICKUP = 'pickup',
   DIAGNOSIS = 'diagnosis',
   REPAIR = 'repair',
-
   DELIVERED = 'delivered'
 }
 
@@ -33,6 +40,7 @@ interface ServiceData {
     address: string;
     preferred_date: string;
     preferred_time: string;
+    warranty_period: string;
   };
   device: {
     type: string;
@@ -48,9 +56,11 @@ interface ServiceData {
   }[];
   service: {
     id: string;
-    status: ServiceStatus[];  // Changed to array
+    status: ServiceStatus[];
     startDate: string;
     estimatedCompletion: string;
+    warrantyPeriod?: string;  // Now handles any text
+    hasWarranty?: boolean;
   };
   billing: {
     subtotal: number;
@@ -73,6 +83,17 @@ interface FeedbackData {
   comment: string;
 }
 
+interface WarrantyClaimForm {
+  description: string;
+}
+
+interface WarrantyClaim {
+  id: string;
+  description: string;
+  status: 'pending' | 'approved' | 'rejected';
+  created_at: string;
+}
+
 const TrackService = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -83,6 +104,10 @@ const TrackService = () => {
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
   const [userFeedback, setUserFeedback] = useState({ rating: 0, comment: '' });
   const [hoveredStar, setHoveredStar] = useState(0);
+  const [warrantyDialogOpen, setWarrantyDialogOpen] = useState(false);
+  const [claimDescription, setClaimDescription] = useState("");
+  const [submittingClaim, setSubmittingClaim] = useState(false);
+  const [warrantyClaims, setWarrantyClaims] = useState<WarrantyClaim[]>([]);
 
   useEffect(() => {
     const fetchServiceData = async () => {
@@ -93,46 +118,48 @@ const TrackService = () => {
       }
 
       try {
-        // Fetch all required data
         const [
           { data: customerData, error: customerError },
-          { data: devicesData, error: deviceError }, // Changed to get all devices
+          { data: devicesData, error: deviceError },
           { data: trackingData, error: trackingError },
-          { data: billingData, error: billingError }
+          { data: billingData, error: billingError },
+          { data: warrantyData, error: warrantyError }
         ] = await Promise.all([
           supabase.from('customers').select('*').eq('service_id', serviceId).single(),
-          supabase.from('devices').select('*').eq('service_id', serviceId), // Removed .single()
+          supabase.from('devices').select('*').eq('service_id', serviceId),
           supabase.from('service_tracking').select('*').eq('service_id', serviceId).order('created_at', { ascending: true }),
-          supabase.from('billing').select('*').eq('service_id', serviceId).single()
+          supabase.from('billing').select('*').eq('service_id', serviceId).single(),
+          supabase.from('warranties').select('*').eq('service_id', serviceId).single()
         ]);
 
+        // Add warranty error check
+        if (warrantyError && warrantyError.code !== 'PGRST116') {
+          throw warrantyError;
+        }
         if (customerError) throw customerError;
         if (deviceError) throw deviceError;
         if (trackingError) throw trackingError;
         if (billingError) throw billingError;
 
-        // Handle case where no data is found
         if (!customerData || !devicesData || !trackingData || !billingData) {
           throw new Error("Service data not found");
         }
 
-        // Transform the data into the required format
         const transformedData: ServiceData = {
           customer: {
             name: customerData.name,
             phone: customerData.mobile,
             address: customerData.address,
             preferred_date: customerData.preferred_date,
-            preferred_time: customerData.preferred_time
+            preferred_time: customerData.preferred_time,
+            warranty_period: customerData.warranty_period || 'TBA'
           },
           device: {
-            // Take the first device's details for backward compatibility
             type: devicesData[0].device_type,
             brand: devicesData[0].device_name || 'N/A',
             model: devicesData[0].device_model,
             issue: devicesData[0].problem_description,
           },
-          // Add a new field for all devices if needed
           devices: devicesData.map(device => ({
             type: device.device_type,
             brand: device.device_name || 'N/A',
@@ -144,6 +171,8 @@ const TrackService = () => {
             status: trackingData.map(t => t.status as ServiceStatus),
             startDate: customerData.preferred_date,
             estimatedCompletion: customerData.preferred_date,
+            warrantyPeriod: warrantyData?.warranty_days,
+            hasWarranty: !!warrantyData,
           },
           billing: {
             subtotal: billingData?.subtotal || 0,
@@ -157,7 +186,6 @@ const TrackService = () => {
             { status: ServiceStatus.PICKUP, completed: false },
             { status: ServiceStatus.DIAGNOSIS, completed: false },
             { status: ServiceStatus.REPAIR, completed: false },
-
             { status: ServiceStatus.DELIVERED, completed: false },
           ].map(step => ({
             ...step,
@@ -198,12 +226,33 @@ const TrackService = () => {
       if (data) {
         setFeedback({
           rating: data.rating,
-          comment: data.comment
+          comment: data.comment,
         });
       }
     };
 
     fetchFeedback();
+  }, [serviceId]);
+
+  useEffect(() => {
+    const fetchWarrantyClaims = async () => {
+      if (!serviceId) return;
+
+      const { data, error } = await supabase
+        .from('warranty_claims')
+        .select('*')
+        .eq('service_id', serviceId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching warranty claims:', error);
+        return;
+      }
+
+      setWarrantyClaims(data || []);
+    };
+
+    fetchWarrantyClaims();
   }, [serviceId]);
 
   const submitFeedback = async () => {
@@ -219,14 +268,14 @@ const TrackService = () => {
         .insert({
           service_id: serviceId,
           rating: userFeedback.rating,
-          comment: userFeedback.comment
+          comment: userFeedback.comment,
         });
 
       if (error) throw error;
 
       setFeedback({
         rating: userFeedback.rating,
-        comment: userFeedback.comment
+        comment: userFeedback.comment,
       });
       toast.success("Thank you for your feedback!");
     } catch (error) {
@@ -234,6 +283,37 @@ const TrackService = () => {
       toast.error("Failed to submit feedback");
     } finally {
       setSubmittingFeedback(false);
+    }
+  };
+
+  const handleWarrantyClaim = async () => {
+    if (!claimDescription.trim()) {
+      toast.error("Please provide a description of the issue");
+      return;
+    }
+
+    setSubmittingClaim(true);
+    try {
+      const { data, error } = await supabase
+        .from('warranty_claims')
+        .insert({
+          service_id: serviceId,
+          description: claimDescription,
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setWarrantyClaims(prev => [data, ...prev]);
+      toast.success("Warranty claim submitted successfully");
+      setWarrantyDialogOpen(false);
+      setClaimDescription("");
+    } catch (error) {
+      console.error('Error submitting warranty claim:', error);
+      toast.error("Failed to submit warranty claim");
+    } finally {
+      setSubmittingClaim(false);
     }
   };
 
@@ -265,50 +345,103 @@ const TrackService = () => {
             <CardDescription>Service ID: {serviceData.service.id}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
-              {serviceData.timeline.map((step, index) => {
-                // Check if any later step is active to check the previous steps which are done
-                const isLaterStepActive = serviceData.service.status.some(
-                  activeStatus => {
-                    const activeIndex = serviceData.timeline.findIndex(t => t.status === activeStatus);
-                    return activeIndex > index;
-                  }
-                );
+            <div className="flex flex-col md:flex-row justify-between">
+              <div className="space-y-2 mb-6 md:mb-0">
+                {serviceData.timeline.map((step, index) => {
+                  const isLaterStepActive = serviceData.service.status.some(
+                    activeStatus => {
+                      const activeIndex = serviceData.timeline.findIndex(t => t.status === activeStatus);
+                      return activeIndex > index;
+                    }
+                  );
 
-                // Step should be completed if it's marked as completed OR if any later step is active
-                const shouldShowCompleted = step.completed || isLaterStepActive;
+                  const shouldShowCompleted = step.completed || isLaterStepActive;
 
-                return (
-                  <div key={step.status} className="flex items-start space-x-5">
-                    <div className="flex flex-col items-center">
-                      {shouldShowCompleted ? (
-                        <CheckCircle2 className="w-6 h-6 text-primary" />
-                      ) : (
-                        <Circle className={`w-6 h-6 ${
-                          serviceData.service.status.includes(step.status)
-                            ? "text-primary animate-pulse" 
-                            : "text-gray-300"
-                        }`} />
-                      )}
-                      {index < serviceData.timeline.length - 1 && (
-                        <div className="w-0.5 h-8 bg-gray-200 my-1" />
-                      )}
+                  return (
+                    <div key={step.status} className="flex items-start space-x-5">
+                      <div className="flex flex-col items-center">
+                        {shouldShowCompleted ? (
+                          <CheckCircle2 className="w-6 h-6 text-primary" />
+                        ) : (
+                          <Circle className={`w-6 h-6 ${
+                            serviceData.service.status.includes(step.status)
+                              ? "text-primary animate-pulse"
+                              : "text-gray-300"
+                          }`} />
+                        )}
+                        {index < serviceData.timeline.length - 1 && (
+                          <div className="w-0.5 h-8 bg-gray-200 my-1" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium capitalize">{step.status}</p>
+                        {step.notes && (
+                          <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium capitalize">{step.status}</p>
-                      {step.notes && (
-                        <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
-                      )}
-                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Warranty Column */}
+              {serviceData.service.hasWarranty && (
+                <div className="flex flex-col items-start md:items-end justify-end space-y-4 md:ml-8">
+                  <div className="text-left md:text-right w-full">
+                    <span className="text-sm text-gray-500">Warranty Period : </span>
+                    <span className="font-medium">
+                      {serviceData.service.warrantyPeriod}
+                    </span>
                   </div>
-                );
-              })}
+                  <Button 
+                    variant="outline" 
+                    className="w-full md:w-100%"
+                    onClick={() => setWarrantyDialogOpen(true)}
+                  >
+                    Having an Issue? Claim Warranty
+                  </Button>
+                  {warrantyClaims.length > 0 && (
+                    <div className="mt-2 space-y-4 bg-blue-100 border-2 border-dashed border-gray-200 rounded-lg p-4 w-full">
+                      <h4 className="font-medium text-sm">Warranty Claim History</h4>
+                      <div className="space-y-3">
+                        {warrantyClaims.map((claim) => (
+                          <div
+                            key={claim.id}
+                            className="p-1 bg-secondary/20 rounded-lg space-y-2"
+                          >
+                            <div className="flex justify-between items-start">
+                              <p className="text-sm">{claim.description}</p>
+                              <Badge
+                                className={`ml-2 ${
+                                  claim.status === "pending"
+                                    ? "bg-blue-500"
+                                    : claim.status === "rejected"
+                                    ? "bg-red-500"
+                                    : claim.status === "approved"
+                                    ? "bg-green-500"
+                                    : "bg-gray-500"
+                                } text-white hover:none pointer-events-none`}
+                              >
+                                {claim.status.charAt(0).toUpperCase() + claim.status.slice(1)}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(claim.created_at).toLocaleDateString()} at{' '}
+                              {new Date(claim.created_at).toLocaleTimeString()}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
 
         <div className="grid md:grid-cols-2 gap-5">
-          {/* Customer Information */}
+          {/* Customer Information Card */}
           <Card>
             <CardHeader>
               <CardTitle>Customer Information</CardTitle>
@@ -322,7 +455,7 @@ const TrackService = () => {
             </CardContent>
           </Card>
 
-          {/* Device Information */}
+          {/* Device Information Card */}
           <Card>
             <CardHeader>
               <CardTitle>Device Information</CardTitle>
@@ -343,7 +476,7 @@ const TrackService = () => {
             </CardContent>
           </Card>
 
-          {/* Billing Information */}
+          {/* Billing Information Card */}
           <Card>
             <CardHeader>
               <CardTitle>Billing Information</CardTitle>
@@ -382,7 +515,7 @@ const TrackService = () => {
             </CardContent>
           </Card>
 
-          {/* Feedback post repair */}
+          {/* Feedback Card */}
           <Card>
             <CardHeader>
               <CardTitle>Feedback</CardTitle>
@@ -409,7 +542,7 @@ const TrackService = () => {
                 <div className="space-y-4">
                   <div className="flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
+                      <StarIcon
                         key={star}
                         className={`w-6 h-6 cursor-pointer transition-colors ${
                           star <= (hoveredStar || userFeedback.rating)
@@ -428,10 +561,10 @@ const TrackService = () => {
                     onChange={(e) => setUserFeedback(prev => ({ ...prev, comment: e.target.value }))}
                     className="min-h-[100px]"
                   />
-                  <Button 
-                    onClick={submitFeedback} 
-                    disabled={submittingFeedback || userFeedback.rating === 0}
+                  <Button
                     className="w-full"
+                    disabled={submittingFeedback || userFeedback.rating === 0}
+                    onClick={submitFeedback}
                   >
                     {submittingFeedback ? "Submitting..." : "Submit Feedback"}
                   </Button>
@@ -442,6 +575,38 @@ const TrackService = () => {
         </div>
       </main>
       <Footer />
+      <Dialog open={warrantyDialogOpen} onOpenChange={setWarrantyDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Submit Warranty Claim</DialogTitle>
+            <DialogDescription>
+              Please describe the issue you're experiencing with your device.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <Textarea
+              placeholder="Describe the issue in detail..."
+              value={claimDescription}
+              onChange={(e) => setClaimDescription(e.target.value)}
+              className="min-h-[100px]"
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setWarrantyDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleWarrantyClaim}
+              disabled={submittingClaim}
+            >
+              {submittingClaim ? "Submitting..." : "Submit Claim"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
