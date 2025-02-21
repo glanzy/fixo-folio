@@ -18,13 +18,10 @@ export const BookServicePopup = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Check if it's the home page and popup hasn't been shown before
-    const hasPopupBeenShown = localStorage.getItem('bookServicePopupShown');
-    
-    if (location.pathname === '/' && !hasPopupBeenShown) {
+    // Ensure the popup shows on the home page after a delay regardless of previous visits
+    if (location.pathname === '/') {
       const timer = setTimeout(() => {
         setOpen(true);
-        localStorage.setItem('bookServicePopupShown', 'true');
       }, 8000);
 
       return () => clearTimeout(timer);

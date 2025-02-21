@@ -24,12 +24,12 @@ const faqs = [
     answer:"We are serving in the IIT Madras campus as of now.",
   },
   {
-    question: "How do I claim warranty?",
-    answer: "Reach out to us via our email at contact@fixonow.com with your details. We will ensure a hassle-free warranty claim process.",
-  },
+    "question": "How do I claim warranty?",
+    "answer": "You can claim your warranty directly from the Track Service page on our website. Simply enter your Service ID, mention the issue faced, and submit your request for a hassle-free process."
+  },  
   {
     question: "What kind of Parts do you use?",
-    answer: "We use high-quality spare parts (OEMs) to ensure the longevity and performance of your devices.",
+    answer: "We use high-quality spare parts and OEMs to ensure the longevity and performance of your devices.",
   },
   {
   question: "How can I track the status of my repair?",

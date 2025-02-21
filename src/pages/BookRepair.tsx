@@ -455,7 +455,7 @@ const BookRepair = () => {
                         <FormItem>
                           <FormLabel>Complete Address</FormLabel>
                           <FormControl>
-                            <Input placeholder="Room no. / Hostel name etc." {...field} />
+                            <Input placeholder="Hostel / Department etc." {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

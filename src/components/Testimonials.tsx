@@ -13,30 +13,38 @@ const testimonials = [
     name: "Mayank, IITM",
     role: "Laptop User",
     content: "Got my Asus FX508 Laptop serviced here for hinge panel repair. The work was top-notch, and the pricing was very reasonable. Really impressed with the quality and professionalism. Highly recommend!",
-    image: "/lovable-uploads/1.png",
-    rating: 5.0 // Dynamic rating
-  },
+    rating: 5.0 
+    },
   {
     name: "Bharathi, IITM",
     role: "Macbook User",
     content: "Swift servicing and good customer experience. Service cost was half of what was quoted in Apple authorised. Overall good and will recommend to others for Macbook servicing.",
-    image: "/lovable-uploads/4.png",
-    rating: 5.0 // Dynamic rating
-  },
+    rating: 5.0 
+    },
+  {
+    name: "Wasim, IITM",
+    role: "Laptop User",
+    content: "Genuine and quick service. Got my laptop repaired in just 4 hours. Best platform for gadget repair especially when you don't know about your nearby repair persons or for your last minute gadget repairs. Excellent service, loved it ❤️.",
+    rating: 5.0 
+    },
   {
     name: "Aniket P, IITM",
     role: "Smartphone User",
     content: "Recently I have serviced my Poco x2 and x3 mobiles, they explained the issues in a clear manner and delivered the mobile earlier as well with reasonable charges. Kudos to entire team who gave the great support.",
-    image: "/lovable-uploads/3.png",
-    rating: 5.0 // Dynamic rating
-  },
+    rating: 5.0 
+    },
   {
     name: "Md Imran, IITM",
     role: "Laptop User",
     content: "I am very satisfied with the service for my Dell Latitude 7398 charger repair. The team was professional, and the repair was completed quickly. I appreciated the regular updates on the progress, and the communication was clear throughout the process. Great support!",
-    image: "/lovable-uploads/2.png",
-    rating: 4.0// Dynamic rating
-  },
+    rating: 4.0
+    },
+  {
+    name: "Mrunmayee Dhonde , IITM",
+    role: "Laptop User",
+    content: "1. Fast service 2. Spare parts of great quality used 3. Reasonable rate 4. Perfect assistance regarding the issue and service provided",
+    rating: 5.0 
+    },
   
 ];
 
