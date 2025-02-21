@@ -46,7 +46,7 @@ const formSchema = z.object({
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
-const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
+const timeSlots = ["11:00 AM", "06:00 PM"]; // Add "03:00 PM" on 23rd Feb Evening
 const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
 const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google", "Honor", "Poco", "Asus", "Infinix", "Techno", "Iqoo", "Huawei", "CMF"];
 
@@ -462,6 +462,9 @@ const BookRepair = () => {
                       )}
                     />
                   </motion.div>
+
+                  {/* Change the code back to normal after 27th */}
+
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                     <FormField
                       control={form.control}
@@ -470,7 +473,26 @@ const BookRepair = () => {
                         <FormItem>
                           <FormLabel>Pickup Date</FormLabel>
                           <FormControl>
-                            <Input type="date" min={minDate} {...field} />
+                            <Input
+                              type="date"
+                              min={minDate}
+                              {...field}
+                              onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const disabledDate = new Date(selectedDate.getFullYear(), 1, 27); // February 27th
+                                
+                                if (
+                                  selectedDate.getFullYear() === disabledDate.getFullYear() &&
+                                  selectedDate.getMonth() === disabledDate.getMonth() &&
+                                  selectedDate.getDate() === disabledDate.getDate()
+                                ) {
+                                  alert("February 27th is not selectable. Please choose another date.");
+                                  e.target.value = "";
+                                } else {
+                                  field.onChange(e);
+                                }
+                              }}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

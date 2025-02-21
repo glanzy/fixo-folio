@@ -15,12 +15,12 @@ const testimonials = [
     content: "Got my Asus FX508 Laptop serviced here for hinge panel repair. The work was top-notch, and the pricing was very reasonable. Really impressed with the quality and professionalism. Highly recommend!",
     rating: 5.0 
     },
-  {
-    name: "Bharathi, IITM",
-    role: "Macbook User",
-    content: "Swift servicing and good customer experience. Service cost was half of what was quoted in Apple authorised. Overall good and will recommend to others for Macbook servicing.",
-    rating: 5.0 
-    },
+    {
+      name: "Shyam, IITM",
+      role: "Mobile User",
+      content: "Got my smartphone battery replaced—they picked it up from my doorstep, fixed it, and delivered it in 5 hours! Just fast, reliable, and budget-friendly service. The founder probably runs on 1% battery but keeps this startup at 100%!",
+      rating: 5.0 
+      },
   {
     name: "Wasim, IITM",
     role: "Laptop User",
@@ -44,6 +44,7 @@ const testimonials = [
     role: "Laptop User",
     content: "1. Fast service 2. Spare parts of great quality used 3. Reasonable rate 4. Perfect assistance regarding the issue and service provided",
     rating: 5.0 
+
     },
   
 ];
