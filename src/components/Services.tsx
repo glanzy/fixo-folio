@@ -1,6 +1,7 @@
 import { Smartphone, Laptop, TabletIcon, Laptop2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { BrandTicker } from "./BrandTicker";
+import { useNavigate } from "react-router-dom";
 
 const services = [
   {
@@ -8,43 +9,50 @@ const services = [
     title: "Laptop Services",
     description: "Professional laptop repair",
     src: "./Services/CCC.png",
+    deviceType: "laptop"
   },
   {
     icon: Smartphone,
     title: "iPhone Services",
     description: "Same-day repair for most",
     src: "./Services/DDD.png",
+    deviceType: "iphone"
   },
   {
     icon: Smartphone,
     title: "Android Services",
     description: "Expert repairs for all phone",
     src: "./Services/EEE.png",
+    deviceType: "mobile"
   },
   {
     icon: Laptop2,
     title: "Macbook Services",
     description: "90-day warranty on all",
     src: "./Services/BBB.png",
+    deviceType: "macbook"
   },
   {
     icon: TabletIcon,
     title: "iPad Services",
     description: "90-day warranty on all",
     src: "./Services/AAA.png",
+    deviceType: "ipad"
   },
   {
     icon: TabletIcon,
     title: "Cleaning & Upgradation",
     description: "90-day warranty on all",
     src: "./Services/Cleaning3.png",
+    deviceType: "laptop"
   },
-  
 ];
 
 export const Services = () => {
-  const handleRedirect = () => {
-    window.location.href = "/book-repair"; // Redirect to /book-repair
+  const navigate = useNavigate();
+
+  const handleRedirect = (deviceType: string) => {
+    navigate('/book-repair', { state: { selectedDeviceType: deviceType } });
   };
 
   return (
@@ -65,7 +73,7 @@ export const Services = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="p-2 md:p-6 rounded-xl bg-white border border-gray-400 hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-                onClick={handleRedirect} // Call handleRedirect on click
+                onClick={() => handleRedirect(service.deviceType)}
               >
                 <div className="rounded-lg flex items-center justify-center mb-2 md:mb-4 bg-gray-100">
                   <img

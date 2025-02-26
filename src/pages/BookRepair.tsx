@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useForm, useFieldArray, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText, Check , Clock2, MapPinCheckInside  } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -46,7 +46,7 @@ const formSchema = z.object({
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
-const timeSlots = ["11:00 AM", "06:00 PM"]; // Add "03:00 PM" on 23rd Feb Evening
+const timeSlots = ["11:00 AM", "03:00 PM","06:00 PM"]; // Add "03:00 PM" on 23rd Feb Evening
 const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
 const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google", "Honor", "Poco", "Asus", "Infinix", "Techno", "Iqoo", "Huawei", "CMF"];
 
@@ -193,6 +193,8 @@ const FormSection = ({ icon, title, description }: { icon: React.ReactNode; titl
 const BookRepair = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const selectedDeviceType = location.state?.selectedDeviceType;
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [serviceId, setServiceId] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -208,7 +210,7 @@ const BookRepair = () => {
       preferredTime: "",
       devices: [
         {
-          deviceType: "laptop",
+          deviceType: selectedDeviceType || "laptop", // Use the selected device type if available
           deviceName: "",
           deviceModel: "",
           problem: "",
