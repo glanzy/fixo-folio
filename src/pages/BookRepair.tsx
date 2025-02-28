@@ -468,7 +468,7 @@ const BookRepair = () => {
                     />
                   </motion.div>
 
-                  {/* Change the code back to normal after 27th */}
+                  {/* Change the code back to normal after 3rd March */}
 
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
                     <FormField
@@ -484,14 +484,14 @@ const BookRepair = () => {
                               {...field}
                               onChange={(e) => {
                                 const selectedDate = new Date(e.target.value);
-                                const disabledDate = new Date(selectedDate.getFullYear(), 1, 27); // February 27th
+                                const disabledDate = new Date(2025, 2, 2); // March 2, 2025
                                 
                                 if (
                                   selectedDate.getFullYear() === disabledDate.getFullYear() &&
                                   selectedDate.getMonth() === disabledDate.getMonth() &&
                                   selectedDate.getDate() === disabledDate.getDate()
                                 ) {
-                                  alert("February 27th is not selectable. Please choose another date.");
+                                  alert("We are actively participating in the IIT Madras E-Summit on March 2nd, 2025! Due to this, device pickups will not be available on this date. Please choose an alternative date for your pickup. We appreciate your support!");
                                   e.target.value = "";
                                 } else {
                                   field.onChange(e);
@@ -504,6 +504,7 @@ const BookRepair = () => {
                       )}
                     />
                   </motion.div>
+
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
                     <FormField
                       control={form.control}
