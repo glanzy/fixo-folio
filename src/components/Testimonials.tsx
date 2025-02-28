@@ -18,7 +18,7 @@ const testimonials = [
     {
       name: "Shyam, IITM",
       role: "Mobile User",
-      content: "Got my smartphone battery replaced—they picked it up from my doorstep, fixed it, and delivered it in 5 hours! Just fast, reliable, and budget-friendly service. The founder probably runs on 1% battery but keeps this startup at 100%!",
+      content: "Got my smartphone battery replaced-they picked it up from my doorstep, fixed it, and delivered it in 5 hours! Just fast, reliable, and budget-friendly service. The founder probably runs on 1% battery but keeps this startup at 100%!",
       rating: 5.0 
       },
   {
