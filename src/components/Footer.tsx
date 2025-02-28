@@ -18,7 +18,7 @@ import {
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
 import { useToast } from "./ui/use-toast";
-import { supabase } from "@/supabaseClient"; // Import supabase client
+import { supabase } from "@/supabaseClient"; 
 
 export const Footer = () => {
   const [feedback, setFeedback] = useState("");
@@ -88,7 +88,7 @@ export const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          {/* <div>
+           {/* <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
@@ -107,12 +107,17 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
+                <Link to="/careers" className="text-gray-300 hover:text-white">
+                  Careers
+                </Link>
+              </li>
+              <li>
                 <Link to="/#faq" className="text-gray-300 hover:text-white">
                   FAQ
                 </Link>
               </li>
             </ul>
-          </div> */}
+          </div>  */}
 
           {/* Our Services - Seen only in laptop mode rest gone*/}
           {/* <div className="hidden md:block">

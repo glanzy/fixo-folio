@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+// Device schema constraints for validation
 const deviceSchema = z.object({
   deviceType: z.enum(["laptop", "mobile", "ipad", "iphone", "macbook"]),
   deviceName: z.string().optional(),
@@ -37,6 +38,7 @@ const deviceSchema = z.object({
   problem: z.string().min(1, "Please describe the problem in detail"),
 });
 
+// Form schema constraints for validation
 const formSchema = z.object({
   name: z.string().min(1, "Name must be at least 2 characters"),
   mobile: z.string().min(10, "Please enter a valid mobile number"),
@@ -46,7 +48,8 @@ const formSchema = z.object({
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
-const timeSlots = ["11:00 AM", "03:00 PM","06:00 PM"]; // Add "03:00 PM" on 23rd Feb Evening
+// Options of Time Slots and brands 
+const timeSlots = ["11:00 AM", "03:00 PM","06:00 PM"]; 
 const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
 const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google", "Honor", "Poco", "Asus", "Infinix", "Techno", "Iqoo", "Huawei", "CMF"];
 
@@ -254,7 +257,7 @@ const BookRepair = () => {
         .from('warranties')
         .insert({
           service_id: newServiceId,
-          warranty_days: '-'  // Changed from 'TBA' to '-'
+          warranty_days: '-'  // Default value as '-'
         });
 
       if (warrantyError) throw new Error(`Warranty creation failed: ${warrantyError.message}`);
