@@ -15,7 +15,7 @@ const features = [
   {
     image: "./Services/B.png",
     title: "Quick Repairs",
-    description: "Most Repair within 24 hours",
+    description: "Average 24-48 hours",
   },
   {
     image: "./Services/C.png",

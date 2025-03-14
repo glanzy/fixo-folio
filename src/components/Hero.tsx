@@ -14,20 +14,22 @@ import Autoplay from "embla-carousel-autoplay";
 
 const carouselImages = [
   {
-    src: "./Carousel/C33.png",
+    src: "./Carousel/SecondaryLaptop.png",
     alt: "Woman using laptop",
-    src1 : "./Carousel/P1.png",
-  },
-  {
-    src: "./Carousel/C11.png",
-    alt: "Woman using laptop",
-    src1 : "./Carousel/P2.png",
+    
+    src1 : "./Carousel/MainPhone.png",
 
   },
   {
-    src: "./Carousel/C22.png",
+    src: "./Carousel/MainLaptop.png",
     alt: "Woman using laptop",
-    src1 : "./Carousel/P3.png",
+    src1 : "./Carousel/SecondPhone.png",
+  },
+  
+  {
+    src: "./Carousel/HoliLaptop.png",
+    alt: "Woman using laptop",
+    src1 : "./Carousel/HoliPhone.png",
   },
 ];
 

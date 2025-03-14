@@ -111,7 +111,7 @@ export const Stats = () => {
                 {yearsCount}+ Years
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 font-semibold text-center">
-                Experienced Professionals You Can Trust
+                Experienced Technicians You Can Trust
               </p>
             </div>
           </div>

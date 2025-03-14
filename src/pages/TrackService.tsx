@@ -33,6 +33,21 @@ enum ServiceStatus {
   DELIVERED = 'delivered'
 }
 
+const getStatusNotes = (status: ServiceStatus): string => {
+  switch (status) {
+    case ServiceStatus.PICKUP:
+      return "Service request created.";
+    case ServiceStatus.DIAGNOSIS:
+      return "Device is being diagnosed.";
+    case ServiceStatus.REPAIR:
+      return "Device is being repaired.";
+    case ServiceStatus.DELIVERED:
+      return "Device has been successfully delivered.";
+    default:
+      return "";
+  }
+};
+
 interface ServiceData {
   customer: {
     name: string;
@@ -187,12 +202,17 @@ const TrackService = () => {
             { status: ServiceStatus.DIAGNOSIS, completed: false },
             { status: ServiceStatus.REPAIR, completed: false },
             { status: ServiceStatus.DELIVERED, completed: false },
-          ].map(step => ({
-            ...step,
-            completed: trackingData.some(t => t.status === step.status),
-            date: trackingData.find(t => t.status === step.status)?.created_at,
-            notes: trackingData.find(t => t.status === step.status)?.notes,
-          })),
+          ].map(step => {
+            const trackingEntry = trackingData.find(t => t.status === step.status);
+            const isCurrentStatus = step.status === trackingData[trackingData.length - 1]?.status;
+            
+            return {
+              ...step,
+              completed: trackingData.some(t => t.status === step.status),
+              date: trackingEntry?.created_at,
+              notes: isCurrentStatus ? getStatusNotes(step.status) : undefined
+            };
+          }),
         };
 
         setServiceData(transformedData);
@@ -488,7 +508,7 @@ const TrackService = () => {
                   <span>₹ {serviceData.billing.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Valentine Month Discount (UPTO 10% OFF)</span>
+                  <span>Holi Month Discount (UPTO 10% OFF)</span>
                   <span>- ₹ {serviceData.billing.iitm.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">

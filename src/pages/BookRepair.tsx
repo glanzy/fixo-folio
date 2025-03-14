@@ -3,8 +3,23 @@ import { useForm, useFieldArray, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, ClipboardIcon, Plus, Trash2, Laptop, Laptop2, Smartphone, Tablet, User, Phone, FileText, Check , Clock2, MapPinCheckInside  } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowLeft,
+  ClipboardIcon,
+  Plus,
+  Trash2,
+  Laptop,
+  Laptop2,
+  Smartphone,
+  Tablet,
+  User,
+  Phone,
+  FileText,
+  Check,
+  Clock2,
+  MapPinCheckInside,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { supabase } from "@/supabaseClient";
@@ -28,7 +43,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Device schema constraints for validation
 const deviceSchema = z.object({
@@ -48,12 +69,36 @@ const formSchema = z.object({
   devices: z.array(deviceSchema).min(1, "Add at least one device"),
 });
 
-// Options of Time Slots and brands 
-const timeSlots = ["11:00 AM", "03:00 PM","06:00 PM"]; 
+// Options of Time Slots and brands
+const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
 const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
-const androidBrands = ["Samsung", "OnePlus", "Xiaomi", "Oppo", "Vivo", "Realme", "Nothing", "Motorola", "Google", "Honor", "Poco", "Asus", "Infinix", "Techno", "Iqoo", "Huawei", "CMF"];
+const androidBrands = [
+  "Samsung",
+  "OnePlus",
+  "Xiaomi",
+  "Oppo",
+  "Vivo",
+  "Realme",
+  "Nothing",
+  "Motorola",
+  "Google",
+  "Honor",
+  "Poco",
+  "Asus",
+  "Infinix",
+  "Techno",
+  "Iqoo",
+  "Huawei",
+  "CMF",
+];
 
-const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: number }) => {
+const DeviceDetails = ({
+  form,
+  index,
+}: {
+  form: UseFormReturn<any>;
+  index: number;
+}) => {
   const deviceType = form.watch(`devices.${index}.deviceType`);
   const isAppleDevice = ["iphone", "ipad", "macbook"].includes(deviceType);
 
@@ -71,46 +116,76 @@ const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: numbe
                 defaultValue={field.value}
                 className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4"
               >
-                <motion.div whileHover={{ scale: 1.05 }} className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex justify-center"
+                >
                   <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
                     <RadioGroupItem value="laptop" id={`laptop-${index}`} />
-                    <label htmlFor={`laptop-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                    <label
+                      htmlFor={`laptop-${index}`}
+                      className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                    >
                       <Laptop className="w-4 h-4 sm:w-5 sm:h-5" />
                       Laptop
                     </label>
                   </div>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex justify-center"
+                >
                   <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
                     <RadioGroupItem value="mobile" id={`mobile-${index}`} />
-                    <label htmlFor={`mobile-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                    <label
+                      htmlFor={`mobile-${index}`}
+                      className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                    >
                       <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
                       Android
                     </label>
                   </div>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex justify-center"
+                >
                   <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
                     <RadioGroupItem value="ipad" id={`ipad-${index}`} />
-                    <label htmlFor={`ipad-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                    <label
+                      htmlFor={`ipad-${index}`}
+                      className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                    >
                       <Tablet className="w-4 h-4 sm:w-5 sm:h-5" />
                       iPad
                     </label>
                   </div>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex justify-center"
+                >
                   <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
                     <RadioGroupItem value="iphone" id={`iphone-${index}`} />
-                    <label htmlFor={`iphone-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                    <label
+                      htmlFor={`iphone-${index}`}
+                      className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                    >
                       <Smartphone className="w-4 h-4 sm:w-5 sm:h-5" />
                       iPhone
                     </label>
                   </div>
                 </motion.div>
-                <motion.div whileHover={{ scale: 1.05 }} className="flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex justify-center"
+                >
                   <div className="flex items-center space-x-2 p-2 sm:p-3 border rounded-md cursor-pointer hover:bg-secondary/50 transition-colors w-32 sm:w-36">
                     <RadioGroupItem value="macbook" id={`macbook-${index}`} />
-                    <label htmlFor={`macbook-${index}`} className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm">
+                    <label
+                      htmlFor={`macbook-${index}`}
+                      className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
+                    >
                       <Laptop2 className="w-4 h-4 sm:w-5 sm:h-5" />
                       Macbook
                     </label>
@@ -132,15 +207,23 @@ const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: numbe
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder={deviceType === 'laptop' ? 'Select Laptop Brand' : 'Select Phone Brand'} />
+                    <SelectValue
+                      placeholder={
+                        deviceType === "laptop"
+                          ? "Select Laptop Brand"
+                          : "Select Phone Brand"
+                      }
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {(deviceType === 'laptop' ? laptopBrands : androidBrands).map((brand) => (
-                    <SelectItem key={brand} value={brand}>
-                      {brand}
-                    </SelectItem>
-                  ))}
+                  {(deviceType === "laptop" ? laptopBrands : androidBrands).map(
+                    (brand) => (
+                      <SelectItem key={brand} value={brand}>
+                        {brand}
+                      </SelectItem>
+                    )
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -155,17 +238,19 @@ const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: numbe
           <FormItem>
             <FormLabel>Device Model</FormLabel>
             <FormControl>
-              <Input 
-                placeholder={deviceType === 'laptop' 
-                  ? 'F15 / Ideapad etc.' 
-                  : deviceType === 'ipad' 
-                  ? 'iPad Pro 13 / iPad Air / iPad Mini etc.' 
-                  : deviceType === 'iphone'
-                  ? 'iPhone 15 / iPhone 14 Pro etc.'
-                  : deviceType === 'macbook'
-                  ? 'Macbook Air / Macbook Pro etc.'
-                  : 'S22 / Note 10 etc.'} 
-                {...field} 
+              <Input
+                placeholder={
+                  deviceType === "laptop"
+                    ? "F15 / Ideapad etc."
+                    : deviceType === "ipad"
+                    ? "iPad Pro 13 / iPad Air / iPad Mini etc."
+                    : deviceType === "iphone"
+                    ? "iPhone 15 / iPhone 14 Pro etc."
+                    : deviceType === "macbook"
+                    ? "Macbook Air / Macbook Pro etc."
+                    : "S22 / Note 10 etc."
+                }
+                {...field}
               />
             </FormControl>
             <FormMessage />
@@ -176,15 +261,21 @@ const DeviceDetails = ({ form, index }: { form: UseFormReturn<any>; index: numbe
   );
 };
 
-const FormSection = ({ icon, title, description }: { icon: React.ReactNode; title: string; description: string; }) => {
+const FormSection = ({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) => {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       className="flex items-center space-x-4"
     >
-      <div className="p-3 bg-white/10 rounded-lg">
-        {icon}
-      </div>
+      <div className="p-3 bg-white/10 rounded-lg">{icon}</div>
       <div>
         <h3 className="font-semibold">{title}</h3>
         <p className="text-sm opacity-75">{description}</p>
@@ -229,7 +320,9 @@ const BookRepair = () => {
 
   const generateServiceId = () => {
     const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
     return `SRV${timestamp}${random}`;
   };
 
@@ -237,33 +330,33 @@ const BookRepair = () => {
     try {
       setIsSubmitting(true);
       const newServiceId = generateServiceId();
-      
-      // Step 1: Insert customer information
-      const { error: customerError } = await supabase
-        .from('customers')
-        .insert({
-          service_id: newServiceId,
-          name: values.name,
-          mobile: values.mobile,
-          address: values.address,
-          preferred_date: values.preferredDate,
-          preferred_time: values.preferredTime,
-        });
 
-      if (customerError) throw new Error(`Customer insertion failed: ${customerError.message}`);
+      // Step 1: Insert customer information
+      const { error: customerError } = await supabase.from("customers").insert({
+        service_id: newServiceId,
+        name: values.name,
+        mobile: values.mobile,
+        address: values.address,
+        preferred_date: values.preferredDate,
+        preferred_time: values.preferredTime,
+      });
+
+      if (customerError)
+        throw new Error(`Customer insertion failed: ${customerError.message}`);
 
       // Step 2: Create warranty entry - Changed default value to '-'
       const { error: warrantyError } = await supabase
-        .from('warranties')
+        .from("warranties")
         .insert({
           service_id: newServiceId,
-          warranty_days: '-'  // Default value as '-'
+          warranty_days: "-", // Default value as '-'
         });
 
-      if (warrantyError) throw new Error(`Warranty creation failed: ${warrantyError.message}`);
+      if (warrantyError)
+        throw new Error(`Warranty creation failed: ${warrantyError.message}`);
 
       // Step 3: Insert devices
-      const devicesToInsert = values.devices.map(device => ({
+      const devicesToInsert = values.devices.map((device) => ({
         service_id: newServiceId,
         device_type: device.deviceType,
         device_name: device.deviceName || null,
@@ -272,52 +365,55 @@ const BookRepair = () => {
       }));
 
       const { error: deviceError } = await supabase
-        .from('devices')
+        .from("devices")
         .insert(devicesToInsert);
 
-      if (deviceError) throw new Error(`Device insertion failed: ${deviceError.message}`);
+      if (deviceError)
+        throw new Error(`Device insertion failed: ${deviceError.message}`);
 
       // Step 4: Create initial billing entry
-      const { error: billingError } = await supabase
-        .from('billing')
-        .insert({
-          service_id: newServiceId,
-          subtotal: 0, // Initial values, to be updated later
-          iitm: 0,
-          total: 0,
-          status: 'pending',
-          payment_method: null,
-          payment_date: null
-        });
+      const { error: billingError } = await supabase.from("billing").insert({
+        service_id: newServiceId,
+        subtotal: 0, // Initial values, to be updated later
+        iitm: 0,
+        total: 0,
+        status: "pending",
+        payment_method: null,
+        payment_date: null,
+      });
 
-      if (billingError) throw new Error(`Billing insertion failed: ${billingError.message}`);
+      if (billingError)
+        throw new Error(`Billing insertion failed: ${billingError.message}`);
 
       // Step 5: Create tracking entry
       const { error: trackingError } = await supabase
-        .from('service_tracking')
+        .from("service_tracking")
         .insert({
           service_id: newServiceId,
-          status: 'pickup',
-          notes: 'Service request created',
+          status: "pickup",
+          notes: "Service request created.",
           created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         });
 
-      if (trackingError) throw new Error(`Tracking insertion failed: ${trackingError.message}`);
+      if (trackingError)
+        throw new Error(`Tracking insertion failed: ${trackingError.message}`);
 
       setServiceId(newServiceId);
       setShowConfirmation(true);
-      
+
       toast({
         title: "Success!",
         description: `Your repair request has been submitted successfully. Service ID: ${newServiceId}`,
       });
-
     } catch (error) {
-      console.error('Form submission error:', error);
+      console.error("Form submission error:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "There was an error submitting your repair request. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "There was an error submitting your repair request. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -357,9 +453,9 @@ const BookRepair = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 pt-6">
-        <Button 
-          variant="ghost" 
-          onClick={() => window.location.href = '/'}
+        <Button
+          variant="ghost"
+          onClick={() => (window.location.href = "/")}
           className="flex items-center gap-2 border"
         >
           <ArrowLeft size={16} />
@@ -376,11 +472,11 @@ const BookRepair = () => {
           <div className="md:flex">
             <div className="relative md:w-1/2 bg-primary p-8 text-white">
               <h2 className="text-3xl font-bold mb-6">Book Your Repair</h2>
-              <p className="mb-8">Get the clear pricing after diagnosis of your device.</p>
-              
-              <div className="space-y-6 mb-8">
-                
+              <p className="mb-8">
+                Get the clear pricing after diagnosis of your device.
+              </p>
 
+              <div className="space-y-6 mb-8">
                 <FormSection
                   icon={<User className="w-6 h-6" />}
                   title="Contact Information"
@@ -421,8 +517,15 @@ const BookRepair = () => {
             </div>
             <div className="md:w-3/4 p-8">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="space-y-6"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                  >
                     <FormField
                       control={form.control}
                       name="name"
@@ -437,7 +540,11 @@ const BookRepair = () => {
                       )}
                     />
                   </motion.div>
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
                     <FormField
                       control={form.control}
                       name="mobile"
@@ -445,14 +552,21 @@ const BookRepair = () => {
                         <FormItem>
                           <FormLabel>Mobile Number</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter your mobile number" {...field} />
+                            <Input
+                              placeholder="Enter your mobile number"
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
                   </motion.div>
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
                     <FormField
                       control={form.control}
                       name="address"
@@ -460,7 +574,10 @@ const BookRepair = () => {
                         <FormItem>
                           <FormLabel>Complete Address</FormLabel>
                           <FormControl>
-                            <Input placeholder="Hostel / Department etc." {...field} />
+                            <Input
+                              placeholder="Hostel / Department etc."
+                              {...field}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -470,7 +587,11 @@ const BookRepair = () => {
 
                   {/* Change the code back to normal after 3rd March */}
 
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
                     <FormField
                       control={form.control}
                       name="preferredDate"
@@ -484,14 +605,19 @@ const BookRepair = () => {
                               {...field}
                               onChange={(e) => {
                                 const selectedDate = new Date(e.target.value);
-                                const disabledDate = new Date(2025, 2, 2); // March 2, 2025
-                                
+                                const disabledDate = new Date(2025, 2, 16); // March 16, 2025
+
                                 if (
-                                  selectedDate.getFullYear() === disabledDate.getFullYear() &&
-                                  selectedDate.getMonth() === disabledDate.getMonth() &&
-                                  selectedDate.getDate() === disabledDate.getDate()
+                                  selectedDate.getFullYear() ===
+                                    disabledDate.getFullYear() &&
+                                  selectedDate.getMonth() ===
+                                    disabledDate.getMonth() &&
+                                  selectedDate.getDate() ===
+                                    disabledDate.getDate()
                                 ) {
-                                  alert("We are actively participating in the IIT Madras E-Summit on March 2nd, 2025! Due to this, device pickups will not be available on this date. Please choose an alternative date for your pickup. We appreciate your support!");
+                                  alert(
+                                    "We're currently experiencing a high volume of requests. In the meantime, you can still book your repair by selecting your pickup date for tomorrow."
+                                  );
                                   e.target.value = "";
                                 } else {
                                   field.onChange(e);
@@ -505,7 +631,11 @@ const BookRepair = () => {
                     />
                   </motion.div>
 
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.6 }}>
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
                     <FormField
                       control={form.control}
                       name="preferredTime"
@@ -582,7 +712,12 @@ const BookRepair = () => {
                       />
                     </motion.div>
                   ))}
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }} className="space-y-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="space-y-4"
+                  >
                     <Button
                       type="button"
                       variant="outline"
@@ -599,14 +734,17 @@ const BookRepair = () => {
                       <Plus className="mr-2 h-4 w-4" />
                       Add Another Device
                     </Button>
-                    <Button type="submit" className="w-full" disabled={isSubmitting}>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isSubmitting}
+                    >
                       {isSubmitting ? "Submitting..." : "Submit Repair Request"}
                     </Button>
                   </motion.div>
                 </form>
               </Form>
             </div>
-
           </div>
         </motion.div>
       </div>
@@ -622,7 +760,9 @@ const BookRepair = () => {
                   variant="ghost"
                   size="icon"
                   className={`h-8 w-8 transition-colors ${
-                    copySuccess ? "bg-green-500 text-white hover:bg-green-600" : ""
+                    copySuccess
+                      ? "bg-green-500 text-white hover:bg-green-600"
+                      : ""
                   }`}
                   onClick={copyServiceId}
                 >
@@ -639,7 +779,9 @@ const BookRepair = () => {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={handleConfirmation}>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={handleConfirmation}>
+              Continue
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
