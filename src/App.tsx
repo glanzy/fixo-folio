@@ -36,8 +36,8 @@ const App = () => (
             <Route path="/services" element={<Services />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/admin" element={<Admin />} />
-            <Route path="/vendor/login" element={<VendorLogin />} />
-            <Route path="/vendor/dashboard" element={<VendorDashboard />} />
+            <Route path="/vendors/login" element={<VendorLogin />} />
+            <Route path="/vendors/vendor/:vendorName" element={<VendorDashboard />} />
           </Routes>
         </Suspense>
       </Router>

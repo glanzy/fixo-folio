@@ -1,198 +1,383 @@
-import { FC, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from "@/supabaseClient";
-import { toast } from "sonner";
+import { updateServiceStatus, setupStatusSubscription } from "@/utils/statusUpdateService";
+import {
+  Typography,
+  Container,
+  Box,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Chip,
+  Button,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Snackbar,
+  Alert,
+} from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-interface Task {
+interface ServiceAssignment {
   service_id: string;
-  brandName: string;
-  model: string;
-  pickupDate: string;
-  pickupTime: string;
-  problemDescription: string;
   customer_name: string;
-  address: string;
   mobile: string;
+  device_type: string;
+  device_model: string;
+  problem: string;
+  status: string;
+  address: string;
+  created_at: string;
 }
 
-const VendorDashboard: FC = () => {
+const serviceStatusOptions = [
+  { value: 'pickup', label: 'Picked Up' },
+  { value: 'diagnosis', label: 'In Diagnosis' },
+  { value: 'repair', label: 'In Repairing' },
+  { value: 'delivered', label: 'Delivered' }
+];
+
+const VendorDashboard = () => {
+  const { vendorName } = useParams<{ vendorName: string }>();
   const navigate = useNavigate();
-  const [selectedTask, setSelectedTask] = useState<string | null>(null);
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [assignments, setAssignments] = useState<ServiceAssignment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [updatingStatus, setUpdatingStatus] = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<ServiceAssignment | null>(null);
+  const [statusDialogOpen, setStatusDialogOpen] = useState(false);
+  const [newStatus, setNewStatus] = useState('');
+  const supabaseSubscription = useRef<any>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
-  const fetchTasks = async (vendorId: string) => {
+  // Authentication check
+  useEffect(() => {
+    const vendorData = JSON.parse(localStorage.getItem('vendorData') || '{}');
+    if (!vendorData?.token || !vendorData?.vendorName) {
+      navigate('/vendors/login');
+      return;
+    }
+
+    // Make sure the vendor is accessing their own dashboard
+    if (vendorName && vendorData.vendorName.toLowerCase() !== vendorName.toLowerCase()) {
+      navigate('/vendors/login');
+    }
+  }, [vendorName, navigate]);
+
+  // Fetch vendor assignments
+  const fetchAssignments = async () => {
+    setLoading(true);
     try {
-      console.log('Fetching tasks for vendor:', vendorId);
+      const vendorData = JSON.parse(localStorage.getItem('vendorData') || '{}');
+      if (!vendorData.vendorName) throw new Error('Vendor not authenticated');
 
-      // First get all tasks assigned to this vendor
-      const { data: trackingData, error: trackingError } = await supabase
-        .from('service_tracking')
-        .select('*')  // Changed from just service_id to all fields
-        .eq('vendor_assigned', vendorId);
+      // Get vendor assignments
+      const { data: assignmentData, error: assignmentError } = await supabase
+        .from('vendor_assignments')
+        .select('service_id')
+        .eq('vendor_name', vendorData.vendorName);
 
-      console.log('Tracking Data:', trackingData);
-      console.log('Tracking Error:', trackingError);
-
-      if (trackingError) throw trackingError;
-      if (!trackingData || trackingData.length === 0) {
-        console.log('No tasks found for this vendor');
-        setTasks([]);
+      if (assignmentError) throw assignmentError;
+      if (!assignmentData || assignmentData.length === 0) {
+        setAssignments([]);
         setLoading(false);
         return;
       }
 
-      const serviceIds = trackingData.map(t => t.service_id);
-      console.log('Service IDs:', serviceIds);
+      // Get service IDs
+      const serviceIds = assignmentData.map(a => a.service_id);
 
-      // Get customer details
+      // Get customer data for each service
       const { data: customerData, error: customerError } = await supabase
         .from('customers')
-        .select(`
-          service_id,
-          name,
-          mobile,
-          address,
-          preferred_date,
-          preferred_time
-        `)
+        .select('*')
         .in('service_id', serviceIds);
-
-      console.log('Customer Data:', customerData);
-      console.log('Customer Error:', customerError);
 
       if (customerError) throw customerError;
 
-      // Get device details
+      // Get device data for each service
       const { data: deviceData, error: deviceError } = await supabase
         .from('devices')
-        .select(`
-          service_id,
-          device_type,
-          device_name,
-          device_model,
-          problem_description
-        `)
+        .select('*')
         .in('service_id', serviceIds);
-
-      console.log('Device Data:', deviceData);
-      console.log('Device Error:', deviceError);
 
       if (deviceError) throw deviceError;
 
-      // Combine the data
-      const combinedTasks = customerData.map(customer => {
-        const devices = deviceData.filter(d => d.service_id === customer.service_id);
-        const tracking = trackingData.find(t => t.service_id === customer.service_id);
-        
+      // Get status data for each service
+      const { data: statusData, error: statusError } = await supabase
+        .from('service_tracking')
+        .select('*')
+        .in('service_id', serviceIds);
+
+      if (statusError) throw statusError;
+
+      // Combine data
+      const combinedData = serviceIds.map(serviceId => {
+        const customer = customerData?.find(c => c.service_id === serviceId);
+        const device = deviceData?.find(d => d.service_id === serviceId);
+        const status = statusData?.find(s => s.service_id === serviceId);
+
         return {
-          service_id: customer.service_id,
-          customer_name: customer.name,
-          mobile: customer.mobile,
-          address: customer.address,
-          pickupDate: customer.preferred_date,
-          pickupTime: customer.preferred_time,
-          brandName: devices[0]?.device_name || 'Not specified',
-          model: devices[0]?.device_model || 'Not specified',
-          problemDescription: devices[0]?.problem_description || 'No description provided',
-          status: tracking?.status || 'pending'
+          service_id: serviceId,
+          customer_name: customer?.name || 'Unknown',
+          mobile: customer?.mobile || 'Unknown',
+          address: customer?.address || 'Unknown',
+          device_type: device?.device_type || 'Unknown',
+          device_model: device?.device_model || 'Unknown',
+          problem: device?.problem_description || 'Unknown',
+          status: status?.status || 'pickup',
+          created_at: customer?.created_at || new Date().toISOString()
         };
       });
 
-      console.log('Combined Tasks:', combinedTasks);
-      setTasks(combinedTasks);
-      toast.success(`Found ${combinedTasks.length} assigned tasks`);
-
+      setAssignments(combinedData);
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      toast.error('Failed to fetch tasks: ' + (error as Error).message);
+      console.error('Error fetching assignments:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // Modified useEffect to show vendorAuth value
-  useEffect(() => {
-    const vendorAuth = localStorage.getItem('vendorAuth');
-    console.log('Vendor Auth:', vendorAuth);
-    
-    if (!vendorAuth) {
-      navigate('/vendor/login');
-    } else {
-      fetchTasks(vendorAuth);
+  // Setup real-time subscription for service status changes
+  const setupRealtimeSubscription = () => {
+    if (supabaseSubscription.current) {
+      supabase.removeChannel(supabaseSubscription.current);
     }
-  }, [navigate]);
+
+    supabaseSubscription.current = setupStatusSubscription(null, (service_id, status) => {
+      console.log('Received real-time update:', service_id, status);
+      // Update the assignments state with the new status
+      setAssignments(prevAssignments => 
+        prevAssignments.map(assignment => 
+          assignment.service_id === service_id
+            ? { ...assignment, status }
+            : assignment
+        )
+      );
+    });
+  };
+
+  // Handle status update
+  const handleStatusUpdate = async (serviceId: string, status: string) => {
+    setUpdatingStatus(serviceId);
+    try {
+      await updateServiceStatus(serviceId, status);
+      
+      // Immediately update UI without waiting for real-time subscription
+      setAssignments(prevAssignments => 
+        prevAssignments.map(assignment => 
+          assignment.service_id === serviceId
+            ? { ...assignment, status }
+            : assignment
+        )
+      );
+      
+      // Show success feedback
+      setSnackbarMessage('Status updated successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error updating status:', error);
+      // Show error feedback
+      setSnackbarMessage('Failed to update status');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } finally {
+      setUpdatingStatus(null);
+      setStatusDialogOpen(false);
+    }
+  };
+
+  const openStatusDialog = (service: ServiceAssignment) => {
+    setSelectedService(service);
+    setNewStatus(service.status);
+    setStatusDialogOpen(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('vendorAuthToken');
+    localStorage.removeItem('vendorName');
+    localStorage.removeItem('vendorData');
+    navigate('/vendors/login');
+  };
+
+  // Initial data fetch and subscription setup
+  useEffect(() => {
+    fetchAssignments();
+    setupRealtimeSubscription();
+
+    return () => {
+      if (supabaseSubscription.current) {
+        supabase.removeChannel(supabaseSubscription.current);
+      }
+    };
+  }, []);
+
+  // Get vendor display name
+  const getVendorDisplayName = () => {
+    const vendorData = JSON.parse(localStorage.getItem('vendorData') || '{}');
+    return vendorData.vendorName || vendorName || 'Vendor';
+  };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Vendor Dashboard</h1>
-        <button
-          onClick={() => {
-            localStorage.removeItem('vendorAuth');
-            navigate('/vendor/login');
-          }}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-        >
-          Logout
-        </button>
-      </div>
-      <div className="grid gap-4">
-        <div className="border rounded-lg p-4">
-          <h2 className="text-xl font-semibold mb-4">Assigned Devices</h2>
-          {loading ? (
-            <p>Loading tasks...</p>
-          ) : tasks.length === 0 ? (
-            <p>No devices assigned yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {tasks.map(task => (
-                <div
-                  key={task.service_id}
-                  className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-                  onClick={() => setSelectedTask(task.service_id)}
-                >
-                  <div className="flex flex-col space-y-2">
-                    <span className="font-semibold text-lg">{task.brandName}</span>
-                    <span className="text-sm text-gray-500">{task.model}</span>
-                    <span className="text-sm text-gray-500">Service ID: {task.service_id}</span>
-                    <span className="text-sm text-gray-500">Pickup: {task.pickupDate}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+    <Container maxWidth="lg">
+      <Box sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Typography variant="h4" component="h1">
+            {getVendorDisplayName()} Dashboard
+          </Typography>
+          <Box>
+            <Button 
+              variant="outlined" 
+              startIcon={<RefreshIcon />} 
+              onClick={fetchAssignments}
+              sx={{ mr: 2 }}
+            >
+              Refresh
+            </Button>
+            <Button 
+              variant="outlined" 
+              color="error" 
+              startIcon={<LogoutIcon />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </Box>
+        </Box>
 
-      {/* Task Details Modal */}
-      {selectedTask && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold">Device Details</h3>
-              <button
-                onClick={() => setSelectedTask(null)}
-                className="text-gray-500 hover:text-gray-700"
+        {loading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+            <CircularProgress />
+          </Box>
+        ) : assignments.length === 0 ? (
+          <Paper sx={{ p: 4, textAlign: 'center' }}>
+            <Typography variant="h6">No assignments found</Typography>
+            <Typography variant="body2" color="textSecondary">
+              You don't have any service assignments yet
+            </Typography>
+          </Paper>
+        ) : (
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Service ID</TableCell>
+                  <TableCell>Customer</TableCell>
+                  <TableCell>Device</TableCell>
+                  <TableCell>Problem</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {assignments.map((assignment) => (
+                  <TableRow key={assignment.service_id}>
+                    <TableCell>{assignment.service_id}</TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{assignment.customer_name}</Typography>
+                      <Typography variant="caption" color="textSecondary">{assignment.mobile}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">{assignment.device_type}</Typography>
+                      <Typography variant="caption" color="textSecondary">{assignment.device_model}</Typography>
+                    </TableCell>
+                    <TableCell>{assignment.problem}</TableCell>
+                    <TableCell>
+                      <Chip 
+                        label={assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)} 
+                        color={
+                          assignment.status === 'pickup' ? 'info' :
+                          assignment.status === 'diagnosis' ? 'warning' :
+                          assignment.status === 'repair' ? 'primary' :
+                          assignment.status === 'delivered' ? 'success' : 
+                          'default'
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button 
+                        variant="contained" 
+                        size="small"
+                        disabled={updatingStatus === assignment.service_id}
+                        onClick={() => openStatusDialog(assignment)}
+                      >
+                        {updatingStatus === assignment.service_id ? (
+                          <CircularProgress size={24} />
+                        ) : 'Update Status'}
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Box>
+
+      {/* Status Update Dialog */}
+      <Dialog open={statusDialogOpen} onClose={() => setStatusDialogOpen(false)}>
+        <DialogTitle>Update Service Status</DialogTitle>
+        <DialogContent>
+          <Box sx={{ minWidth: 300, mt: 2 }}>
+            <FormControl fullWidth>
+              <InputLabel id="status-select-label">Status</InputLabel>
+              <Select
+                labelId="status-select-label"
+                value={newStatus}
+                label="Status"
+                onChange={(e) => setNewStatus(e.target.value)}
               >
-                ✕
-              </button>
-            </div>
-            {tasks.find(task => task.service_id === selectedTask) && (
-              <div className="space-y-4">
-                {Object.entries(tasks.find(task => task.service_id === selectedTask) || {})
-                  .map(([key, value]) => (
-                    <div key={key} className="grid grid-cols-2 gap-2">
-                      <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:</span>
-                      <span>{String(value)}</span>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
+                {serviceStatusOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setStatusDialogOpen(false)}>Cancel</Button>
+          <Button 
+            onClick={() => selectedService && handleStatusUpdate(selectedService.service_id, newStatus)}
+            variant="contained"
+            disabled={!selectedService || selectedService.status === newStatus}
+          >
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Feedback Snackbar */}
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={6000} 
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={() => setSnackbarOpen(false)} 
+          severity={snackbarSeverity}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Container>
   );
 };
 

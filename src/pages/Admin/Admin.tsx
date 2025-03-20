@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import {
@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Search, RefreshCw } from "lucide-react";
+import { Search, RefreshCw, Copy } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -35,7 +35,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { updateServiceStatus, setupStatusSubscription } from "@/utils/statusUpdateService";
 
 interface RepairBooking {
   service_id: string;
@@ -90,6 +90,9 @@ const Admin = () => {
   const [editVendor, setEditVendor] = useState(false);
   const [editPaymentDate, setEditPaymentDate] = useState(false);  // Add this line
   const [editWarranty, setEditWarranty] = useState(false);
+  const [selectedTemplate, setSelectedTemplate] = useState("pickup");
+  const [messageContent, setMessageContent] = useState("");
+  const supabaseSubscription = useRef<any>(null);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -510,53 +513,38 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
     }
   };
 
-  const handleStatusUpdate = async (serviceId: string, newStatus: string) => {
-    try {
-      // First check if a record exists
-      const { data: existingTracking, error: checkError } = await supabase
-        .from("service_tracking")
-        .select("*")
-        .eq("service_id", serviceId)
-        .single();
-
-      if (checkError && checkError.code !== 'PGRST116') {
-        throw checkError;
-      }
-
-      // Update or insert the record
-      const { error } = existingTracking
-        ? await supabase
-            .from("service_tracking")
-            .update({ status: newStatus.toLowerCase() })
-            .eq("service_id", serviceId)
-        : await supabase
-            .from("service_tracking")
-            .insert({ service_id: serviceId, status: newStatus.toLowerCase() });
-
-      if (error) throw error;
-
-      // Update local state
-      setBookings((prevBookings) =>
-        prevBookings.map((booking) =>
-          booking.service_id === serviceId
-            ? { ...booking, status: newStatus.toLowerCase() }
-            : booking
-        )
-      );
-
-      if (selectedBooking && selectedBooking.service_id === serviceId) {
-        setSelectedBooking((prev) => ({
-          ...prev!,
-          status: newStatus.toLowerCase(),
-        }));
-      }
-
-      toast.success("Status updated successfully");
-    } catch (error) {
-      console.error("Error updating status:", error);
-      toast.error("Failed to update status");
+const handleStatusUpdate = async (serviceId: string, newStatus: string) => {
+  try {
+    // Optimistically update the UI first
+    setBookings((prevBookings) =>
+      prevBookings.map((booking) =>
+        booking.service_id === serviceId
+          ? { ...booking, status: newStatus }
+          : booking
+      )
+    );
+    
+    // Also update selected booking if it's the one being changed
+    if (selectedBooking && selectedBooking.service_id === serviceId) {
+      setSelectedBooking((prev) => ({
+        ...prev!,
+        status: newStatus,
+      }));
     }
-  };
+    
+    // Show immediate feedback
+    toast.success(`Status updated to: ${newStatus}`);
+    
+    // Then update in the database
+    await updateServiceStatus(serviceId, newStatus);
+  } catch (error) {
+    console.error("Error updating status:", error);
+    toast.error("Failed to update status");
+    
+    // Revert the optimistic update in case of error
+    fetchBookings();
+  }
+};
 
   const handleWarrantyUpdate = async (serviceId: string, warrantyDays: string) => {
     try {
@@ -615,6 +603,51 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
     }
   };
 
+const setupRealtimeSubscription = () => {
+  // Clean up any existing subscription
+  if (supabaseSubscription.current) {
+    supabase.removeChannel(supabaseSubscription.current);
+  }
+
+  // Use the utility function
+  supabaseSubscription.current = setupStatusSubscription(null, (serviceId, status) => {
+    // Only update if the new status is different from what we have
+    setBookings((prevBookings) => {
+      const existingBooking = prevBookings.find(b => b.service_id === serviceId);
+      if (!existingBooking || existingBooking.status === status) return prevBookings;
+      
+      return prevBookings.map((booking) =>
+        booking.service_id === serviceId
+          ? { ...booking, status: status }
+          : booking
+      );
+    });
+    
+    // If this is the currently selected booking, update its status too
+    setSelectedBooking((prev) => {
+      if (!prev || prev.service_id !== serviceId || prev.status === status) return prev;
+      return { ...prev, status: status };
+    });
+    
+    // Only show toast if it's a new update from another session
+    const existingBooking = bookings.find(b => b.service_id === serviceId);
+    if (existingBooking && existingBooking.status !== status) {
+      toast.info(`Service ID ${serviceId} status updated to ${status}`, {
+        id: `status-update-${serviceId}-${Date.now()}`, // Unique ID to prevent duplicate toasts
+      });
+    }
+  });
+};
+
+  // Cleanup subscription on component unmount
+  useEffect(() => {
+    return () => {
+      if (supabaseSubscription.current) {
+        supabase.removeChannel(supabaseSubscription.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (selectedBooking) {
       setTempBilling({
@@ -630,8 +663,56 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
       setEditPaymentDate(!selectedBooking.payment_date);  // Add this line
       setEditWarranty(!selectedBooking.warranty_days);
       // Remove the automatic setting of editVendor here
+      
+      // Set default message when booking is selected
+      updateMessageTemplate("pickup", selectedBooking);
     }
   }, [selectedBooking]);
+
+  const updateMessageTemplate = (template: string, booking: DetailedBooking) => {
+    setSelectedTemplate(template);
+    let content = "";
+    
+    switch (template) {
+      case "pickup":
+        content = `Dear Customer,
+
+Your repair request for your ${booking.device_type} with ${booking.devices[0]?.problem_description || "issues"} has been successfully confirmed. Our team will pick it up at ${booking.preferred_time} today.
+
+🧘🏻Sit back and relax! After diagnosis, we will provide you with a clear estimation of pricing, warranty details, and repair time - no hidden costs, no surprises! 
+
+📍Track Your Repair Status:
+https://fixonow.com/track-service?id=${booking.service_id}
+
+Need help? Call us anytime at 9582568064.
+
+✨ Thank you for choosing FIXO! We're committed to providing you with fast, reliable, and hassle-free repairs. ✨
+
+— Team FIXO`;
+        break;
+      case "delivery":
+        content = `Dear Customer,
+
+🎉 We're happy to inform you that your ${booking.device_type} has been successfully delivered and is ready to roll!
+
+Amount Paid: ₹${booking.total || "___"}
+Warranty Provided: ${booking.warranty_days || "6 months"}
+
+📍Check your service details here:
+https://fixonow.com/track-service?id=${booking.service_id}
+
+For any assistance, feel free to contact us at 9582568064.
+
+✨ Fixo—Your trusted repair partner, always at your service! ✨
+
+— Team FIXO`;
+        break;
+      default:
+        content = `Hi ${booking.customer_name},\n\nYour ${booking.device_type} repair status is: ${booking.status}.\n${booking.total ? `Total amount: ₹${booking.total}` : ''}\n\nThank you for choosing Fixo.`;
+    }
+    
+    setMessageContent(content);
+  };
 
   useEffect(() => {
     const auth = localStorage.getItem("adminAuth");
@@ -640,6 +721,7 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
     }
     if (isAuthenticated) {
       fetchBookings();
+      setupRealtimeSubscription(); // Setup real-time subscription
     }
   }, [isAuthenticated]);
 
@@ -784,13 +866,13 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
         </CardContent>
       </Card>
       <Dialog open={showDetails} onOpenChange={setShowDetails}>
-        <DialogContent className="max-w-[95%] md:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto p-4 md:p-6">
-          <DialogHeader className="top-0 bg-white pb-4">
+        <DialogContent className="max-w-[95%] w-full md:max-w-2xl lg:max-w-4xl h-[90vh] overflow-y-auto p-4 md:p-6">
+          <DialogHeader className="top-0 bg-white pb-4 z-10">
             <DialogTitle>Repair Booking Details</DialogTitle>
           </DialogHeader>
           {selectedBooking && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Display basic booking information */}
                 <div>
                   <h4 className="font-semibold">Service ID</h4>
@@ -867,7 +949,7 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
 
               {/* Vendor Assignment Section */}
               <div className="mt-6 border-t pt-4">
-                <h4 className="font-semibold mb-2">Assign Vendor</h4>
+                <h4 className="font-semibold mb-3">Assign Vendor</h4>
                 <div className="flex items-center gap-2 flex-wrap">
                   {/* Show assigned vendor if exists and not in edit mode */}
                   {!editVendor && selectedBooking.vendor_assigned ? (
@@ -907,26 +989,32 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
 
               {/* Service Status Section */}
               <div className="mt-6 border-t pt-4">
-                <h4 className="font-semibold mb-2">Service Status</h4>
-                <Select
-                  value={selectedBooking.status}
-                  onValueChange={(value) => handleStatusUpdate(selectedBooking.service_id, value)}
-                >
-                  <SelectTrigger className="w-full sm:w-[200px]">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pickup">Pickup</SelectItem>
-                    <SelectItem value="diagnosis">Diagnosis</SelectItem>
-                    <SelectItem value="repair">Repair</SelectItem>
-                    <SelectItem value="delivered">Delivered</SelectItem>
-                  </SelectContent>
-                </Select>
+                <h4 className="font-semibold mb-3">Service Status</h4>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                  <Select
+                    value={selectedBooking.status}
+                    onValueChange={(value) => handleStatusUpdate(selectedBooking.service_id, value)}
+                  >
+                    <SelectTrigger className="w-full sm:w-[200px]">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pickup">Pickup</SelectItem>
+                      <SelectItem value="diagnosis">Diagnosis</SelectItem>
+                      <SelectItem value="repair">Repair</SelectItem>
+                      <SelectItem value="delivered">Delivered</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Badge variant="outline" className="capitalize">
+                    Current: {selectedBooking.status}
+                  </Badge>
+                </div>
               </div>
 
               {/* Billing Details Section */}
               <div className="mt-6 border-t pt-4">
-                <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
+                <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
                   <h4 className="font-semibold">Billing Details</h4>
                   <Button
                     onClick={() => handleSavePrice(selectedBooking.service_id)}
@@ -936,7 +1024,7 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
                     {savingPrice ? "Saving..." : "Save Price"}
                   </Button>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div>
                     <label className="text-sm font-medium">Subtotal</label>
                     <Input
@@ -1101,6 +1189,43 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
                         />
                       )}
                     </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              {/* Messaging Template Section */}
+              <div className="mt-6 border-t pt-4">
+                <h4 className="font-semibold mb-3">Send Message</h4>
+                <div className="space-y-3">
+                  <Select 
+                    value={selectedTemplate} 
+                    onValueChange={(value) => selectedBooking && updateMessageTemplate(value, selectedBooking)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select message template" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="pickup">Pickup Confirmation</SelectItem>
+                      <SelectItem value="delivery">Delivery Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <textarea 
+                    className="w-full min-h-[120px] p-3 border rounded-md text-sm"
+                    placeholder="Message content will appear here"
+                    value={messageContent}
+                    onChange={(e) => setMessageContent(e.target.value)}
+                  ></textarea>
+                  
+                  <div className="flex justify-center sm:justify-start">
+                    <Button variant="outline" className="w-full sm:w-auto bg-blue-900 text-white hover:bg-blue-800" onClick={() => {
+                      navigator.clipboard.writeText(messageContent);
+                      toast.success("Message copied to clipboard");
+                    }}>
+                      <Copy className="w-4 h-4 mr-2" />
+                      Copy Message
+                    </Button>
                   </div>
                 </div>
               </div>

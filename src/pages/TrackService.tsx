@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -25,6 +25,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { setupStatusSubscription } from "@/utils/statusUpdateService";
 
 enum ServiceStatus {
   PICKUP = 'pickup',
@@ -123,6 +124,60 @@ const TrackService = () => {
   const [claimDescription, setClaimDescription] = useState("");
   const [submittingClaim, setSubmittingClaim] = useState(false);
   const [warrantyClaims, setWarrantyClaims] = useState<WarrantyClaim[]>([]);
+  const supabaseSubscription = useRef<any>(null);
+
+  // Setup real-time subscription for the current service
+  useEffect(() => {
+    if (!serviceId) return;
+
+    // Use the utility function
+    const subscription = setupStatusSubscription(serviceId, (_, newStatus) => {
+      // Update the service status in our state
+      if (newStatus && serviceData) {
+        const typedStatus = newStatus as ServiceStatus;
+        
+        // Update the service status
+        setServiceData(prevData => {
+          if (!prevData) return null;
+          
+          // Create a new timeline with the updated status
+          const newTimeline = prevData.timeline.map(step => {
+            const isCurrentStatus = step.status === typedStatus;
+            const shouldBeCompleted = prevData.timeline.findIndex(t => t.status === step.status) 
+              <= prevData.timeline.findIndex(t => t.status === typedStatus);
+            
+            return {
+              ...step,
+              completed: shouldBeCompleted,
+              notes: isCurrentStatus ? getStatusNotes(step.status) : step.notes,
+              date: isCurrentStatus || step.date ? step.date || new Date().toISOString() : undefined
+            };
+          });
+          
+          return {
+            ...prevData,
+            service: {
+              ...prevData.service,
+              status: [...(prevData.service.status || []), typedStatus]
+            },
+            timeline: newTimeline
+          };
+        });
+        
+        toast.info(`Service status updated to ${newStatus}`);
+      }
+    });
+
+    // Save subscription reference for cleanup
+    supabaseSubscription.current = subscription;
+
+    // Cleanup function
+    return () => {
+      if (supabaseSubscription.current) {
+        supabase.removeChannel(supabaseSubscription.current);
+      }
+    };
+  }, [serviceId, serviceData]);
 
   useEffect(() => {
     const fetchServiceData = async () => {

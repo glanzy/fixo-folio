@@ -71,7 +71,16 @@ const formSchema = z.object({
 
 // Options of Time Slots and brands
 const timeSlots = ["11:00 AM", "03:00 PM", "06:00 PM"];
-const laptopBrands = ["Asus", "HP", "Lenovo", "Dell", "Acer", "MSI", "Samsung"];
+const laptopBrands = [
+  "Asus",
+  "HP",
+  "Lenovo",
+  "Dell",
+  "Acer",
+  "MSI",
+  "Samsung",
+  "Windows",
+];
 const androidBrands = [
   "Samsung",
   "OnePlus",

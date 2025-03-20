@@ -4,9 +4,9 @@ import {
   Phone,
   MessageSquare,
   MessageCircle,
-
+  User
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -23,6 +23,7 @@ import { supabase } from "@/supabaseClient";
 export const Footer = () => {
   const [feedback, setFeedback] = useState("");
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleFeedbackSubmit = async () => {
     if (!feedback.trim()) {
@@ -61,6 +62,10 @@ export const Footer = () => {
     }
   };
 
+  const navigateToVendorLogin = () => {
+    navigate('/vendors/login');
+  };
+
   return (
     <footer className="bg-primary text-white">
       <div className="container mx-auto px-4 py-8">
@@ -87,48 +92,6 @@ export const Footer = () => {
             </div>
           </div>
 
-          {/* Quick Links */}
-           {/* <div>
-            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-white">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <a href="/track-service" className="text-gray-300 hover:text-white">
-                  Track Service
-                </a>
-              </li>
-              <li>
-                <a href="/about-us" className="text-gray-300 hover:text-white">
-                  About us
-                </a>
-              </li>
-              <li>
-                <Link to="/careers" className="text-gray-300 hover:text-white">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link to="/#faq" className="text-gray-300 hover:text-white">
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>  */}
-
-          {/* Our Services - Seen only in laptop mode rest gone*/}
-          {/* <div className="hidden md:block">
-            <h4 className="text-lg font-semibold mb-4">Our Services</h4>
-            <ul className="space-y-2">
-              <li className="text-gray-300">Mobile Repair</li>
-              <li className="text-gray-300">Laptop Service</li>
-              <li className="text-gray-300">iPad Repair</li>
-            </ul>
-          </div> */}
-
           {/* Contact Us */}
           <div>
             <h4 className="text-lg font-semibold mb-4">CONTACT US</h4>
@@ -142,7 +105,6 @@ export const Footer = () => {
                 </div>
               </div>
 
-              {/*  */}
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5" />
                 <span
@@ -171,20 +133,8 @@ export const Footer = () => {
               </div>
 
               {/* Socials */}
-
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
-                  <a
-                    href="https://chat.whatsapp.com/B5fTANfsQZQ5apGqjZTOQ9"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      src="./socials/WL.png"
-                      alt="Message Circle"
-                      className="w-8 h-8 transition-colors"
-                    />
-                  </a>
                   <a
                     href="https://www.linkedin.com/company/fixorepairs"
                     target="_blank"
@@ -220,30 +170,6 @@ export const Footer = () => {
                   </a>
                 </div>
               </div>
-
-              {/* 
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="secondary" className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4" />
-                    Give Feedback
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Share Your Feedback</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <Textarea
-                      placeholder="Tell us what you think..."
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                      className="min-h-[100px]"
-                    />
-                    <Button onClick={handleFeedbackSubmit}>Submit Feedback</Button>
-                  </div>
-                </DialogContent>
-              </Dialog> */}
             </div>
           </div>
 
