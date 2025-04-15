@@ -1003,6 +1003,7 @@ For any assistance, feel free to contact us at 9582568064.
                       <SelectItem value="diagnosis">Diagnosis</SelectItem>
                       <SelectItem value="repair">Repair</SelectItem>
                       <SelectItem value="delivered">Delivered</SelectItem>
+                      <SelectItem value="cancelled">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>
                   

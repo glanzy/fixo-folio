@@ -31,7 +31,8 @@ enum ServiceStatus {
   PICKUP = 'pickup',
   DIAGNOSIS = 'diagnosis',
   REPAIR = 'repair',
-  DELIVERED = 'delivered'
+  DELIVERED = 'delivered',
+  CANCELLED = 'cancelled'
 }
 
 const getStatusNotes = (status: ServiceStatus): string => {
@@ -44,6 +45,8 @@ const getStatusNotes = (status: ServiceStatus): string => {
       return "Device is being repaired.";
     case ServiceStatus.DELIVERED:
       return "Device has been successfully delivered.";
+    case ServiceStatus.CANCELLED:
+      return "Repair service has been cancelled.";
     default:
       return "";
   }
@@ -416,47 +419,65 @@ const TrackService = () => {
         {/* Service Timeline */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Service Progress</CardTitle>
+            <CardTitle>
+              {serviceData.service.status.includes(ServiceStatus.CANCELLED) 
+                ? "Service Cancelled" 
+                : "Service Progress"}
+            </CardTitle>
             <CardDescription>Service ID: {serviceData.service.id}</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col md:flex-row justify-between">
               <div className="space-y-2 mb-6 md:mb-0">
-                {serviceData.timeline.map((step, index) => {
-                  const isLaterStepActive = serviceData.service.status.some(
-                    activeStatus => {
-                      const activeIndex = serviceData.timeline.findIndex(t => t.status === activeStatus);
-                      return activeIndex > index;
-                    }
-                  );
-
-                  const shouldShowCompleted = step.completed || isLaterStepActive;
-
-                  return (
-                    <div key={step.status} className="flex items-start space-x-5">
-                      <div className="flex flex-col items-center">
-                        {shouldShowCompleted ? (
-                          <CheckCircle2 className="w-6 h-6 text-primary" />
-                        ) : (
-                          <Circle className={`w-6 h-6 ${
-                            serviceData.service.status.includes(step.status)
-                              ? "text-primary animate-pulse"
-                              : "text-gray-300"
-                          }`} />
-                        )}
-                        {index < serviceData.timeline.length - 1 && (
-                          <div className="w-0.5 h-8 bg-gray-200 my-1" />
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-medium capitalize">{step.status}</p>
-                        {step.notes && (
-                          <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
-                        )}
-                      </div>
+                {serviceData.service.status.includes(ServiceStatus.CANCELLED) ? (
+                  // Show cancelled status UI
+                  <div className="flex items-start space-x-5">
+                    <div className="flex flex-col items-center">
+                      <Circle className="w-6 h-6 text-red-500" />
                     </div>
-                  );
-                })}
+                    <div className="flex-1">
+                      <p className="font-medium capitalize text-red-500">Cancelled</p>
+                      <p className="text-sm mt-2 text-gray-800">Repair service has been cancelled.</p>
+                    </div>
+                  </div>
+                ) : (
+                  // Show normal timeline
+                  serviceData.timeline.map((step, index) => {
+                    const isLaterStepActive = serviceData.service.status.some(
+                      activeStatus => {
+                        const activeIndex = serviceData.timeline.findIndex(t => t.status === activeStatus);
+                        return activeIndex > index;
+                      }
+                    );
+
+                    const shouldShowCompleted = step.completed || isLaterStepActive;
+
+                    return (
+                      <div key={step.status} className="flex items-start space-x-5">
+                        <div className="flex flex-col items-center">
+                          {shouldShowCompleted ? (
+                            <CheckCircle2 className="w-6 h-6 text-primary" />
+                          ) : (
+                            <Circle className={`w-6 h-6 ${
+                              serviceData.service.status.includes(step.status)
+                                ? "text-primary animate-pulse"
+                                : "text-gray-300"
+                            }`} />
+                          )}
+                          {index < serviceData.timeline.length - 1 && (
+                            <div className="w-0.5 h-8 bg-gray-200 my-1" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium capitalize">{step.status}</p>
+                          {step.notes && (
+                            <p className="text-sm mt-2 text-gray-800">{step.notes}</p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
               </div>
               
               {/* Warranty Column */}
