@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { supabase } from "@/supabaseClient";
+import { encodeServiceId } from '@/utils/hashUtils';
 
 const ServiceIdEntry = () => {
   const [serviceId, setServiceId] = useState("");
@@ -23,7 +24,6 @@ const ServiceIdEntry = () => {
     setLoading(true);
 
     try {
-      // Verify if the service ID exists
       const { data, error } = await supabase
         .from('customers')
         .select('service_id')
@@ -35,8 +35,8 @@ const ServiceIdEntry = () => {
         return;
       }
 
-      // Navigate to track-service page with the verified service ID
-      navigate(`/track-service?id=${serviceId}`);
+      const hashedServiceId = encodeServiceId(serviceId);
+      navigate(`/track/${hashedServiceId}`);
     } catch (error) {
       console.error('Error verifying service ID:', error);
       toast.error("An error occurred. Please try again.");

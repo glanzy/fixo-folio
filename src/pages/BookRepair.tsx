@@ -50,6 +50,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { encodeServiceId } from "@/utils/hashUtils";
 
 // Device schema constraints for validation
 const deviceSchema = z.object({
@@ -432,7 +433,7 @@ const BookRepair = () => {
 
   const handleConfirmation = () => {
     setShowConfirmation(false);
-    navigate("/");
+    navigate('/'); // Redirect to home page
   };
 
   const copyServiceId = async () => {
@@ -783,7 +784,7 @@ const BookRepair = () => {
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Please save this Service ID for future reference.
+                Please save this Service ID for tracking your repair status.
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>

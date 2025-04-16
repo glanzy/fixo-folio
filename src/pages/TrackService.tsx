@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import {
@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { setupStatusSubscription } from "@/utils/statusUpdateService";
+import { decodeServiceId } from '@/utils/hashUtils';
 
 enum ServiceStatus {
   PICKUP = 'pickup',
@@ -114,9 +115,12 @@ interface WarrantyClaim {
 }
 
 const TrackService = () => {
-  const [searchParams] = useSearchParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const serviceId = searchParams.get("id");
+  
+  // Decode the hashed service ID
+  const serviceId = id ? decodeServiceId(id) : null;
+  
   const [serviceData, setServiceData] = useState<ServiceData | null>(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<FeedbackData | null>(null);
