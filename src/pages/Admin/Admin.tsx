@@ -36,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateServiceStatus, setupStatusSubscription } from "@/utils/statusUpdateService";
+import { encodeServiceId } from "@/utils/hashUtils";
 
 interface RepairBooking {
   service_id: string;
@@ -682,7 +683,7 @@ Your repair request for your ${booking.device_type} with ${booking.devices[0]?.p
 🧘🏻Sit back and relax! After diagnosis, we will provide you with a clear estimation of pricing, warranty details, and repair time - no hidden costs, no surprises! 
 
 📍Track Your Repair Status:
-https://fixonow.com/track-service?id=${booking.service_id}
+https://fixonow.com/track-service/${encodeServiceId(booking.service_id)}
 
 Need help? Call us anytime at 9582568064.
 
@@ -699,7 +700,7 @@ Amount Paid: ₹${booking.total || "___"}
 Warranty Provided: ${booking.warranty_days || "6 months"}
 
 📍Check your service details here:
-https://fixonow.com/track-service?id=${booking.service_id}
+https://fixonow.com/track-service/${encodeServiceId(booking.service_id)}
 
 For any assistance, feel free to contact us at 9582568064.
 
@@ -892,7 +893,20 @@ For any assistance, feel free to contact us at 9582568064.
                 </div>
                 <div>
                   <h4 className="font-semibold">Mobile</h4>
-                  <p>{selectedBooking.mobile}</p>
+                  <div className="flex items-center gap-2">
+                    <p>{selectedBooking.mobile}</p>
+                    <Button
+                      variant="ghost" 
+                      size="sm"
+                      className="h-6 w-6 p-0"
+                      onClick={() => {
+                        navigator.clipboard.writeText(selectedBooking.mobile);
+                        toast.success("Mobile number copied");
+                      }}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
                 {/* Pickup details */}
                 <div>
@@ -1219,7 +1233,7 @@ For any assistance, feel free to contact us at 9582568064.
                     onChange={(e) => setMessageContent(e.target.value)}
                   ></textarea>
                   
-                  <div className="flex justify-center sm:justify-start">
+                  <div className="flex justify-center sm:justify-start gap-2">
                     <Button variant="outline" className="w-full sm:w-auto bg-blue-900 text-white hover:bg-blue-800" onClick={() => {
                       navigator.clipboard.writeText(messageContent);
                       toast.success("Message copied to clipboard");
@@ -1227,6 +1241,13 @@ For any assistance, feel free to contact us at 9582568064.
                       <Copy className="w-4 h-4 mr-2" />
                       Copy Message
                     </Button>
+                    {/* <Button variant="outline" className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700" onClick={() => {
+                      if (selectedBooking?.mobile) {
+                        window.open(`https://wa.me/91${selectedBooking.mobile}?text=${encodeURIComponent(messageContent)}`);
+                      }
+                    }}>
+                      Send to WhatsApp
+                    </Button> */}
                   </div>
                 </div>
               </div>
