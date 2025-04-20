@@ -1241,13 +1241,13 @@ For any assistance, feel free to contact us at 9582568064.
                       <Copy className="w-4 h-4 mr-2" />
                       Copy Message
                     </Button>
-                    {/* <Button variant="outline" className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700" onClick={() => {
+                    <Button variant="outline" className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700" onClick={() => {
                       if (selectedBooking?.mobile) {
-                        window.open(`https://wa.me/91${selectedBooking.mobile}?text=${encodeURIComponent(messageContent)}`);
+                      window.open(`https://wa.me/91${selectedBooking.mobile}`);
                       }
                     }}>
-                      Send to WhatsApp
-                    </Button> */}
+                      Open WhatsApp
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -1255,6 +1255,11 @@ For any assistance, feel free to contact us at 9582568064.
           )}
         </DialogContent>
       </Dialog>
+      <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">
+        Total Bookings: {filteredBookings.length}
+        <br />
+        Total Order Value: ₹{filteredBookings.reduce((acc, booking) => acc + (booking.total || 0), 0)}
+      </div>
     </div>
   );
 };
