@@ -732,6 +732,23 @@ For any assistance, feel free to contact us at 9582568064.
     )
   );
 
+  const getStatusBadgeClass = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "pickup":
+        return "bg-blue-100 text-blue-800 border-blue-300";
+      case "diagnosis":
+        return "bg-yellow-100 text-yellow-800 border-yellow-300";
+      case "repair":
+        return "bg-orange-100 text-orange-800 border-orange-300";
+      case "delivered":
+        return "bg-green-100 text-green-800 border-green-300";
+      case "cancelled":
+        return "bg-red-100 text-red-800 border-red-300";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-300";
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -812,15 +829,23 @@ For any assistance, feel free to contact us at 9582568064.
             />
           </div>
           
-          {/* Google Form Link Section */}
-          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-md flex justify-between items-center cursor-pointer hover:bg-blue-100 transition-colors"
-               onClick={() => window.open("https://forms.gle/cXDAyGaNceR2QHw2A", "_blank")}>
-            <div>
-              <h1 className="font-medium text-blue-700">Pickup/Delivery Form</h1>
-              <h1 className="text-sm text-blue-600">Make video during Pickup/Delivery</h1>
-            </div>
-            
-          </div>
+          {/* Google Form Link and Overall Analytics Section */}
+          <div className="mt-4 flex">
+  <div
+    className="w-1/2 p-3 bg-blue-50 border border-blue-200 rounded-md flex justify-between items-center cursor-pointer hover:bg-blue-100 transition-colors mr-2"
+    onClick={() => window.open("https://forms.gle/cXDAyGaNceR2QHw2A", "_blank")}
+  >
+    <div>
+      <h1 className="font-medium text-blue-700">Pickup/Delivery Form</h1>
+      <h1 className="text-sm text-blue-600">Make video during Pickup/Delivery</h1>
+    </div>
+  </div>
+  <div className="w-1/2 mt-0 p-4 bg-gray-50 border border-gray-200 rounded-md ml-2">
+    Total Bookings: {filteredBookings.length}
+    <br />
+    Total Order Value: ₹{filteredBookings.reduce((acc, booking) => acc + (booking.total || 0), 0)}
+  </div>
+</div>
         </CardHeader>
         <CardContent>
           <Table>
@@ -853,7 +878,10 @@ For any assistance, feel free to contact us at 9582568064.
                     {booking.device_type}
                   </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="capitalize">
+                    <Badge
+                      variant="outline"
+                      className={`capitalize border ${getStatusBadgeClass(booking.status)}`}
+                    >
                       {booking.status}
                     </Badge>
                   </TableCell>
@@ -882,7 +910,10 @@ For any assistance, feel free to contact us at 9582568064.
                 <div>
                   <h4 className="font-semibold">Status</h4>
                   {/* Show current repair status with a badge */}
-                  <Badge variant="outline" className="capitalize">
+                  <Badge
+                    variant="outline"
+                    className={`capitalize border ${getStatusBadgeClass(selectedBooking.status)}`}
+                  >
                     {selectedBooking.status}
                   </Badge>
                 </div>
@@ -1021,7 +1052,10 @@ For any assistance, feel free to contact us at 9582568064.
                     </SelectContent>
                   </Select>
                   
-                  <Badge variant="outline" className="capitalize">
+                  <Badge
+                    variant="outline"
+                    className={`capitalize border ${getStatusBadgeClass(selectedBooking.status)}`}
+                  >
                     Current: {selectedBooking.status}
                   </Badge>
                 </div>
@@ -1255,11 +1289,7 @@ For any assistance, feel free to contact us at 9582568064.
           )}
         </DialogContent>
       </Dialog>
-      <div className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-md">
-        Total Bookings: {filteredBookings.length}
-        <br />
-        Total Order Value: ₹{filteredBookings.reduce((acc, booking) => acc + (booking.total || 0), 0)}
-      </div>
+
     </div>
   );
 };
