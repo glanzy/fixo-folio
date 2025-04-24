@@ -615,18 +615,16 @@ const BookRepair = () => {
                               {...field}
                               onChange={(e) => {
                                 const selectedDate = new Date(e.target.value);
-                                const disabledDate = new Date(2025, 2, 16); // March 16, 2025
+                                // Block dates from 25th April to 10th May 2025 (inclusive)
+                                const blockStart = new Date(2025, 3, 25); // April is month 3 (0-indexed)
+                                const blockEnd = new Date(2025, 4, 10);   // May is month 4
 
                                 if (
-                                  selectedDate.getFullYear() ===
-                                    disabledDate.getFullYear() &&
-                                  selectedDate.getMonth() ===
-                                    disabledDate.getMonth() &&
-                                  selectedDate.getDate() ===
-                                    disabledDate.getDate()
+                                  selectedDate >= blockStart &&
+                                  selectedDate <= blockEnd
                                 ) {
                                   alert(
-                                    "We're currently experiencing a high volume of requests. In the meantime, you can still book your repair by selecting your pickup date for tomorrow."
+                                    "Sorry, pickups are unavailable temporarily from 25th April to 10th May. Please select another date."
                                   );
                                   e.target.value = "";
                                 } else {
