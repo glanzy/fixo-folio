@@ -18,4 +18,77 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
+
+  <!-- Ravvio Chat Bubble Widget -->
+<style>
+  .chat-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10; /* Reduced from 1000 to allow other elements to appear above it */
+}
+
+#chat-toggle { display: none; }
+
+.chat-button {
+  width: 65px; height: 65px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a8a, #1e3a8add);
+  color: white; border: none; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.chat-button:hover { transform: scale(1.1); }
+
+.chat-frame {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  display: none;
+  width: 350px;
+  height: 550px; /* Shortened height */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+
+/* When chat is open, increase z-index to bring it to front */
+#chat-toggle:checked ~ .chat-frame {
+  display: block;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  z-index: 1000;
+}
+
+/* Also increase the button z-index when chat is open */
+#chat-toggle:checked ~ .chat-button {
+  z-index: 1000;
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media screen and (max-width: 767px) {
+  .chat-frame {
+    width: calc(100vw - 40px);
+    height: 450px; /* Also shortened on mobile */
+    right: 0;
+  }
+}
+</style>
+
+  <div class="chat-container">
+    <input type="checkbox" id="chat-toggle">
+    <label class="chat-button" for="chat-toggle">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </label>
+    <div class="chat-frame">
+      <iframe src="https://chatbot.ravvio.in/embed/f9ef8a3c-1ce2-426b-bc9e-3a279cd69110?primaryColor=%231e3a8a&chatTitle=FIXO+Assistant&welcomeMessage=Hi+there%21+I%27m+FIXO%27s+assistant.+How+can+I+help+you+today%3F&showBranding=true&suggestedQuestions=%5B%22What+services+do+you+offer%3F%22%2C%22How+can+I+get+started%3F%22%2C%22What+all+devices+you+repair%3F%22%5D" width="100%" height="100%" style="border: none;" title="Chatbot"></iframe>
+    </div>
+  </div>
 </html>
