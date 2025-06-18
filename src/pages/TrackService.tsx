@@ -588,7 +588,7 @@ const TrackService = () => {
                   <span>₹ {serviceData.billing.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Holi Month Discount (UPTO 10% OFF)</span>
+                  <span>Discount</span>
                   <span>- ₹ {serviceData.billing.iitm.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">

@@ -54,7 +54,8 @@ interface RepairBooking {
   payment_status: "paid" | "unpaid";
   payment_method: string | null;
   payment_date: string | null; 
-  warranty_days: string | null; // Changed from number to string
+  warranty_days: string | null;
+  spare_quality: string | null;
 }
 
 interface DetailedBooking extends RepairBooking {
@@ -84,12 +85,13 @@ const Admin = () => {
     status: "unpaid",
     payment_method: "",
     payment_date: "", 
-    warranty_days: "", // Changed from 0 to empty string
+    warranty_days: "",
+    spare_quality: "",
   });
   const [savingPrice, setSavingPrice] = useState(false);
   const [editPaymentMethod, setEditPaymentMethod] = useState(false);
   const [editVendor, setEditVendor] = useState(false);
-  const [editPaymentDate, setEditPaymentDate] = useState(false);  // Add this line
+  const [editPaymentDate, setEditPaymentDate] = useState(false);
   const [editWarranty, setEditWarranty] = useState(false);
   const [selectedTemplate, setSelectedTemplate] = useState("pickup");
   const [messageContent, setMessageContent] = useState("");
@@ -232,6 +234,9 @@ const Admin = () => {
           warranty_days:
             warrantyData.find((w) => w.service_id === customer.service_id)
               ?.warranty_days || null,
+          spare_quality:
+            billingData.find((b) => b.service_id === customer.service_id)
+              ?.spare_quality || null,
         }))
         .sort(
           (a, b) =>
@@ -255,8 +260,9 @@ const fetchDetailedBooking = async (serviceId: string) => {
       { data: deviceData },
       { data: trackingData },
       { data: billingData },
-      { data: vendorData }, // Add this line
+      { data: vendorData },
       { data: warrantyData },
+      { data: sparePartsData },
     ] = await Promise.all([
       supabase
         .from("customers")
@@ -274,13 +280,18 @@ const fetchDetailedBooking = async (serviceId: string) => {
         .select("*")
         .eq("service_id", serviceId)
         .single(),
-      supabase  // Add this query
+      supabase
         .from("vendor_assignments")
         .select("*")
         .eq("service_id", serviceId)
         .single(),
       supabase
         .from("warranties")
+        .select("*")
+        .eq("service_id", serviceId)
+        .single(),
+      supabase
+        .from("spare_parts")
         .select("*")
         .eq("service_id", serviceId)
         .single(),
@@ -305,6 +316,7 @@ const fetchDetailedBooking = async (serviceId: string) => {
         payment_method: billingData?.payment_method || null,
         payment_date: billingData?.payment_date || null, 
         warranty_days: warrantyData?.warranty_days || null,
+        spare_quality: sparePartsData?.quality || null,
         devices: deviceData.map((device) => ({
           device_type: device.device_type,
           device_name: device.device_name,
@@ -313,9 +325,7 @@ const fetchDetailedBooking = async (serviceId: string) => {
         })),
       });
       setShowDetails(true);
-      // Reset editVendor based on whether vendor is assigned
       setEditVendor(!vendorData?.vendor_name);
-      // Reset editWarranty based on whether warranty is set
       setEditWarranty(!warrantyData?.warranty_days);
     }
   } catch (error) {
@@ -436,6 +446,7 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
   const handleSavePrice = async (serviceId: string) => {
     setSavingPrice(true);
     try {
+      console.log('Starting save operation for service:', serviceId);
       const newTotal = tempBilling.subtotal - tempBilling.iitm;
 
       const billingData = {
@@ -465,9 +476,62 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
 
       if (billingError) throw billingError;
 
-      // Also update warranty if value is provided
+      // Update warranty if value is provided
       if (tempBilling.warranty_days) {
         await handleWarrantyUpdate(serviceId, tempBilling.warranty_days);
+      }
+
+      // Handle spare part quality
+      if (tempBilling.spare_quality) {
+        console.log('Saving spare part quality:', tempBilling.spare_quality);
+        
+        // First check if record exists
+        const { data: existingSparePart, error: checkError } = await supabase
+          .from("spare_parts")
+          .select("*")
+          .eq("service_id", serviceId)
+          .single();
+
+        if (checkError && checkError.code !== 'PGRST116') {
+          console.error('Error checking existing spare part:', checkError);
+        }
+
+        const sparePartData = {
+          service_id: serviceId,
+          quality: tempBilling.spare_quality
+        };
+
+        try {
+          if (!existingSparePart) {
+            // Insert new record
+            const { data, error } = await supabase
+              .from("spare_parts")
+              .insert([sparePartData])
+              .select();
+
+            if (error) {
+              console.error('Error inserting spare part:', error);
+              throw error;
+            }
+            console.log('Inserted spare part:', data);
+          } else {
+            // Update existing record
+            const { data, error } = await supabase
+              .from("spare_parts")
+              .update(sparePartData)
+              .eq("service_id", serviceId)
+              .select();
+
+            if (error) {
+              console.error('Error updating spare part:', error);
+              throw error;
+            }
+            console.log('Updated spare part:', data);
+          }
+        } catch (error) {
+          console.error('Error in spare part operation:', error);
+          throw error;
+        }
       }
 
       // Update local state
@@ -483,6 +547,7 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
                 payment_method: tempBilling.payment_method,
                 payment_date: tempBilling.payment_date,
                 warranty_days: tempBilling.warranty_days,
+                spare_quality: tempBilling.spare_quality,
               }
             : booking
         )
@@ -499,12 +564,13 @@ const handleVendorAssignment = async (serviceId: string, vendor: string) => {
           payment_method: tempBilling.payment_method,
           payment_date: tempBilling.payment_date,
           warranty_days: tempBilling.warranty_days,
+          spare_quality: tempBilling.spare_quality,
         }));
       }
 
       toast.success("Billing details updated successfully");
       setEditPaymentMethod(false);
-      setEditPaymentDate(false);  // Add this line
+      setEditPaymentDate(false);
       setEditWarranty(false);
     } catch (error) {
       console.error("Error updating details:", error);
@@ -658,10 +724,11 @@ const setupRealtimeSubscription = () => {
         status: selectedBooking.payment_status || "unpaid",
         payment_method: selectedBooking.payment_method || "",
         payment_date: selectedBooking.payment_date || "", 
-        warranty_days: selectedBooking.warranty_days || "", // Changed from 0 to empty string
+        warranty_days: selectedBooking.warranty_days || "",
+        spare_quality: selectedBooking.spare_quality || "",
       });
       setEditPaymentMethod(!selectedBooking.payment_method);
-      setEditPaymentDate(!selectedBooking.payment_date);  // Add this line
+      setEditPaymentDate(!selectedBooking.payment_date);
       setEditWarranty(!selectedBooking.warranty_days);
       // Remove the automatic setting of editVendor here
       
@@ -1240,7 +1307,38 @@ For any assistance, feel free to contact us at 9582568064.
                     </div>
                   </div>
                 </div>
-                
+                {/* Quality of Spare Part */}
+                <div className="col-span-1 lg:col-span-2">
+                  <div>
+                    <label className="text-sm font-medium">Spare Part Quality</label>
+                    <Select
+                      value={tempBilling.spare_quality || ""}
+                      onValueChange={(value) => {
+                        console.log('Selected spare part quality:', value);
+                        setTempBilling((prev) => {
+                          const newState = {
+                            ...prev,
+                            spare_quality: value,
+                          };
+                          console.log('Updated tempBilling state:', newState);
+                          return newState;
+                        });
+                      }}
+                    >
+                      <SelectTrigger className="mt-1 w-full">
+                        <SelectValue placeholder="Select quality" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Original">Original</SelectItem>
+                        <SelectItem value="OEM">OEM</SelectItem>
+                        <SelectItem value="Local">Local</SelectItem>
+                        <SelectItem value="Not Used">Not used</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+
               </div>
               
               {/* Messaging Template Section */}
