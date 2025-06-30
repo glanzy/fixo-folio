@@ -78,6 +78,7 @@ const Admin = () => {
   const [selectedBooking, setSelectedBooking] =
     useState<DetailedBooking | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [showAnalytics, setShowAnalytics] = useState(false);
   const [tempBilling, setTempBilling] = useState({
     subtotal: 0,
     iitm: 0,
@@ -897,22 +898,125 @@ For any assistance, feel free to contact us at 9582568064.
           </div>
           
           {/* Google Form Link and Overall Analytics Section */}
-          <div className="mt-4 flex">
-  <div
-    className="w-1/2 p-3 bg-blue-50 border border-blue-200 rounded-md flex justify-between items-center cursor-pointer hover:bg-blue-100 transition-colors mr-2"
-    onClick={() => window.open("https://forms.gle/cXDAyGaNceR2QHw2A", "_blank")}
-  >
-    <div>
-      <h1 className="font-medium text-blue-700">Pickup/Delivery Form</h1>
-      <h1 className="text-sm text-blue-600">Make video during Pickup/Delivery</h1>
-    </div>
-  </div>
-  <div className="w-1/2 mt-0 p-4 bg-gray-50 border border-gray-200 rounded-md ml-2">
-    Total Bookings: {filteredBookings.length}
-    <br />
-    Total Order Value: ₹{filteredBookings.reduce((acc, booking) => acc + (booking.total || 0), 0)}
-  </div>
-</div>
+            <div className="mt-4 flex flex-col space-y-4">
+              <div
+                className="w-full p-3 bg-blue-50 border border-blue-200 rounded-md flex justify-between items-center cursor-pointer hover:bg-blue-100 transition-colors"
+                onClick={() => window.open("https://forms.gle/cXDAyGaNceR2QHw2A", "_blank")}
+              >
+                <div>
+                  <h1 className="font-medium text-blue-700">Pickup/Delivery Form</h1>
+                  <h1 className="text-sm text-blue-600">Make video during Pickup/Delivery</h1>
+                </div>
+              </div>
+              
+              <div
+                className="w-full p-3 bg-gray-50 border border-gray-200 rounded-md flex justify-between items-center cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => setShowAnalytics(true)}
+              >
+                <div>
+                  <h1 className="font-medium">Booking Analytics</h1>
+                  <h1 className="text-sm text-gray-600">View order statistics</h1>
+                </div>
+              </div>
+
+              <Dialog open={showAnalytics} onOpenChange={setShowAnalytics}>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Booking Analytics</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
+                    <div className="flex justify-between">
+                      <span>Total Bookings:</span>
+                      <span className="font-medium">{filteredBookings.length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Order Value:</span>
+                      <span className="font-medium">₹{filteredBookings.reduce((acc, booking) => acc + (booking.total || 0), 0)}</span>
+                    </div>
+                    <div className="pt-2 mt-2 border-t border-gray-200">
+                      <span className="text-sm font-medium text-gray-500">Order Status</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Delivered:</span>
+                      <span className="font-medium text-green-600">{filteredBookings.filter(booking => booking.status.toLowerCase() === "delivered").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cancelled:</span>
+                      <span className="font-medium text-red-600">{filteredBookings.filter(booking => booking.status.toLowerCase() === "cancelled").length}</span>
+                    </div>
+
+                    {/* Mobile Bookings Analytics */}
+                    <div className="pt-2 mt-2 border-t border-gray-200">
+                      <span className="text-sm font-medium text-gray-500">Mobile Bookings</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Mobiles:</span>
+                      <span className="font-medium">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "mobile").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Delivered Mobiles:</span>
+                      <span className="font-medium text-green-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "mobile" && booking.status.toLowerCase() === "delivered").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cancelled Mobiles:</span>
+                      <span className="font-medium text-red-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "mobile" && booking.status.toLowerCase() === "cancelled").length}</span>
+                    </div>
+                    
+                    {/* iphone Bookings Analytics */}
+                    <div className="pt-2 mt-2 border-t border-gray-200">
+                      <span className="text-sm font-medium text-gray-500">iphone Bookings</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total iphone:</span>
+                      <span className="font-medium">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "iphone").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Delivered iphone:</span>
+                      <span className="font-medium text-green-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "iphone" && booking.status.toLowerCase() === "delivered").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cancelled iphone:</span>
+                      <span className="font-medium text-red-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "iphone" && booking.status.toLowerCase() === "cancelled").length}</span>
+                    </div>
+
+
+                    {/* Laptop Bookings Analytics */}
+                    <div className="pt-2 mt-2 border-t border-gray-200">
+                      <span className="text-sm font-medium text-gray-500">Laptop Bookings</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Laptops:</span>
+                      <span className="font-medium">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "laptop").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Delivered Laptops:</span>
+                      <span className="font-medium text-green-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "laptop" && booking.status.toLowerCase() === "delivered").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cancelled Laptops:</span>
+                      <span className="font-medium text-red-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "laptop" && booking.status.toLowerCase() === "cancelled").length}</span>
+                    </div>
+
+                    {/* Macbook Bookings Analytics */}
+                    <div className="pt-2 mt-2 border-t border-gray-200">
+                      <span className="text-sm font-medium text-gray-500">Macbook Bookings</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Total Macbook:</span>
+                      <span className="font-medium">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "macbook").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Delivered Macbook:</span>
+                      <span className="font-medium text-green-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "macbook" && booking.status.toLowerCase() === "delivered").length}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Cancelled Macbook:</span>
+                      <span className="font-medium text-red-600">{filteredBookings.filter(booking => booking.device_type && booking.device_type.toLowerCase() === "macbook" && booking.status.toLowerCase() === "cancelled").length}</span>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
         </CardHeader>
         <CardContent>
           <Table>

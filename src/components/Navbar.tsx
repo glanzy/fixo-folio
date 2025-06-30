@@ -24,10 +24,14 @@ export const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-white">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="text-3xl font-bold text-primary">
-            FIXO
+      <div className="container mx-auto px-4 py-2">
+        <div className="flex items-center justify-between pl-0">
+          <Link to="/" className="block">
+            <img 
+              src="./public/logo/LOGO.png" 
+              alt="FIXO" 
+              className="h-11"
+            />
           </Link>
 
           {/* Desktop Menu */}
