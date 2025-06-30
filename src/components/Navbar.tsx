@@ -30,7 +30,7 @@ export const Navbar = () => {
             <img 
               src="./public/logo/LOGO.png" 
               alt="FIXO" 
-              className="h-11"
+              className="h-12"
             />
           </Link>
 
