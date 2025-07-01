@@ -28,7 +28,7 @@ export const Navbar = () => {
         <div className="flex items-center justify-between pl-0">
           <Link to="/" className="block">
             <img 
-              src="./public/logo/LOGO.png" 
+              src="/logo/LOGO.png" 
               alt="FIXO" 
               className="h-12"
             />
